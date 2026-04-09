@@ -8,6 +8,7 @@ class RequestBroker:
 	"""
 	def __init__(self, _thisOp: OP):
 		self._thisOp = _thisOp
+		self._apiKey = parent.geminiCOMP.par.Apikey.eval()
 		self._webclientDat:webclientDAT = self._thisOp.op("webclient1")
 		self._requestLookup:Dict[int, RequestObjectBase] = {}
 		pass
@@ -15,7 +16,7 @@ class RequestBroker:
 	def _makeRequest(self, requestObject:RequestObjectBase, url:str, method:str, header=None):
 		'''internal request initializer, this method will create the request on the webclientDat'''
 		# TODO: create request against the webclient DAT
-		id = self._webclientDat.request(url, method, header=header, data=requestObject.input)
+		id = self._webclientDat.request(url, method, header=header, data=requestObject.input())
 		self._requestLookup[id] = requestObject
 		pass
 
@@ -60,7 +61,8 @@ class RequestBroker:
 		del self._requestLookup[id]
 
 	def MakeRequest(self, requestObject:RequestObjectBase):
-		self._makeRequest(requestObject)
+		requestObject._header["x-goog-api-key"] = self._apiKey
+		self._makeRequest(requestObject, url=requestObject.url(), method=requestObject.method(), header=requestObject.header())
 		pass
 
 	def CompleteRequest(self, statusCode: Dict[str, Any], headerDict: Dict[str, str], data: bytes, id: int):

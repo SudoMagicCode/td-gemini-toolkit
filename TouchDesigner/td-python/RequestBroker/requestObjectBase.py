@@ -3,11 +3,14 @@ from abc import ABC, abstractmethod
 
 
 class RequestObjectBase(ABC):
-	def __init__(self, input:bytes):
+	def __init__(self, input:Any):
 		self._inputData = input
 		self._status: dict[str, Any] = {}
 		self._completed = False
 		self._result:bytes = b""
+		self._url:str = ""
+		self._header:dict[str,str] = {}
+		self._method:str = "POST"
 
 	def _resolve(self, statusCode: Dict[str, Any], headerDict: Dict[str, str], data:bytes=None):
 		self._result = data
@@ -20,10 +23,20 @@ class RequestObjectBase(ABC):
 		self._completed = True
 		self.error(error)
 
+	def url(self)->str:
+		return self._url
+	
+	def method(self)->str:
+		return self._method
+
+	
+	def header(self)->dict[str,str]:
+		return self._header
+
 	def isCompleted(self)->bool:
 		return self._completed
 
-	def input(self)->bytes:
+	def input(self)->Any:
 		return self._inputData
 
 	def result(self)->bytes:

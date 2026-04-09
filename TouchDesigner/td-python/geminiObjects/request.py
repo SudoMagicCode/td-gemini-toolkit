@@ -19,7 +19,7 @@ class GeminiInputContent:
 	
 	def renderContents(self)->dict:
 		partData = [p.renderPart() for p in self._parts]
-		return {"contents": partData}
+		return {"contents":{"parts": partData } }
 
 	def addTextPart(self, text:str):
 		newPart = GeminiContentTextPart(text)

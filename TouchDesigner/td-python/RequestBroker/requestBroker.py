@@ -75,3 +75,7 @@ class RequestBroker:
     def CompleteRequestAsError(self, id: int, error: Exception):
         self._completeRequestAsError(id, error)
         pass
+
+    @property
+    def Awaitingresponse(self) -> bool:
+        return False

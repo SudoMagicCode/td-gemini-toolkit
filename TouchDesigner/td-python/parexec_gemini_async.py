@@ -48,7 +48,7 @@ def onPulse(par: Par):
         func = getattr(geminiAsyncACTIONS, par.name)
         func(par)
     except Exception as e:
-        pass
+        print(e)
     return
 
 

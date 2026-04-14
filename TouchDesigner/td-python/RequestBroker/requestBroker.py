@@ -17,7 +17,6 @@ class RequestBroker:
 
     def _makeRequest(self, requestObject: RequestObjectBase, url: str, method: str, header=None):
         '''internal request initializer, this method will create the request on the webclientDat'''
-        # TODO: create request against the webclient DAT
         id = self._webclientDat.request(
             url, method, header=header, data=requestObject.input())
         self._requestLookup[id] = requestObject

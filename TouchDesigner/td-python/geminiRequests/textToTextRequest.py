@@ -18,7 +18,16 @@ class TextToTextRequestObject(RequestObjectBase):
 
 	def resolve(self, result:bytes):
 		text = result.decode("utf-8", errors="ignore")
-		self._output.text = text
+		output = GeminiOutput.fromJson(text)
+		
+		output_text = ""
+
+		for candidate in output.candidates:
+			for part in candidate.content.parts:
+				output_text = output_text+part.text+"\n"
+
+		self._output.text = output_text
+		self._output.store("metadata", output.usage_metadata)
 
 	def error(self, error):
 		return super().error(error)

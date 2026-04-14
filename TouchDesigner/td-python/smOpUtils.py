@@ -1,3 +1,6 @@
+api_pop_dialog = op('base_assets/popDialog')
+
+
 def find_gemini_ops() -> list[OP]:
     ...
 

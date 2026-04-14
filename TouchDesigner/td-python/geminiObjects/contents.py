@@ -31,7 +31,22 @@ class GeminiInputContent:
 
 class GeminiOutputPart:
 	def __init__(self, input:dict):
-		self.text = input["text"]
+
+		self.text = None
+		self.inline_data = None
+		self.mime_type = None
+		self.data = None
+
+		if "text" in input:
+			print('text Part')
+			self.text = input["text"]
+		
+		if "inlineData" in input:
+			print('inlineData Part')
+			self.inline_data = input["inlineData"]
+			self.mime_type = input["inlineData"]["mimeType"] 
+			self.data = input["inlineData"]["data"]
+
 		self.thought_signature = input["thoughtSignature"]
 		pass
 
@@ -54,7 +69,7 @@ class GeminiUsageMetadata:
 		self.candidates_token_count = input['candidatesTokenCount']
 		self.total_token_count = input['totalTokenCount']
 		self.prompt_tokens_details = input['promptTokensDetails']
-		self.thoughts_token_count = input['thoughtsTokenCount']
+		#self.thoughts_token_count = input['thoughtsTokenCount']
 		pass
 
 

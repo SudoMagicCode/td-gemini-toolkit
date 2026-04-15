@@ -43,7 +43,6 @@ def onPulse(par: Par):
     Args:
         par: The Par object that was pulsed
     """
-    print(par)
     try:
         func = getattr(geminiTextToTextACTIONS, par.name)
         func(par)

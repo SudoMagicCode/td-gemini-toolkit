@@ -27,6 +27,9 @@ def createRequest(textOp: textDAT):
     # add a text part to the contents
     inputContent.addTextPart(input_text)
 
+    resolution = parent.geminiCOMP.par.Resolution.eval()
+    aspect = parent.geminiCOMP.par.Aspectratio.eval()
+    print(resolution, aspect)
     # create a request object which resolves to the output_buffer
     request = TextToImageRequestObject(inputContent, output_buffer)
 

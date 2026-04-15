@@ -10,7 +10,7 @@ class RequestBroker:
     """
 
     def __init__(self, _thisOp: OP):
-        self.my_id = uuid.uuid4()
+        self.my_id = uuid.uuid5(uuid.NAMESPACE_OID, _thisOp.path)
         self._thisOp = _thisOp
         print(f"initializing request broker {str(self.my_id)} at {self._thisOp.path}")
         self._apiKey = parent.geminiCOMP.fetch('gemini_apiKey')
@@ -24,7 +24,7 @@ class RequestBroker:
         '''internal request initializer, this method will create the request on the webclientDat'''
         id = self._webclientDat.request(url, method, header=header, data=requestObject.input())
         self._requestLookup[id] = requestObject
-        print("making request")
+        print(f"{self._thisOp.path} broker making request")
         self._awaiting_response.val = True
         pass
 

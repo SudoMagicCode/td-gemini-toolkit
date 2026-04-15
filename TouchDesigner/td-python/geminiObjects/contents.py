@@ -38,11 +38,9 @@ class GeminiOutputPart:
 		self.data = None
 
 		if "text" in input:
-			print('text Part')
 			self.text = input["text"]
 		
 		if "inlineData" in input:
-			print('inlineData Part')
 			self.inline_data = input["inlineData"]
 			self.mime_type = input["inlineData"]["mimeType"] 
 			self.data = input["inlineData"]["data"]

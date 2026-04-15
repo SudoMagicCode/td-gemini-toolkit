@@ -8,6 +8,7 @@ def clear_api_keys():
 
 def build_ops():
     clear_api_keys()
+    op('base_save_for_release').par.Package.pulse()
 
 
 build_ops()

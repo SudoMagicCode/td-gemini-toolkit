@@ -1,5 +1,6 @@
 from typing import Dict, Any, runtime_checkable
 from abc import ABC, abstractmethod
+import uuid
 
 from requestObjectBase import RequestObjectBase
 
@@ -9,7 +10,9 @@ class RequestBroker:
     """
 
     def __init__(self, _thisOp: OP):
+        self.my_id = uuid.uuid4()
         self._thisOp = _thisOp
+        print(f"initializing request broker {str(self.my_id)} at {self._thisOp.path}")
         self._apiKey = parent.geminiCOMP.fetch('gemini_apiKey')
         self._webclientDat: webclientDAT = self._thisOp.op("webclient1")
         self._requestLookup: Dict[int, RequestObjectBase] = {}
@@ -19,18 +22,22 @@ class RequestBroker:
 
     def _makeRequest(self, requestObject: RequestObjectBase, url: str, method: str, header=None):
         '''internal request initializer, this method will create the request on the webclientDat'''
-        id = self._webclientDat.request(
-            url, method, header=header, data=requestObject.input())
+        id = self._webclientDat.request(url, method, header=header, data=requestObject.input())
         self._requestLookup[id] = requestObject
         print("making request")
         self._awaiting_response.val = True
-
         pass
 
     def _completeRequest(self, statusCode: Dict[str, Any], headerDict: Dict[str, str], data: bytes, id: int):
         '''internal request completer, this method will resolve the RequestObjectBase with data from the webclientDat'''
         # find the request object
+        if id not in self._requestLookup:
+            # there has been some issue with the request map resetting
+            print(f"request {id} not found in broker {str(self.my_id)} at {self._thisOp.path}")
+            pass
+        
         requestObject = self._requestLookup[id]
+        
 
         # check if an object was found
         if requestObject is None:
@@ -43,7 +50,7 @@ class RequestBroker:
             self._awaiting_response.val = False
         except Exception as e:
             # something went wrong in the resolving code...
-            print(e)
+            print(f"{str(self.my_id)} at {self._thisOp.path} raised Exception for request {id}:{e}")
 
         # delete the request object from lookup
         del self._requestLookup[id]
@@ -51,6 +58,11 @@ class RequestBroker:
 
     def _completeRequestAsError(self, id: int, error: Exception):
         # find the request object
+        if id not in self._requestLookup:
+            # there has been some issue with the request map resetting
+            print(f"request {id} not found in broker {str(self.my_id)} at {self._thisOp.path}")
+            pass
+
         requestObject = self._requestLookup[id]
 
         # check if an object was found
@@ -61,17 +73,17 @@ class RequestBroker:
         try:
             # attempt to resolve the request object
             requestObject._error(error)
+
         except Exception as e:
             # something went wrong in the resolving code...
-            print(e)
+            print(f"{str(self.my_id)} at {self._thisOp.path} raised Exception for request {id}:{e}")
 
         # delete the request object from lookup
         del self._requestLookup[id]
 
     def MakeRequest(self, requestObject: RequestObjectBase):
         requestObject._header["x-goog-api-key"] = self._apiKey
-        self._makeRequest(requestObject, url=requestObject.url(
-        ), method=requestObject.method(), header=requestObject.header())
+        self._makeRequest(requestObject, url=requestObject.url(), method=requestObject.method(), header=requestObject.header())
         pass
 
     def CompleteRequest(self, statusCode: Dict[str, Any], headerDict: Dict[str, str], data: bytes, id: int):

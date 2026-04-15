@@ -13,6 +13,8 @@ class RequestBroker:
         self._apiKey = parent.geminiCOMP.fetch('gemini_apiKey')
         self._webclientDat: webclientDAT = self._thisOp.op("webclient1")
         self._requestLookup: Dict[int, RequestObjectBase] = {}
+        self._awaiting_response = tdu.Dependency(False)
+
         pass
 
     def _makeRequest(self, requestObject: RequestObjectBase, url: str, method: str, header=None):
@@ -20,6 +22,9 @@ class RequestBroker:
         id = self._webclientDat.request(
             url, method, header=header, data=requestObject.input())
         self._requestLookup[id] = requestObject
+        print("making request")
+        self._awaiting_response.val = True
+
         pass
 
     def _completeRequest(self, statusCode: Dict[str, Any], headerDict: Dict[str, str], data: bytes, id: int):
@@ -35,6 +40,7 @@ class RequestBroker:
         try:
             # attempt to resolve the request object
             requestObject._resolve(statusCode, headerDict, data)
+            self._awaiting_response.val = False
         except Exception as e:
             # something went wrong in the resolving code...
             print(e)
@@ -75,3 +81,7 @@ class RequestBroker:
     def CompleteRequestAsError(self, id: int, error: Exception):
         self._completeRequestAsError(id, error)
         pass
+
+    @property
+    def Awaitingresponse(self) -> bool:
+        return self._awaiting_response

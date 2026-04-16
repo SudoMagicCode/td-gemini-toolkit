@@ -30,5 +30,4 @@ class TextToTextRequestObject(RequestObjectBase):
 		self._output.store("metadata", output.usage_metadata)
 
 	def error(self, error):
-		
 		return super().error(error)

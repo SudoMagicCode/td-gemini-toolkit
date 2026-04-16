@@ -4,7 +4,7 @@ import base64
 from RequestBroker import RequestObjectBase
 from geminiObjects import *
 
-class TextToImageRequestObject(RequestObjectBase):
+class ImageTextToImageRequestObject(RequestObjectBase):
 	def __init__(self, input: GeminiInputContent, output:scriptTOP):
 		data = input.renderContents()
 		data_string = json.dumps(data)
@@ -12,7 +12,7 @@ class TextToImageRequestObject(RequestObjectBase):
 
 		self._output = output
 
-		self._url = CreateEndpoint(Model.GEMINI_3_FLASH_PREVIEW, Operation.GENERATE_CONTENT)
+		self._url = CreateEndpoint(Model.GEMINI_3_1_FLASH_IMAGE_PREVIEW, Operation.GENERATE_CONTENT)
 		self._method = "POST"
 		self._header = {
     		"Content-Type": "application/json"

@@ -34,11 +34,11 @@ class RequestBroker:
         id = self._webclientDat.request(url, method, header=header, data=requestObject.input())
         self._requestLookup[id] = requestObject
         msg_formatter(f"{self._thisOp.path} broker making request")
-        self._awaiting_response.val = True
         pass
 
     def _completeRequest(self, statusCode: Dict[str, Any], headerDict: Dict[str, str], data: bytes, id: int):
         '''internal request completer, this method will resolve the RequestObjectBase with data from the webclientDat'''
+
         # find the request object
         if id not in self._requestLookup:
             # there has been some issue with the request map resetting
@@ -65,6 +65,7 @@ class RequestBroker:
         return
 
     def _completeRequestAsError(self, id: int, error: Exception):
+        
         # find the request object
         if id not in self._requestLookup:
             # there has been some issue with the request map resetting
@@ -90,15 +91,22 @@ class RequestBroker:
         del self._requestLookup[id]
 
     def MakeRequest(self, requestObject: RequestObjectBase):
+                # this is to enforce serial requests
+        self._awaiting_response.val = True
+
         requestObject._header["x-goog-api-key"] = self._apiKey
         self._makeRequest(requestObject, url=requestObject.url(), method=requestObject.method(), header=requestObject.header())
         pass
 
     def CompleteRequest(self, statusCode: Dict[str, Any], headerDict: Dict[str, str], data: bytes, id: int):
+        # this is to enforce serial requests
+        self._awaiting_response.val = False
         self._completeRequest(statusCode, headerDict, data, id)
         pass
 
     def CompleteRequestAsError(self, id: int, error: Exception):
+        # this is to enforce serial requests
+        self._awaiting_response.val = False
         self._completeRequestAsError(id, error)
         pass
 

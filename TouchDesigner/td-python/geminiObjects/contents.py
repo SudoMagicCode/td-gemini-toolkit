@@ -111,12 +111,16 @@ class GeminiCandidate:
 
 class GeminiUsageMetadata:
 	def __init__(self, input:dict):
+		self._data = input
 		self.prompt_token_count = input['promptTokenCount']
 		self.candidates_token_count = input['candidatesTokenCount']
 		self.total_token_count = input['totalTokenCount']
 		self.prompt_tokens_details = input['promptTokensDetails']
 		#self.thoughts_token_count = input['thoughtsTokenCount']
 		pass
+
+	def toDict(self)->dict:
+		return self._data
 
 
 class GeminiOutput:

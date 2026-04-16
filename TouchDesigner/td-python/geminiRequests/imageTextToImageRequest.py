@@ -29,7 +29,7 @@ class ImageTextToImageRequestObject(RequestObjectBase):
 					self._output.store("image_data", img_bytes)
 					self._output.store("mime", ".jpg")
 
-		self._output.store("metadata", output.usage_metadata)
+		self._output.store("metadata",  output.usage_metadata.toDict())
 
 
 	def error(self, error):

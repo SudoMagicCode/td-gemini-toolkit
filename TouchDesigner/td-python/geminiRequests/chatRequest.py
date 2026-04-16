@@ -26,7 +26,7 @@ class ChatRequestObject(RequestObjectBase):
 			row = Adaptors.GeminiContentToFifoRow(candidate.content)
 			self._output.appendRow(row)
 
-		self._output.store("metadata", output.usage_metadata)
+		self._output.store("metadata", output.usage_metadata.toDict())
 
 
 	def error(self, error):

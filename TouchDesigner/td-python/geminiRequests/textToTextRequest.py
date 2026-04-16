@@ -27,7 +27,7 @@ class TextToTextRequestObject(RequestObjectBase):
 				output_text = output_text+part.text+"\n"
 
 		self._output.text = output_text
-		self._output.store("metadata", output.usage_metadata)
+		self._output.store("metadata",  output.usage_metadata.toDict())
 
 	def error(self, error):
 		return super().error(error)

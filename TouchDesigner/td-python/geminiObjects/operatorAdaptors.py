@@ -1,7 +1,9 @@
 import contents
 
 def TOPtoGeminiImagePart(top:TOP) -> contents.GeminiContentImagePart:
-	return 
+	data = top.saveByteArray('.jpeg')
+	return contents.GeminiContentImagePart("image/jpeg", data)
 
 def DATtoGeminiTextPart(dat:DAT) -> contents.GeminiContentTextPart:
-	return 
+	input_text = dat.text
+	return contents.GeminiContentTextPart(input_text) 

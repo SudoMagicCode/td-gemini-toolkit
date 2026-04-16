@@ -1,5 +1,5 @@
 from apiKeyActions import *
-from geminiObjects import GeminiInputContent
+import geminiObjects 
 from geminiRequests import TextToImageRequestObject
 from geminiTerminalLogs import msg_formatter
 
@@ -19,17 +19,21 @@ def CreateRequest(textOp: textDAT):
 
 def createRequest(textOp: textDAT):
     # grab text from buffer
-    input_text = textOp.text
+    textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
 
     # create input object
-    inputContent = GeminiInputContent()
+    inputContent = geminiObjects.GeminiInputContent()
 
     # add a text part to the contents
-    inputContent.addTextPart(input_text)
+    inputContent.addPart(textPart)
 
+    # additional attributes
     resolution = parent.geminiCOMP.par.Resolution.eval()
     aspect = parent.geminiCOMP.par.Aspectratio.eval()
-    print(resolution, aspect)
+    
+    # debug pars
+    debug(resolution, aspect)
+    
     # create a request object which resolves to the output_buffer
     request = TextToImageRequestObject(inputContent, output_buffer)
 

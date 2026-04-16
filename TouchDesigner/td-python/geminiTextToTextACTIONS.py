@@ -1,5 +1,5 @@
 from apiKeyActions import *
-from geminiObjects import GeminiInputContent
+import geminiObjects 
 from geminiRequests import TextToTextRequestObject
 from geminiTerminalLogs import msg_formatter
 
@@ -19,13 +19,13 @@ def CreateRequest(textOp: textDAT):
 
 def createRequest(textOp: textDAT):
     # grab text from buffer
-    input_text = textOp.text
+    textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
 
     # create input object
-    inputContent = GeminiInputContent()
+    inputContent = geminiObjects.GeminiInputContent()
 
     # add a text part to the contents
-    inputContent.addTextPart(input_text)
+    inputContent.addPart(textPart)
 
     # create a request object which resolves to the output_buffer
     request = TextToTextRequestObject(inputContent, output_buffer)

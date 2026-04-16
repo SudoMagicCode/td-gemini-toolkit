@@ -59,6 +59,10 @@ class GeminiInput:
 		contents = [c.renderContents() for c in self._contents]
 		return { "contents": contents }
 	
+	def addContent(self, content:list[GeminiContent]):
+		self._contents.extend(content)
+		return
+
 	def addUserContent(self) -> GeminiContent:
 		c = GeminiContent("user")
 		self._contents.append(c)

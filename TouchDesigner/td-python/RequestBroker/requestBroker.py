@@ -55,7 +55,6 @@ class RequestBroker:
         try:
             # attempt to resolve the request object
             requestObject._resolve(statusCode, headerDict, data)
-            self._awaiting_response.val = False
         except Exception as e:
             # something went wrong in the resolving code...
             msg_formatter(f"{str(self.my_id)} at {self._thisOp.path} raised Exception for request {id}:{e}")
@@ -91,7 +90,7 @@ class RequestBroker:
         del self._requestLookup[id]
 
     def MakeRequest(self, requestObject: RequestObjectBase):
-                # this is to enforce serial requests
+        # this is to enforce serial requests
         self._awaiting_response.val = True
 
         requestObject._header["x-goog-api-key"] = self._apiKey

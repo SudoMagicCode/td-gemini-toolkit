@@ -12,7 +12,7 @@ class ChatRequestObject(RequestObjectBase):
 
 		self._output = output
 
-		self._url = CreateEndpoint(Model.GEMINI_3_1_FLASH_IMAGE_PREVIEW, Operation.GENERATE_CONTENT)
+		self._url = CreateEndpoint(Model.GEMINI_3_FLASH_PREVIEW, Operation.GENERATE_CONTENT)
 		self._method = "POST"
 		self._header = {
     		"Content-Type": "application/json"
@@ -20,14 +20,11 @@ class ChatRequestObject(RequestObjectBase):
 
 	def resolve(self, result:bytes):
 		text = result.decode("utf-8", errors="ignore")
-
 		output = GeminiOutput.fromJson(text)
+
 		for candidate in output.candidates:
-			for part in candidate.content.parts:
-				if len(part.data)>0:
-					img_bytes = base64.b64decode(part.data)
-					self._output.store("image_data", img_bytes)
-					self._output.store("mime", ".jpg")
+			row = Adaptors.GeminiContentToFifoRow(candidate.content)
+			self._output.appendRow(row)
 
 		self._output.store("metadata", output.usage_metadata)
 

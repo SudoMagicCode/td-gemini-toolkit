@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import json
-
+import base64
 
 class GeminiContentPart(ABC):
 	@abstractmethod
@@ -13,6 +13,17 @@ class GeminiContentTextPart(GeminiContentPart):
 	
 	def renderPart(self)->dict:
 		return {"text": self._text}
+	
+class GeminiContentImagePart(GeminiContentPart):
+	def __init__(self, mime_type:str, image_bytes:bytes):
+		self._mime_type = mime_type
+		self._data = base64.b64encode(image_bytes).decode('utf-8')
+	
+	def renderPart(self)->dict:
+		return {"inline_data": {
+			"mime_type": self._mime_type,
+			"data": self._data
+		}}
 
 class GeminiInputContent:
 	def __init__(self):
@@ -21,10 +32,17 @@ class GeminiInputContent:
 	def renderContents(self)->dict:
 		partData = [p.renderPart() for p in self._parts]
 		return {"contents":{"parts": partData } }
+	
+	def addPart(self, part:GeminiContentPart):
+		self._parts.append(part)
 
 	def addTextPart(self, text:str):
 		newPart = GeminiContentTextPart(text)
-		self._parts.append(newPart)
+		self.addPart(newPart)
+
+	def addImagePart(self, mime_type:str, image_bytes:bytes):
+		newPart = GeminiContentImagePart(mime_type, image_bytes)
+		self.addPart(newPart)
 
 
 

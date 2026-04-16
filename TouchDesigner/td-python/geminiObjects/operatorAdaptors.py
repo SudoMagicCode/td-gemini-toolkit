@@ -7,3 +7,7 @@ def TOPtoGeminiImagePart(top:TOP) -> contents.GeminiContentImagePart:
 def DATtoGeminiTextPart(dat:DAT) -> contents.GeminiContentTextPart:
 	input_text = dat.text
 	return contents.GeminiContentTextPart(input_text) 
+
+def FIFODattoGeminiTextParts(dat:fifoDAT) -> list[contents.GeminiContentTextPart]:
+	input_text = dat.text
+	return contents.GeminiContentTextPart(input_text) 

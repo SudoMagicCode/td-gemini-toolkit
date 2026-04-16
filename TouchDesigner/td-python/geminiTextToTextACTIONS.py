@@ -22,13 +22,14 @@ def createRequest(textOp: textDAT):
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
 
     # create input object
-    inputContent = geminiObjects.GeminiInputContent()
+    geminiInput = geminiObjects.GeminiInput()
+    userContent = geminiInput.addUserContent()
 
     # add a text part to the contents
-    inputContent.addPart(textPart)
+    userContent.addPart(textPart)
 
     # create a request object which resolves to the output_buffer
-    request = TextToTextRequestObject(inputContent, output_buffer)
+    request = TextToTextRequestObject(userContent, output_buffer)
 
     # make the request
     request_engine.MakeRequest(request)

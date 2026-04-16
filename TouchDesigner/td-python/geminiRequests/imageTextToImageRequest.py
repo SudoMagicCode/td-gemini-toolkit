@@ -5,8 +5,8 @@ from RequestBroker import RequestObjectBase
 from geminiObjects import *
 
 class ImageTextToImageRequestObject(RequestObjectBase):
-	def __init__(self, input: GeminiInputContent, output:scriptTOP):
-		data = input.renderContents()
+	def __init__(self, input: GeminiInput, output:scriptTOP):
+		data = input.render()
 		data_string = json.dumps(data)
 		super().__init__(data_string)
 

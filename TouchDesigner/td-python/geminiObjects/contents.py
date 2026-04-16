@@ -10,9 +10,11 @@ class GeminiContentPart(ABC):
 class GeminiContentTextPart(GeminiContentPart):
 	def __init__(self, text:str):
 		self._text = text
+		self._role = ""
 	
 	def renderPart(self)->dict:
-		return {"text": self._text}
+		part = { "text": self._text }
+		return part
 	
 class GeminiContentImagePart(GeminiContentPart):
 	def __init__(self, mime_type:str, image_bytes:bytes):
@@ -25,14 +27,17 @@ class GeminiContentImagePart(GeminiContentPart):
 			"data": self._data
 		}}
 
-class GeminiInputContent:
-	def __init__(self):
+class GeminiContent:
+	def __init__(self, role:str):
 		self._parts:list[GeminiContentPart] = []
-	
+		self._role = role
+
 	def renderContents(self)->dict:
-		partData = [p.renderPart() for p in self._parts]
-		return {"contents":{"parts": partData } }
-	
+		contentsData = [p.renderPart() for p in self._parts]
+		content = { "role": self._role,
+					"parts":contentsData }
+		return content
+
 	def addPart(self, part:GeminiContentPart):
 		self._parts.append(part)
 
@@ -43,6 +48,27 @@ class GeminiInputContent:
 	def addImagePart(self, mime_type:str, image_bytes:bytes):
 		newPart = GeminiContentImagePart(mime_type, image_bytes)
 		self.addPart(newPart)
+
+
+
+class GeminiInput:
+	def __init__(self):
+		self._contents:list[GeminiContent] = []
+	
+	def render(self)->dict:
+		contents = [c.renderContents() for c in self._contents]
+		return { "contents": contents }
+	
+	def addUserContent(self) -> GeminiContent:
+		c = GeminiContent("user")
+		self._contents.append(c)
+		return c
+	
+	def addModelContent(self) -> GeminiContent:
+		c = GeminiContent("model")
+		self._contents.append(c)
+		return c
+
 
 
 

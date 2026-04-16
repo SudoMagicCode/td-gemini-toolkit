@@ -22,10 +22,11 @@ def createRequest(textOp: textDAT):
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
 
     # create input object
-    inputContent = geminiObjects.GeminiInputContent()
+    geminiInput = geminiObjects.GeminiInput()
+    userContent = geminiInput.addUserContent()
 
     # add a text part to the contents
-    inputContent.addPart(textPart)
+    userContent.addPart(textPart)
 
     # additional attributes
     resolution = parent.geminiCOMP.par.Resolution.eval()
@@ -35,7 +36,7 @@ def createRequest(textOp: textDAT):
     debug(resolution, aspect)
     
     # create a request object which resolves to the output_buffer
-    request = TextToImageRequestObject(inputContent, output_buffer)
+    request = TextToImageRequestObject(geminiInput, output_buffer)
 
     # make the request
     request_engine.MakeRequest(request)

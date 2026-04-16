@@ -1,16 +1,18 @@
 import json
+import base64
+
 from RequestBroker import RequestObjectBase
 from geminiObjects import *
 
-class TextToTextRequestObject(RequestObjectBase):
-	def __init__(self, input: GeminiInputContent, outputOp:textDAT):
+class TextToImageRequestObject(RequestObjectBase):
+	def __init__(self, input: GeminiInputContent, output:scriptTOP):
 		data = input.renderContents()
 		data_string = json.dumps(data)
 		super().__init__(data_string)
-		
-		self._output = outputOp
-		
-		self._url = CreateEndpoint(Model.GEMINI_3_FLASH_PREVIEW, Operation.GENERATE_CONTENT)
+
+		self._output = output
+
+		self._url = CreateEndpoint(Model.GEMINI_3_1_FLASH_IMAGE_PREVIEW, Operation.GENERATE_CONTENT)
 		self._method = "POST"
 		self._header = {
     		"Content-Type": "application/json"
@@ -18,17 +20,17 @@ class TextToTextRequestObject(RequestObjectBase):
 
 	def resolve(self, result:bytes):
 		text = result.decode("utf-8", errors="ignore")
-		output = GeminiOutput.fromJson(text)
-		
-		output_text = ""
 
+		output = GeminiOutput.fromJson(text)
 		for candidate in output.candidates:
 			for part in candidate.content.parts:
-				output_text = output_text+part.text+"\n"
+				if len(part.data)>0:
+					img_bytes = base64.b64decode(part.data)
+					self._output.store("image_data", img_bytes)
+					self._output.store("mime", ".jpg")
 
-		self._output.text = output_text
 		self._output.store("metadata", output.usage_metadata)
 
+
 	def error(self, error):
-		
 		return super().error(error)

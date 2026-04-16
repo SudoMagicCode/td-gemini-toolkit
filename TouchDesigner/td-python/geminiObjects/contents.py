@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import json
-
+import base64
 
 class GeminiContentPart(ABC):
 	@abstractmethod
@@ -10,21 +10,65 @@ class GeminiContentPart(ABC):
 class GeminiContentTextPart(GeminiContentPart):
 	def __init__(self, text:str):
 		self._text = text
+		self._role = ""
 	
 	def renderPart(self)->dict:
-		return {"text": self._text}
-
-class GeminiInputContent:
-	def __init__(self):
-		self._parts:list[GeminiContentPart] = []
+		part = { "text": self._text }
+		return part
 	
+class GeminiContentImagePart(GeminiContentPart):
+	def __init__(self, mime_type:str, image_bytes:bytes):
+		self._mime_type = mime_type
+		self._data = base64.b64encode(image_bytes).decode('utf-8')
+	
+	def renderPart(self)->dict:
+		return {"inline_data": {
+			"mime_type": self._mime_type,
+			"data": self._data
+		}}
+
+class GeminiContent:
+	def __init__(self, role:str):
+		self._parts:list[GeminiContentPart] = []
+		self._role = role
+
 	def renderContents(self)->dict:
-		partData = [p.renderPart() for p in self._parts]
-		return {"contents":{"parts": partData } }
+		contentsData = [p.renderPart() for p in self._parts]
+		content = { "role": self._role,
+					"parts":contentsData }
+		return content
+
+	def addPart(self, part:GeminiContentPart):
+		self._parts.append(part)
 
 	def addTextPart(self, text:str):
 		newPart = GeminiContentTextPart(text)
-		self._parts.append(newPart)
+		self.addPart(newPart)
+
+	def addImagePart(self, mime_type:str, image_bytes:bytes):
+		newPart = GeminiContentImagePart(mime_type, image_bytes)
+		self.addPart(newPart)
+
+
+
+class GeminiInput:
+	def __init__(self):
+		self._contents:list[GeminiContent] = []
+	
+	def render(self)->dict:
+		contents = [c.renderContents() for c in self._contents]
+		return { "contents": contents }
+	
+	def addUserContent(self) -> GeminiContent:
+		c = GeminiContent("user")
+		self._contents.append(c)
+		return c
+	
+	def addModelContent(self) -> GeminiContent:
+		c = GeminiContent("model")
+		self._contents.append(c)
+		return c
+
 
 
 

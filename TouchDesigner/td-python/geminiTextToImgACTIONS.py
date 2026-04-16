@@ -31,7 +31,13 @@ def createRequest(textOp: textDAT):
     # additional attributes
     resolution = parent.geminiCOMP.par.Resolution.eval()
     aspect = parent.geminiCOMP.par.Aspectratio.eval()
-    
+
+    # setup generation config
+    config = geminiInput.addGenerationConfig()
+    imageConfig = config.AddImageConfig()
+    imageConfig.SetAspect(geminiObjects.GenerationAspectRatio.ASPECT_16_9)
+    imageConfig.SetImageSize(geminiObjects.GenerationImageSize.RESOLUTION_1K)
+
     # debug pars
     debug(resolution, aspect)
     

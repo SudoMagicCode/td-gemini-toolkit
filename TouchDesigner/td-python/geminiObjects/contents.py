@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import json
 import base64
+from generationConfig import *
 
 class GeminiContentPart(ABC):
 	@abstractmethod
@@ -26,6 +27,62 @@ class GeminiContentImagePart(GeminiContentPart):
 			"mime_type": self._mime_type,
 			"data": self._data
 		}}
+
+
+class ImageConfig:
+	def __init__(self):
+		# defaults
+		self.aspect = GenerationAspectRatio.ASPECT_1_1
+		self.image_size = GenerationImageSize.RESOLUTION_512
+
+	def SetAspect(self, aspect:GenerationAspectRatio):
+		self.aspect = aspect
+	
+	def SetImageSize(self, size:GenerationImageSize):
+		self.image_size = size
+
+
+class ThinkingConfig:
+	def __init__(self):
+		# defaults
+		self.thinking_level = GenerationThinkingLevel.LOW
+	
+	def SetThinkingLevel(self, level:GenerationThinkingLevel):
+		self.thinking_level = level
+
+class GenerationConfig:
+	def __init__(self):
+		self._image_config = None
+		self._thinking_config = None
+		pass
+
+	def AddThinkingConfig(self) -> ThinkingConfig:
+		self._thinking_config = ThinkingConfig()
+		return self._thinking_config
+
+	def AddImageConfig(self) -> ImageConfig:
+		self._image_config = ImageConfig()
+		return self._image_config
+
+	def render(self)->dict:
+		config = {}
+		if self._image_config is not None:
+			# add image config
+			config["imageConfig"] = {
+				"aspectRatio": self._image_config.aspect,
+				"imageSize": self._image_config.image_size
+			}
+
+		if self._thinking_config is not None:
+			# add thinking config
+			config["thinkingConfig"] = {
+				"thinkingLevel" : self._thinking_config.thinking_level
+			}
+
+		return config	
+
+
+
 
 class GeminiContent:
 	def __init__(self, role:str):
@@ -54,11 +111,19 @@ class GeminiContent:
 class GeminiInput:
 	def __init__(self):
 		self._contents:list[GeminiContent] = []
+		self._generation_config:GenerationConfig = None
 	
 	def render(self)->dict:
 		contents = [c.renderContents() for c in self._contents]
-		return { "contents": contents }
+		data = { "contents": contents }
+
+		if self._generation_config is not None:
+			data["generationConfig"] = self._generation_config.render()
 	
+	def addGenerationConfig(self) -> GenerationConfig:
+		self._generation_config = GenerationConfig()
+		return self._generation_config
+
 	def addContent(self, content:list[GeminiContent]):
 		self._contents.extend(content)
 		return

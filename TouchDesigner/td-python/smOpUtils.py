@@ -1,3 +1,18 @@
+from dataclasses import dataclass
+
+
+@dataclass
+class menuPars():
+    menuNames: list
+    menuLabels: list
+
+    @staticmethod
+    def fromEnum(info: enum):
+        menuNames = [each.name for each in info]
+        menuLabels = [each.value for each in info]
+        return menuPars(menuLabels=menuLabels, menuNames=menuNames)
+
+
 # op used for capturing user's API key
 api_pop_dialog = parent.geminiCOMP.op('base_assets/popDialog')
 

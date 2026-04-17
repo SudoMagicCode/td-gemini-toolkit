@@ -1,5 +1,5 @@
 from apiKeyActions import *
-import geminiObjects 
+import geminiObjects
 from geminiRequests import TextToImageRequestObject
 from geminiTerminalLogs import msg_formatter
 
@@ -20,6 +20,7 @@ def CreateRequest(textOp: textDAT):
 def createRequest(textOp: textDAT):
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
+    print(textPart._text)
 
     # create input object
     geminiInput = geminiObjects.GeminiInput()
@@ -29,23 +30,27 @@ def createRequest(textOp: textDAT):
     userContent.addPart(textPart)
 
     # additional attributes
-    resolution = parent.geminiCOMP.par.Resolution.eval()
-    aspect = parent.geminiCOMP.par.Aspectratio.eval()
+    resolution = geminiObjects.GenerationImageSize[parent.geminiCOMP.par.Resolution.eval(
+    )]
+    aspect = geminiObjects.GenerationAspectRatio[parent.geminiCOMP.par.Aspectratio.eval(
+    )]
 
     # setup generation config
     config = geminiInput.addGenerationConfig()
     imageConfig = config.AddImageConfig()
-    imageConfig.SetAspect(geminiObjects.GenerationAspectRatio.ASPECT_16_9)
-    imageConfig.SetImageSize(geminiObjects.GenerationImageSize.RESOLUTION_1K)
+    imageConfig.SetAspect(aspect)
+    imageConfig.SetImageSize(resolution)
 
     # debug pars
-    debug(resolution, aspect)
-    
+    # debug(resolution, aspect)
+    print(geminiInput.render())
+
     # create a request object which resolves to the output_buffer
     request = TextToImageRequestObject(geminiInput, output_buffer)
 
     # make the request
     request_engine.MakeRequest(request)
+
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 
 

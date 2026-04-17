@@ -30,7 +30,6 @@ def CreateRequest(fifo: fifoDAT, newEntry: str, role: str = "user"):
 
 
 def createRequest(fifo: fifoDAT):
-    model = enumPars.TextModels[parent.geminiCOMP.par.Model.eval()].value.model
 
     # grab text from buffer
     print("creating request")
@@ -52,7 +51,7 @@ def createRequest(fifo: fifoDAT):
 
 def Generate(par: Par):
     """Generate new output on demand"""
-    text = parent.geminiCOMP.par.Defaultprompt.eval()
+    text = parent.geminiCOMP.par.Prompt.eval()
     role = "user"
     CreateRequest(op("fifo1"), text, role)
 

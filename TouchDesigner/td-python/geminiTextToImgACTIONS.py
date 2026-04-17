@@ -38,12 +38,12 @@ def createRequest(textOp: textDAT):
     # setup generation config
     config = geminiInput.addGenerationConfig()
     imageConfig = config.AddImageConfig()
+
     imageConfig.SetAspect(aspect)
     imageConfig.SetImageSize(resolution)
 
     # debug pars
     # debug(resolution, aspect)
-    print(geminiInput.render())
 
     # create a request object which resolves to the output_buffer
     request = TextToImageRequestObject(geminiInput, output_buffer)

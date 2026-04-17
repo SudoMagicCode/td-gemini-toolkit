@@ -69,14 +69,14 @@ class GenerationConfig:
 		if self._image_config is not None:
 			# add image config
 			config["imageConfig"] = {
-				"aspectRatio": self._image_config.aspect,
-				"imageSize": self._image_config.image_size
+				"aspectRatio": str(self._image_config.aspect),
+				"imageSize": str(self._image_config.image_size)
 			}
 
 		if self._thinking_config is not None:
 			# add thinking config
 			config["thinkingConfig"] = {
-				"thinkingLevel" : self._thinking_config.thinking_level
+				"thinkingLevel" : str(self._thinking_config.thinking_level)
 			}
 
 		return config	
@@ -119,6 +119,8 @@ class GeminiInput:
 
 		if self._generation_config is not None:
 			data["generationConfig"] = self._generation_config.render()
+		
+		return data
 	
 	def addGenerationConfig(self) -> GenerationConfig:
 		self._generation_config = GenerationConfig()

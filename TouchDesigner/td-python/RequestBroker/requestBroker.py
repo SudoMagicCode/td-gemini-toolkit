@@ -6,15 +6,17 @@ from requestObjectBase import RequestObjectBase
 from geminiTerminalLogs import msg_formatter
 
 
+class CanceledRequestException(Exception):
+    pass
+
+
 class RequestBroker:
-    """RequestBroker handles all requests to the API and brokers their responses through callbacks
-    """
+    """RequestBroker handles all requests to the API and brokers their responses through callbacks"""
 
     def __init__(self, _thisOp: OP):
         self.my_id = uuid.uuid5(uuid.NAMESPACE_OID, _thisOp.path)
         self._thisOp = _thisOp
-        msg_formatter(
-            f"initializing request broker {str(self.my_id)} at {self._thisOp.path}")
+        msg_formatter(f"initializing request broker {str(self.my_id)} at {self._thisOp.path}")
         self._webclientDat: webclientDAT = self._thisOp.op("webclient1")
         self._requestLookup: Dict[int, RequestObjectBase] = {}
         self._awaiting_response = tdu.Dependency(False)
@@ -23,30 +25,27 @@ class RequestBroker:
 
     @property
     def _apiKey(self) -> str:
-        if parent.geminiCOMP.fetch('gemini_apiKey', None) == None:
-            msg_formatter(
-                "Missing api key, please ensure you've added an API key to your component")
+        if parent.geminiCOMP.fetch("gemini_apiKey", None) == None:
+            msg_formatter("Missing api key, please ensure you've added an API key to your component")
             self._thisOp.parent().addScriptError("Missing Gemini API Key")
             raise ValueError("Missing api key")
         else:
-            return parent.geminiCOMP.fetch('gemini_apiKey')
+            return parent.geminiCOMP.fetch("gemini_apiKey")
 
-    def _makeRequest(self, requestObject: RequestObjectBase, url: str, method: str, header=None):
-        '''internal request initializer, this method will create the request on the webclientDat'''
-        id = self._webclientDat.request(
-            url, method, header=header, data=requestObject.input())
+    def _makeRequest(self, requestObject: RequestObjectBase, url: str, method: str, header=None) -> int:
+        """internal request initializer, this method will create the request on the webclientDat"""
+        id = self._webclientDat.request(url, method, header=header, data=requestObject.input())
         self._requestLookup[id] = requestObject
         msg_formatter(f"{self._thisOp.path} broker making request")
-        pass
+        return id
 
     def _completeRequest(self, statusCode: Dict[str, Any], headerDict: Dict[str, str], data: bytes, id: int):
-        '''internal request completer, this method will resolve the RequestObjectBase with data from the webclientDat'''
+        """internal request completer, this method will resolve the RequestObjectBase with data from the webclientDat"""
 
         # find the request object
         if id not in self._requestLookup:
             # there has been some issue with the request map resetting
-            msg_formatter(
-                f"request {id} not found in broker {str(self.my_id)} at {self._thisOp.path}")
+            msg_formatter(f"request {id} not found in broker {str(self.my_id)} at {self._thisOp.path}")
             pass
 
         requestObject = self._requestLookup[id]
@@ -61,8 +60,7 @@ class RequestBroker:
             requestObject._resolve(statusCode, headerDict, data)
         except Exception as e:
             # something went wrong in the resolving code...
-            msg_formatter(
-                f"{str(self.my_id)} at {self._thisOp.path} raised Exception for request {id}:{e}")
+            msg_formatter(f"{str(self.my_id)} at {self._thisOp.path} raised Exception for request {id}:{e}")
 
         # delete the request object from lookup
         del self._requestLookup[id]
@@ -73,8 +71,7 @@ class RequestBroker:
         # find the request object
         if id not in self._requestLookup:
             # there has been some issue with the request map resetting
-            msg_formatter(
-                f"request {id} not found in broker {str(self.my_id)} at {self._thisOp.path}")
+            msg_formatter(f"request {id} not found in broker {str(self.my_id)} at {self._thisOp.path}")
             pass
 
         requestObject = self._requestLookup[id]
@@ -90,20 +87,42 @@ class RequestBroker:
 
         except Exception as e:
             # something went wrong in the resolving code...
-            msg_formatter(
-                f"{str(self.my_id)} at {self._thisOp.path} raised Exception for request {id}:{e}")
+            msg_formatter(f"{str(self.my_id)} at {self._thisOp.path} raised Exception for request {id}:{e}")
 
         # delete the request object from lookup
         del self._requestLookup[id]
 
-    def MakeRequest(self, requestObject: RequestObjectBase):
+    def _cancelRequest(self, id: int):
+        self._webclientDat.closeConnection(id)
+
+        # find the request object
+        if id not in self._requestLookup:
+            # there has been some issue with the request map resetting
+            msg_formatter(f"request {id} not found in broker {str(self.my_id)} at {self._thisOp.path}")
+            pass
+
+        requestObject = self._requestLookup[id]
+
+        try:
+            # attempt to resolve the request object
+            requestObject._error(CanceledRequestException())
+
+        except Exception as e:
+            # something went wrong in the resolving code...
+            msg_formatter(f"{str(self.my_id)} at {self._thisOp.path} raised Exception for request {id}:{e}")
+
+        # delete the request object from lookup
+        del self._requestLookup[id]
+
+    def MakeRequest(self, requestObject: RequestObjectBase) -> int:
         # this is to enforce serial requests
         self._awaiting_response.val = True
 
         requestObject._header["x-goog-api-key"] = self._apiKey
-        self._makeRequest(requestObject, url=requestObject.url(
-        ), method=requestObject.method(), header=requestObject.header())
-        pass
+        id = self._makeRequest(
+            requestObject, url=requestObject.url(), method=requestObject.method(), header=requestObject.header()
+        )
+        return id
 
     def CompleteRequest(self, statusCode: Dict[str, Any], headerDict: Dict[str, str], data: bytes, id: int):
         # this is to enforce serial requests
@@ -117,8 +136,8 @@ class RequestBroker:
         self._completeRequestAsError(id, error)
         pass
 
-    def CancelRequest(self) -> None:
-        raise TypeError("Cancel Request not implemented")
+    def CancelRequest(self, id: int) -> None:
+        self._cancelRequest(id)
 
     @property
     def Awaitingresponse(self) -> bool:

@@ -20,7 +20,6 @@ def CreateRequest(textOp: textDAT):
 def createRequest(textOp: textDAT):
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
-    print(textPart._text)
 
     # create input object
     geminiInput = geminiObjects.GeminiInput()

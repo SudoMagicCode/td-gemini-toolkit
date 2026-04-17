@@ -3,16 +3,25 @@ import geminiObjects
 from geminiRequests import TextToImageRequestObject
 from geminiTerminalLogs import msg_formatter
 
-request_engine = op('base_request_engine')
-output_buffer = op('script1')
+request_engine = op("base_request_engine")
+output_buffer = op("script1")
+
+
+def OpCreated():
+    msg_formatter(f"{parent.geminiCOMP.name} created")
+    pass
+
+
+def onExit():
+    pass
 
 
 def CreateRequest(textOp: textDAT):
-    '''Gate against requests when there's currently one in progress
-    '''
+    """Gate against requests when there's currently one in progress"""
     if parent.geminiCOMP.par.Generating.eval():
         msg_formatter(
-            f"WARN {parent.geminiCOMP.name} is currently generating text, skipping")
+            f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
+        )
     else:
         createRequest(textOp=textOp)
 
@@ -29,10 +38,12 @@ def createRequest(textOp: textDAT):
     userContent.addPart(textPart)
 
     # additional attributes
-    resolution = geminiObjects.GenerationImageSize[parent.geminiCOMP.par.Resolution.eval(
-    )]
-    aspect = geminiObjects.GenerationAspectRatio[parent.geminiCOMP.par.Aspectratio.eval(
-    )]
+    resolution = geminiObjects.GenerationImageSize[
+        parent.geminiCOMP.par.Resolution.eval()
+    ]
+    aspect = geminiObjects.GenerationAspectRatio[
+        parent.geminiCOMP.par.Aspectratio.eval()
+    ]
 
     # setup generation config
     config = geminiInput.addGenerationConfig()
@@ -48,17 +59,16 @@ def createRequest(textOp: textDAT):
     request = TextToImageRequestObject(geminiInput, output_buffer)
 
     # make the request
-    request_engine.MakeRequest(request)
-
+    requestId = request_engine.MakeRequest(request)
+    parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 
 
 def Generate(par: Par):
-    '''Generate new output on demand
-    '''
-    CreateRequest(op('null_buffer'))
+    """Generate new output on demand"""
+    CreateRequest(op("null_buffer"))
 
 
 def Cancel(par: Par):
-    '''Cancel running request'''
-    request_engine.CancelRequest()
+    """Cancel running request"""
+    request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())

@@ -1,8 +1,7 @@
 from apiKeyActions import *
 import geminiObjects
-from geminiRequests import ChatRequestObject
+from geminiRequests import TextToTextRequestObject
 from geminiTerminalLogs import msg_formatter
-import enumPars
 
 request_engine = op("base_request_engine")
 
@@ -16,35 +15,22 @@ def onExit():
     pass
 
 
-def CreateRequest(fifo: fifoDAT, newEntry: str, role: str = "user"):
+def CreateRequest():
     """Gate against requests when there's currently one in progress"""
-
     if parent.geminiCOMP.par.Generating.eval():
         msg_formatter(
             f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
         )
     else:
-        # add new entry to fifo
-        fifo.appendRow([role, newEntry])
-        createRequest(fifo)
+        createRequest()
 
 
-def createRequest(fifo: fifoDAT):
-    model = enumPars.TextModels[parent.geminiCOMP.par.Model.eval()].value.model
-
-    # grab text from buffer
-    print("creating request")
-    # create input object
-    geminiInput = geminiObjects.GeminiInput()
-
-    contents = geminiObjects.Adaptors.FIFODattoGeminiContents(fifo)
-    geminiInput.addContent(contents)
+def createRequest():
 
     # create a request object which resolves to the output_buffer
-    request = ChatRequestObject(geminiInput, fifo)
+    request: callable
 
     # make the request
-    print("making request")
     requestId = request_engine.MakeRequest(request)
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
@@ -52,11 +38,9 @@ def createRequest(fifo: fifoDAT):
 
 def Generate(par: Par):
     """Generate new output on demand"""
-    text = parent.geminiCOMP.par.Defaultprompt.eval()
-    role = "user"
-    CreateRequest(op("fifo1"), text, role)
+    CreateRequest(op("null_buffer"))
 
 
 def Cancel(par: Par):
-    """Cancel running request"""
+    """Generate new output on demand"""
     request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())

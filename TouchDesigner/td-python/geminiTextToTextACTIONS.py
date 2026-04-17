@@ -3,16 +3,26 @@ import geminiObjects
 from geminiRequests import TextToTextRequestObject
 from geminiTerminalLogs import msg_formatter
 import enumPars
-request_engine = op('base_request_engine')
-output_buffer = op('text_output_buffer')
+
+request_engine = op("base_request_engine")
+output_buffer = op("text_output_buffer")
+
+
+def OpCreated():
+    msg_formatter(f"{parent.geminiCOMP.name} created")
+    pass
+
+
+def onExit():
+    pass
 
 
 def CreateRequest(textOp: textDAT):
-    '''Gate against requests when there's currently one in progress
-    '''
+    """Gate against requests when there's currently one in progress"""
     if parent.geminiCOMP.par.Generating.eval():
         msg_formatter(
-            f"WARN {parent.geminiCOMP.name} is currently generating text, skipping")
+            f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
+        )
     else:
         createRequest(textOp=textOp)
 
@@ -35,16 +45,16 @@ def createRequest(textOp: textDAT):
     request = TextToTextRequestObject(geminiInput, output_buffer, model=model)
 
     # make the request
-    request_engine.MakeRequest(request)
+    requestId = request_engine.MakeRequest(request)
+    parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 
 
 def Generate(par: Par):
-    '''Generate new output on demand
-    '''
-    CreateRequest(op('null_buffer'))
+    """Generate new output on demand"""
+    CreateRequest(op("null_buffer"))
 
 
 def Cancel(par: Par):
-    '''Cancel running request'''
-    request_engine.CancelRequest()
+    """Cancel running request"""
+    request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())

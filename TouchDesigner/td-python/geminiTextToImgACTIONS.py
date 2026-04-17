@@ -53,7 +53,12 @@ def createRequest(textOp: textDAT):
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 
 
-def Generatenew(par: Par):
+def Generate(par: Par):
     '''Generate new output on demand
     '''
     CreateRequest(op('null_buffer'))
+
+
+def Cancel(par: Par):
+    '''Cancel running request'''
+    request_engine.CancelRequest()

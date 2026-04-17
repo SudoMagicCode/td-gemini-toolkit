@@ -1,5 +1,5 @@
 from apiKeyActions import *
-import geminiObjects 
+import geminiObjects
 from geminiRequests import *
 from geminiTerminalLogs import msg_formatter
 
@@ -7,16 +7,17 @@ request_engine = op('base_request_engine')
 output_buffer = op('text_output_buffer')
 
 
-def CreateRequest(textOp: textDAT, top:TOP):
+def CreateRequest(textOp: textDAT, top: TOP):
     '''Gate against requests when there's currently one in progress
     '''
     if parent.geminiCOMP.par.Generating.eval():
-        msg_formatter(f"WARN {parent.geminiCOMP.name} is currently generating text, skipping")
+        msg_formatter(
+            f"WARN {parent.geminiCOMP.name} is currently generating text, skipping")
     else:
         createRequest(textOp, top)
 
 
-def createRequest(dat: textDAT, top:TOP):
+def createRequest(dat: textDAT, top: TOP):
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(dat)
     imagePart = geminiObjects.Adaptors.TOPtoGeminiImagePart(top)
@@ -29,13 +30,6 @@ def createRequest(dat: textDAT, top:TOP):
     userContent.addPart(imagePart)
     userContent.addPart(textPart)
 
-    # additional attributes
-    resolution = parent.geminiCOMP.par.Resolution.eval()
-    aspect = parent.geminiCOMP.par.Aspectratio.eval()
-    
-    # debug pars
-    # debug(resolution, aspect)
-    
     # create a request object which resolves to the output_buffer
     request = ImageTextToTextRequestObject(geminiInput, output_buffer)
 
@@ -44,7 +38,12 @@ def createRequest(dat: textDAT, top:TOP):
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 
 
-def Generatenew(par: Par):
+def Generate(par: Par):
     '''Generate new output on demand
     '''
     CreateRequest(op('null_text_buffer'), op('null_image_buffer'))
+
+
+def Cancel(par: Par):
+    '''Cancel running request'''
+    request_engine.CancelRequest()

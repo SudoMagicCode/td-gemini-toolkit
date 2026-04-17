@@ -1,5 +1,5 @@
 from apiKeyActions import *
-import geminiObjects 
+import geminiObjects
 from geminiRequests import ImageTextToImageRequestObject
 from geminiTerminalLogs import msg_formatter
 
@@ -7,7 +7,7 @@ request_engine = op('base_request_engine')
 output_buffer = op('script1')
 
 
-def CreateRequest(textOp: textDAT, top:TOP):
+def CreateRequest(textOp: textDAT, top: TOP):
     '''Gate against requests when there's currently one in progress
     '''
     if parent.geminiCOMP.par.Generating.eval():
@@ -17,7 +17,7 @@ def CreateRequest(textOp: textDAT, top:TOP):
         createRequest(textOp, top)
 
 
-def createRequest(dat: textDAT, top:TOP):
+def createRequest(dat: textDAT, top: TOP):
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(dat)
     imagePart = geminiObjects.Adaptors.TOPtoGeminiImagePart(top)
@@ -30,13 +30,22 @@ def createRequest(dat: textDAT, top:TOP):
     userContent.addPart(imagePart)
     userContent.addPart(textPart)
 
-    # additional attributes
-    resolution = parent.geminiCOMP.par.Resolution.eval()
-    aspect = parent.geminiCOMP.par.Aspectratio.eval()
-    
-    # debug pars
-    debug(resolution, aspect)
-    
+    # setup generation config
+    config = geminiInput.addGenerationConfig()
+
+    if parent.geminiCOMP.par.Useinput.eval() == False:
+        # create additional image config info
+        imageConfig = config.AddImageConfig()
+
+        resolution = geminiObjects.GenerationImageSize[parent.geminiCOMP.par.Resolution.eval(
+        )]
+        aspect = geminiObjects.GenerationAspectRatio[parent.geminiCOMP.par.Aspectratio.eval(
+        )]
+        # additional attributes
+
+        imageConfig.SetAspect(aspect)
+        imageConfig.SetImageSize(resolution)
+
     # create a request object which resolves to the output_buffer
     request = ImageTextToImageRequestObject(geminiInput, output_buffer)
 
@@ -45,7 +54,12 @@ def createRequest(dat: textDAT, top:TOP):
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 
 
-def Generatenew(par: Par):
+def Generate(par: Par):
     '''Generate new output on demand
     '''
     CreateRequest(op('null_text_buffer'), op('null_image_buffer'))
+
+
+def Cancel(par: Par):
+    '''Cancel running request'''
+    request_engine.CancelRequest()

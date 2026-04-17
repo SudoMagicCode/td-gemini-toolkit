@@ -2,6 +2,15 @@ from dataclasses import dataclass
 
 
 @dataclass
+class ModelAsPar:
+    model: enum
+    label: str
+
+    def __repr__(self) -> str:
+        return self.label
+
+
+@dataclass
 class menuPars():
     menuNames: list
     menuLabels: list
@@ -10,6 +19,12 @@ class menuPars():
     def fromEnum(info: enum):
         menuNames = [each.name for each in info]
         menuLabels = [each.value for each in info]
+        return menuPars(menuLabels=menuLabels, menuNames=menuNames)
+
+    @staticmethod
+    def fromEnumPar(info: enum):
+        menuNames = [each.name for each in info]
+        menuLabels = [each.value.label for each in info]
         return menuPars(menuLabels=menuLabels, menuNames=menuNames)
 
 

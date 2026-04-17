@@ -2,7 +2,7 @@ from apiKeyActions import *
 import geminiObjects
 from geminiRequests import TextToTextRequestObject
 from geminiTerminalLogs import msg_formatter
-
+import enumPars
 request_engine = op('base_request_engine')
 output_buffer = op('text_output_buffer')
 
@@ -18,6 +18,9 @@ def CreateRequest(textOp: textDAT):
 
 
 def createRequest(textOp: textDAT):
+    model = enumPars.TextModels[parent.geminiCOMP.par.Model.eval()].value.model
+
+    print(model)
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
 
@@ -29,14 +32,19 @@ def createRequest(textOp: textDAT):
     userContent.addPart(textPart)
 
     # create a request object which resolves to the output_buffer
-    request = TextToTextRequestObject(geminiInput, output_buffer)
+    request = TextToTextRequestObject(geminiInput, output_buffer, model=model)
 
     # make the request
     request_engine.MakeRequest(request)
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 
 
-def Generatenew(par: Par):
+def Generate(par: Par):
     '''Generate new output on demand
     '''
     CreateRequest(op('null_buffer'))
+
+
+def Cancel(par: Par):
+    '''Cancel running request'''
+    request_engine.CancelRequest()

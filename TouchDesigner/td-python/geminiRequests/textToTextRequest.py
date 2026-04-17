@@ -4,7 +4,7 @@ from geminiObjects import *
 
 
 class TextToTextRequestObject(RequestObjectBase):
-    def __init__(self, input: GeminiInput, outputOp: textDAT):
+    def __init__(self, input: GeminiInput, outputOp: textDAT, model: Model = Model.GEMINI_3_FLASH_PREVIEW):
         data = input.render()
         data_string = json.dumps(data)
         super().__init__(data_string)
@@ -12,7 +12,7 @@ class TextToTextRequestObject(RequestObjectBase):
         self._output = outputOp
 
         self._url = CreateEndpoint(
-            Model.GEMINI_3_FLASH_PREVIEW, Operation.GENERATE_CONTENT)
+            model, Operation.GENERATE_CONTENT)
         self._method = "POST"
         self._header = {
             "Content-Type": "application/json"

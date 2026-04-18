@@ -23,7 +23,10 @@ def CreateRequest(textOp: textDAT, top: TOP):
             f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
         )
     else:
-        createRequest(textOp, top)
+        if textOp.text == "":
+            msg_formatter(f"WARN {parent.geminiCOMP.name} prompt is empty, skipping")
+        else:
+            createRequest(textOp, top)
 
 
 def createRequest(dat: textDAT, top: TOP):

@@ -24,13 +24,15 @@ def CreateRequest(textOp: textDAT):
             f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
         )
     else:
-        createRequest(textOp=textOp)
+        if textOp.text == "":
+            msg_formatter(f"WARN {parent.geminiCOMP.name} prompt is empty, skipping")
+        else:
+            createRequest(textOp=textOp)
 
 
 def createRequest(textOp: textDAT):
     model = enumPars.TextModels[parent.geminiCOMP.par.Model.eval()].value.model
 
-    print(model)
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
 

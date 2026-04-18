@@ -16,7 +16,9 @@ def onExit():
     pass
 
 
-def CreateRequest(fifo: fifoDAT, newEntry: str, role: str = "user"):
+def CreateRequest(
+    fifo: fifoDAT, newEntry: str, role: str = "user", context: DAT = op("null_context")
+):
     """Gate against requests when there's currently one in progress"""
 
     if parent.geminiCOMP.par.Generating.eval():
@@ -26,17 +28,17 @@ def CreateRequest(fifo: fifoDAT, newEntry: str, role: str = "user"):
     else:
         # add new entry to fifo
         fifo.appendRow([role, newEntry])
-        createRequest(fifo)
+        createRequest(fifo, context)
 
 
-def createRequest(fifo: fifoDAT):
+def createRequest(fifo: fifoDAT, context: DAT):
 
     # grab text from buffer
     print("creating request")
     # create input object
     geminiInput = geminiObjects.GeminiInput()
 
-    contents = geminiObjects.Adaptors.FIFODattoGeminiContents(fifo)
+    contents = geminiObjects.Adaptors.FIFODattoGeminiContents(context)
     geminiInput.addContent(contents)
 
     # create a request object which resolves to the output_buffer
@@ -51,7 +53,7 @@ def createRequest(fifo: fifoDAT):
 
 def Generate(par: Par):
     """Generate new output on demand"""
-    text = parent.geminiCOMP.par.Prompt.eval()
+    text = op("null_buffer").text
     role = "user"
     CreateRequest(op("fifo1"), text, role)
 

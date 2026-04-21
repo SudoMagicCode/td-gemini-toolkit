@@ -14,11 +14,10 @@ class TextToImageRequestObject(RequestObjectBase):
         self._output = output
 
         self._url = CreateEndpoint(
-            Model.GEMINI_3_1_FLASH_IMAGE_PREVIEW, Operation.GENERATE_CONTENT)
+            Model.GEMINI_3_1_FLASH_IMAGE_PREVIEW, Operation.GENERATE_CONTENT
+        )
         self._method = "POST"
-        self._header = {
-            "Content-Type": "application/json"
-        }
+        self._header = {"Content-Type": "application/json"}
 
     def resolve(self, result: bytes):
         text = result.decode("utf-8", errors="ignore")
@@ -32,7 +31,8 @@ class TextToImageRequestObject(RequestObjectBase):
                     self._output.store("image_data", img_bytes)
                     self._output.store("mime", ".jpg")
 
-        self._output.store("metadata",  output.usage_metadata.toDict())
+        self._output.store("metadata", output.usage_metadata.toDict())
+        return None
 
     def error(self, error):
         return super().error(error)

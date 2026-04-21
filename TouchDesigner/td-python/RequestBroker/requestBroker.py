@@ -21,8 +21,6 @@ class RequestBroker:
         )
         self._webclientDat: webclientDAT = self._thisOp.op("webclient1")
         self._requestLookup: Dict[int, RequestObjectBase] = {}
-        self._awaiting_response = tdu.Dependency(False)
-
         pass
 
     @property
@@ -37,11 +35,18 @@ class RequestBroker:
             return parent.geminiCOMP.fetch("gemini_apiKey")
 
     def _makeRequest(
-        self, requestObject: RequestObjectBase, url: str, method: str, header=None
+        self,
+        requestObject: RequestObjectBase,
+        url: str,
+        method: str,
+        header=None,
     ) -> int:
         """internal request initializer, this method will create the request on the webclientDat"""
         id = self._webclientDat.request(
-            url, method, header=header, data=requestObject.input()
+            url,
+            method,
+            header=header,
+            data=requestObject.input(),
         )
         self._requestLookup[id] = requestObject
         msg_formatter(f"{self._thisOp.path} broker making request")
@@ -73,7 +78,19 @@ class RequestBroker:
 
         try:
             # attempt to resolve the request object
-            requestObject._resolve(statusCode, headerDict, data)
+            nextRequest = requestObject._resolve(
+                statusCode,
+                headerDict,
+                data,
+            )
+            if nextRequest is not None:
+                # run the next request in series
+                run(
+                    "args[0](args[1])",
+                    self.MakeRequest,
+                    nextRequest,
+                    delayMilliSeconds=1000 * 3,
+                )
         except Exception as e:
             # something went wrong in the resolving code...
             msg_formatter(
@@ -128,7 +145,6 @@ class RequestBroker:
         requestObject = self._requestLookup[id]
 
         try:
-            self._awaiting_response.val = False
             # attempt to resolve the request object
             requestObject._error(CanceledRequestException())
 
@@ -142,8 +158,6 @@ class RequestBroker:
         del self._requestLookup[id]
 
     def MakeRequest(self, requestObject: RequestObjectBase) -> int:
-        # this is to enforce serial requests
-        self._awaiting_response.val = True
 
         requestObject._header["x-goog-api-key"] = self._apiKey
         id = self._makeRequest(
@@ -161,20 +175,12 @@ class RequestBroker:
         data: bytes,
         id: int,
     ):
-        # this is to enforce serial requests
-        self._awaiting_response.val = False
         self._completeRequest(statusCode, headerDict, data, id)
         pass
 
     def CompleteRequestAsError(self, id: int, error: Exception):
-        # this is to enforce serial requests
-        self._awaiting_response.val = False
         self._completeRequestAsError(id, error)
         pass
 
     def CancelRequest(self, id: int) -> None:
         self._cancelRequest(id)
-
-    @property
-    def Awaitingresponse(self) -> bool:
-        return self._awaiting_response

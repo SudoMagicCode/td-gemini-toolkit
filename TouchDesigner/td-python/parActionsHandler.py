@@ -1,5 +1,5 @@
 class ParActionsHandler:
-    def __init__(self, ownerOp: OP,  actions: callable, debug: bool = False):
+    def __init__(self, ownerOp: OP, actions: callable, debug: bool = False):
         self.OwnerOp = ownerOp
         self.actions = actions
         self.debug = debug

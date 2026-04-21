@@ -1,8 +1,9 @@
 from enum import StrEnum
 
+
 class RpcOperations(StrEnum):
-    ''' RPC Call Operations
-    '''
+    """RPC Call Operations"""
+
     GENERATE_CONTENT = "generateContent"
     PREDICT_LONG_RUNNING = "predictLongRunning"
     PREDICT = "predict"

@@ -1,9 +1,10 @@
 from apiKeyActions import *
 import geminiObjects
-from geminiRequests import TextToTextRequestObject
+from geminiRequests import TextToVideoRequestObject
 from geminiTerminalLogs import msg_formatter
 
 request_engine = op("base_request_engine")
+output_buffer = op("moviefilein1")
 
 
 def OpCreated():
@@ -15,20 +16,32 @@ def onExit():
     pass
 
 
-def CreateRequest():
+def CreateRequest(textOp: textDAT):
     """Gate against requests when there's currently one in progress"""
     if parent.geminiCOMP.par.Generating.eval():
         msg_formatter(
             f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
         )
     else:
-        createRequest()
+        if textOp.text == "":
+            msg_formatter(f"WARN {parent.geminiCOMP.name} prompt is empty, skipping")
+        else:
+            createRequest(textOp=textOp)
 
 
-def createRequest():
+def createRequest(textOp: textDAT):
+
+    # create input object
+    geminiInput = geminiObjects.GeminiVideoInput()
+
+    prompt = textOp.text
+
+    geminiInput.addPromptInstance(prompt)
 
     # create a request object which resolves to the output_buffer
-    request: callable
+    request: TextToVideoRequestObject = TextToVideoRequestObject(
+        geminiInput, output_buffer
+    )
 
     # make the request
     requestId = request_engine.MakeRequest(request)

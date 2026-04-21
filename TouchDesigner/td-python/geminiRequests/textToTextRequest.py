@@ -4,19 +4,21 @@ from geminiObjects import *
 
 
 class TextToTextRequestObject(RequestObjectBase):
-    def __init__(self, input: GeminiInput, outputOp: textDAT, model: Model = Model.GEMINI_3_FLASH_PREVIEW):
+    def __init__(
+        self,
+        input: GeminiInput,
+        outputOp: textDAT,
+        model: Model = Model.GEMINI_3_FLASH_PREVIEW,
+    ):
         data = input.render()
         data_string = json.dumps(data)
         super().__init__(data_string)
 
         self._output = outputOp
 
-        self._url = CreateEndpoint(
-            model, Operation.GENERATE_CONTENT)
+        self._url = CreateEndpoint(model, Operation.GENERATE_CONTENT)
         self._method = "POST"
-        self._header = {
-            "Content-Type": "application/json"
-        }
+        self._header = {"Content-Type": "application/json"}
 
     def resolve(self, result: bytes):
         text = result.decode("utf-8", errors="ignore")
@@ -26,10 +28,11 @@ class TextToTextRequestObject(RequestObjectBase):
 
         for candidate in output.candidates:
             for part in candidate.content.parts:
-                output_text = output_text+part.text+"\n"
+                output_text = output_text + part.text + "\n"
 
         self._output.text = output_text
-        self._output.store("metadata",  output.usage_metadata.toDict())
+        self._output.store("metadata", output.usage_metadata.toDict())
+        return None
 
     def error(self, error):
         return super().error(error)

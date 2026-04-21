@@ -11,10 +11,10 @@ def onStart():
     """
     Called when the project starts.
     """
-    gemini_ops = root.findChildren(tags=['gemini'])
+    gemini_ops = root.findChildren(tags=["gemini"])
     api_key = me.var("GEMINI_API_KEY")
     for each in gemini_ops:
-        each.store('gemini_apiKey', api_key)
+        each.store("gemini_apiKey", api_key)
     return
 
 
@@ -29,9 +29,9 @@ def onExit():
     """
     Called when the project exits.
     """
-    gemini_ops = root.findChildren(tags=['gemini'])
+    gemini_ops = root.findChildren(tags=["gemini"])
     for each in gemini_ops:
-        each.unstore('gemini_apiKey')
+        each.unstore("gemini_apiKey")
     return
 
 

@@ -12,5 +12,8 @@ class Models(StrEnum):
     GEMINI_3_1_FLASH_LITE_PREVIEW = "models/gemini-3.1-flash-lite-preview"
     GEMINI_3_1_FLASH_IMAGE_PREVIEW = "models/gemini-3.1-flash-image-preview"
     VEO_3_1_GENERATE_PREVIEW = "models/veo-3.1-generate-preview"
+    VEO_3_1_FAST_GENERATE_PREVIEW = "models/veo-3.1-fast-generate-preview"
+    VEO_3_1_LITE_GENERATE_PREVIEW = "models/veo-3.1-lite-generate-preview"
+    VEO_3_0_GENERATE_PREVIEW = "veo-3.0-generate-001"
     LYRIA_3_CLIP_PREVIEW = "models/lyria-3-clip-preview"
     IMAGEN_4_0_GENERATE_PREDICT = "models/imagen-4.0-generate-001"

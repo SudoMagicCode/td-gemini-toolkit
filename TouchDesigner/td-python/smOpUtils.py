@@ -58,3 +58,7 @@ def get_api_key() -> None:
             return None
 
     api_pop_dialog.Open(callback=pop_dialog_cb)
+
+
+def set_par_state(targetOp: OP, par: str, state: bool) -> None:
+    targetOp.par[par] = state

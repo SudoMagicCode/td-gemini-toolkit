@@ -2,8 +2,8 @@ from enum import StrEnum
 
 
 class GenerationAspectRatio(StrEnum):
-    '''Gemini Aspect Ratios
-    '''
+    """Gemini Aspect Ratios"""
+
     ASPECT_1_1 = "1:1"
     ASPECT_1_4 = "1:4"
     ASPECT_1_8 = "1:8"
@@ -21,8 +21,8 @@ class GenerationAspectRatio(StrEnum):
 
 
 class GenerationImageSize(StrEnum):
-    '''Gemini Image Size
-    '''
+    """Gemini Image Size"""
+
     RESOLUTION_512 = "512"
     RESOLUTION_1K = "1K"
     RESOLUTION_2K = "2K"
@@ -30,8 +30,8 @@ class GenerationImageSize(StrEnum):
 
 
 class GenerationThinkingLevel(StrEnum):
-    '''Gemini Thinking levels
-    '''
+    """Gemini Thinking levels"""
+
     LOW = "low"
     MEDIUM = "medium"
     HIGH = "high"

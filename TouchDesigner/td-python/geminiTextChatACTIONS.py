@@ -1,18 +1,18 @@
 from apiKeyActions import *
-import geminiObjects 
+import geminiObjects
 from geminiRequests import TextToTextRequestObject
 from geminiTerminalLogs import msg_formatter
 
-request_engine = op('base_request_engine')
-output_buffer = op('text_output_buffer')
+request_engine = op("base_request_engine")
+output_buffer = op("text_output_buffer")
 
 
 def CreateRequest(textOp: textDAT):
-    '''Gate against requests when there's currently one in progress
-    '''
+    """Gate against requests when there's currently one in progress"""
     if parent.geminiCOMP.par.Generating.eval():
         msg_formatter(
-            f"WARN {parent.geminiCOMP.name} is currently generating text, skipping")
+            f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
+        )
     else:
         createRequest(textOp=textOp)
 
@@ -37,6 +37,5 @@ def createRequest(textOp: textDAT):
 
 
 def Generatenew(par: Par):
-    '''Generate new output on demand
-    '''
-    CreateRequest(op('null_buffer'))
+    """Generate new output on demand"""
+    CreateRequest(op("null_buffer"))

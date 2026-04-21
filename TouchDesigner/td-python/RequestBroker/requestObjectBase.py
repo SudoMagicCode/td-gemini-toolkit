@@ -1,4 +1,4 @@
-from typing import Dict, Any, runtime_checkable
+from typing import Dict, Any, Self
 from abc import ABC, abstractmethod
 
 
@@ -12,12 +12,17 @@ class RequestObjectBase(ABC):
         self._header: dict[str, str] = {}
         self._method: str = "POST"
 
-    def _resolve(self, statusCode: Dict[str, Any], headerDict: Dict[str, str], data: bytes = None):
+    def _resolve(
+        self,
+        statusCode: Dict[str, Any],
+        headerDict: Dict[str, str],
+        data: bytes = None,
+    ) -> Self:
         self._result = data
         self._status = statusCode
         self._headerDict = headerDict
         self._completed = True
-        self.resolve(self._result)
+        return self.resolve(self._result)
 
     def _error(self, error: Exception):
         self._completed = True
@@ -54,7 +59,7 @@ class RequestObjectBase(ABC):
         return self._status["message"]
 
     @abstractmethod
-    def resolve(self, result: bytes):
+    def resolve(self, result: bytes) -> Self:
         raise Exception("Unimplemented")
 
     @abstractmethod

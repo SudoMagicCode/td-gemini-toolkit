@@ -30,6 +30,11 @@ def createRequest():
     # create a request object which resolves to the output_buffer
     request: callable
 
+    def cleanup():
+        smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
+
+    request.onDone = cleanup
+
     # make the request
     requestId = request_engine.MakeRequest(request)
     parent.geminiCOMP.par.Requestid = requestId
@@ -37,15 +42,6 @@ def createRequest():
 
     # set state of par for "Generating"
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", True)
-
-    # NOTE this is just a placeholder until there's a way to run a callback
-    run(
-        smOpUtils.set_par_state,
-        parent.geminiCOMP,
-        "Generating",
-        False,
-        delayFrames=200,
-    )
 
 
 def Generate(par: Par):

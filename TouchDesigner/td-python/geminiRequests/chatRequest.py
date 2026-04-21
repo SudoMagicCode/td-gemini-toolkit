@@ -31,4 +31,6 @@ class ChatRequestObject(RequestObjectBase):
         return None
 
     def error(self, error):
+        if self._on_error_cb is not None:
+            self._on_error_cb()
         return super().error(error)

@@ -35,3 +35,20 @@ class GenerationThinkingLevel(StrEnum):
     LOW = "low"
     MEDIUM = "medium"
     HIGH = "high"
+
+
+class VeoParameterAspectRatio(StrEnum):
+    ASPECT_16_9 = "16:9"
+    ASPECT_9_16 = "9:16"
+
+
+class VeoParameterResolution(StrEnum):
+    RESOLUTION_720p = "720p"
+    RESOLUTION_1080p = "1080p"
+    RESOLUTION_4k = "4k"
+
+
+class VeoParameterDuration(StrEnum):
+    DURATION_4 = "4"
+    DURATION_6 = "6"
+    DURATION_8 = "8"

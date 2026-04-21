@@ -31,21 +31,17 @@ def createRequest(textOp: textDAT):
     # create a request object which resolves to the output_buffer
     request = TextToTextRequestObject(userContent, output_buffer)
 
+    def cleanup():
+        smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
+
+    request.onDone = cleanup
+
     # make the request
     request_engine.MakeRequest(request)
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 
     # set state of par for "Generating"
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", True)
-
-    # NOTE this is just a placeholder until there's a way to run a callback
-    run(
-        smOpUtils.set_par_state,
-        parent.geminiCOMP,
-        "Generating",
-        False,
-        delayFrames=200,
-    )
 
 
 def Generatenew(par: Par):

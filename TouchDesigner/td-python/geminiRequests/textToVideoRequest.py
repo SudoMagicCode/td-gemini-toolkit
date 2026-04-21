@@ -54,4 +54,6 @@ class TextToVideoRequestObject(RequestObjectBase):
         self._output.par.file = filePath + f"&key={key}"
 
     def error(self, error):
+        if self._on_error_cb is not None:
+            self._on_error_cb()
         return super().error(error)

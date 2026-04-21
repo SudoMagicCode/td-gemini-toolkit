@@ -11,6 +11,24 @@ class RequestObjectBase(ABC):
         self._url: str = ""
         self._header: dict[str, str] = {}
         self._method: str = "POST"
+        self._on_done_cb: callable = None
+        self._on_error_cb: callable = None
+
+    @property
+    def onDone(self) -> callable:
+        return self._on_done_cb
+
+    @onDone.setter
+    def onDone(self, cb: callable):
+        self._on_done_cb = cb
+
+    @property
+    def onError(self) -> callable:
+        return self._on_error_cb
+
+    @onError.setter
+    def onError(self, cb: callable):
+        self._on_error_cb = cb
 
     def _resolve(
         self,
@@ -21,11 +39,17 @@ class RequestObjectBase(ABC):
         self._result = data
         self._status = statusCode
         self._headerDict = headerDict
-        self._completed = True
-        return self.resolve(self._result)
+        _resolve_result = self.resolve(self._result)
+        if _resolve_result is None:
+            self._completed = True
+            if self._on_done_cb is not None:
+                self._on_done_cb()
+        return _resolve_result
 
     def _error(self, error: Exception):
         self._completed = True
+        if self._on_done_cb is not None:
+            self._on_done_cb()
         self.error(error)
 
     def url(self) -> str:

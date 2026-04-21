@@ -43,6 +43,7 @@ def createRequest(textOp: textDAT):
     # create input object
     geminiInput = geminiObjects.GeminiVideoInput()
 
+    # add prompt
     geminiInput.addPromptInstance(prompt)
 
     # pull additional parameters

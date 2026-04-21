@@ -34,7 +34,6 @@ def CreateRequest(
 def createRequest(fifo: fifoDAT, context: DAT):
 
     # grab text from buffer
-    print("creating request")
     # create input object
     geminiInput = geminiObjects.GeminiInput()
 
@@ -45,10 +44,21 @@ def createRequest(fifo: fifoDAT, context: DAT):
     request = ChatRequestObject(geminiInput, fifo)
 
     # make the request
-    print("making request")
     requestId = request_engine.MakeRequest(request)
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
+
+    # set state of par for "Generating"
+    smOpUtils.set_par_state(parent.geminiCOMP, "Generating", True)
+
+    # NOTE this is just a placeholder until there's a way to run a callback
+    run(
+        smOpUtils.set_par_state,
+        parent.geminiCOMP,
+        "Generating",
+        False,
+        delayFrames=200,
+    )
 
 
 def Generate(par: Par):

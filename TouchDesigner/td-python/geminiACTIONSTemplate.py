@@ -25,6 +25,18 @@ def createRequest():
     request_engine.MakeRequest(request)
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 
+    # set state of par for "Generating"
+    smOpUtils.set_par_state(parent.geminiCOMP, "Generating", True)
+
+    # NOTE this is just a placeholder until there's a way to run a callback
+    run(
+        smOpUtils.set_par_state,
+        parent.geminiCOMP,
+        "Generating",
+        False,
+        delayFrames=200,
+    )
+
 
 def Generate(par: Par):
     """Generate new output on demand"""

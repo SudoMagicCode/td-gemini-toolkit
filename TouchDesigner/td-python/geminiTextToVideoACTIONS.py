@@ -2,7 +2,6 @@ from apiKeyActions import *
 import geminiObjects
 from geminiRequests import TextToVideoRequestObject
 from geminiTerminalLogs import msg_formatter
-
 import enumPars
 
 request_engine = op("base_request_engine")

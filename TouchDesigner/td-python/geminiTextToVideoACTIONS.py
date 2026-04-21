@@ -3,8 +3,11 @@ import geminiObjects
 from geminiRequests import TextToVideoRequestObject
 from geminiTerminalLogs import msg_formatter
 
+import enumPars
+
 request_engine = op("base_request_engine")
 output_buffer = op("moviefilein1")
+animation_channel = op("speed1")
 
 
 def OpCreated():
@@ -30,20 +33,39 @@ def CreateRequest(textOp: textDAT):
 
 
 def createRequest(textOp: textDAT):
+    # set state of par for "Generating"
+    smOpUtils.set_par_state(parent.geminiCOMP, "Generating", True)
 
-    op("moviefilein1").par.file = ""
-    op("timer1").par.start.pulse()
+    output_buffer.par.file = ""
+
+    model = enumPars.VeoModels[parent.geminiCOMP.par.Model.eval()].value.model
+    prompt = textOp.text
 
     # create input object
     geminiInput = geminiObjects.GeminiVideoInput()
 
-    prompt = textOp.text
-
     geminiInput.addPromptInstance(prompt)
+
+    # pull additional parameters
+    resolution = geminiObjects.VeoParameterResolution[
+        parent.geminiCOMP.par.Resolution.eval()
+    ]
+    aspect = geminiObjects.VeoParameterAspectRatio[
+        parent.geminiCOMP.par.Aspectratio.eval()
+    ]
+    duration = geminiObjects.VeoParameterDuration[
+        parent.geminiCOMP.par.Videolength.eval()
+    ]
+
+    # add pars to config
+    config = geminiInput.addParameters()
+    config.setAspect(aspect)
+    config.setResolution(resolution)
+    config.setDuration(duration)
 
     # create a request object which resolves to the output_buffer
     request: TextToVideoRequestObject = TextToVideoRequestObject(
-        geminiInput, output_buffer
+        geminiInput, output_buffer, model=model
     )
 
     def cleanup():
@@ -56,16 +78,39 @@ def createRequest(textOp: textDAT):
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 
-    # set state of par for "Generating"
-    smOpUtils.set_par_state(parent.geminiCOMP, "Generating", True)
-
 
 def Generate(par: Par):
     """Generate new output on demand"""
-    CreateRequest(op("null_buffer"))
+    CreateRequest(parent.geminiCOMP.op("null_buffer"))
 
 
 def Cancel(par: Par):
     """Generate new output on demand"""
-    request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
+    request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
+
+
+def resolutionFromPars() -> tuple[int, int]:
+    resolutionMap = {
+        geminiObjects.VeoParameterResolution.RESOLUTION_4k: (3840, 2160),
+        geminiObjects.VeoParameterResolution.RESOLUTION_1080p: (1920, 1080),
+        geminiObjects.VeoParameterResolution.RESOLUTION_720p: (1280, 720),
+    }
+
+    resolution = geminiObjects.VeoParameterResolution[
+        parent.geminiCOMP.par.Resolution.eval()
+    ]
+    aspect = geminiObjects.VeoParameterAspectRatio[
+        parent.geminiCOMP.par.Aspectratio.eval()
+    ]
+
+    aspectValue = aspect.value
+
+    match aspectValue:
+        case "16:9":
+            x, y = resolutionMap[resolution][0], resolutionMap[resolution][1]
+        case _:
+            x, y = resolutionMap[resolution][1], resolutionMap[resolution][0]
+
+    resolution = (x, y)
+    return resolution

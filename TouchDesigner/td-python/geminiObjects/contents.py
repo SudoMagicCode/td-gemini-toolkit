@@ -184,6 +184,7 @@ class GeminiPromptInstance:
         pass
 
     def render(self) -> dict:
+
         data = {
             "prompt": self._prompt,
         }
@@ -209,11 +210,12 @@ class GeminiVideoParameters:
     def render(self) -> dict:
         data = {}
         if self._aspect is not None:
-            data["aspectRatio"] = self._aspect
+            data["aspectRatio"] = self._aspect.value
         if self._resolution is not None:
-            data["resolution"] = self._resolution
+            data["resolution"] = self._resolution.value
         if self._duration is not None:
-            data["durationSeconds"] = self._duration
+            data["durationSeconds"] = int(self._duration.value)
+        return data
 
     def setAspect(self, aspect: VeoParameterAspectRatio):
         self._aspect = aspect
@@ -222,7 +224,7 @@ class GeminiVideoParameters:
         self._resolution = resolution
 
     def setDuration(self, duration: VeoParameterDuration):
-        self._cuiration = duration
+        self._duration = duration
 
 
 class GeminiVideoInput:
@@ -231,7 +233,7 @@ class GeminiVideoInput:
         self._parameters: GeminiVideoParameters = None
         pass
 
-    def addParamters(self) -> GeminiVideoParameters:
+    def addParameters(self) -> GeminiVideoParameters:
         params = GeminiVideoParameters()
         self._parameters = params
         return params
@@ -242,9 +244,11 @@ class GeminiVideoInput:
         return instance
 
     def render(self) -> dict:
+
         data = {"instances": [i.render() for i in self._instances]}
         if self._parameters is not None:
             data["parameters"] = self._parameters.render()
+        return data
 
 
 class GeminiOutputPart:

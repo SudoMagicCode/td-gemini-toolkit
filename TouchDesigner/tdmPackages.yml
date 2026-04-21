@@ -8,5 +8,5 @@ tdPackages:
     - package: github.com/SudoMagicCode/td-annotation-controller
       releaseTag: v0.1.6
     - package: github.com/SudoMagicCode/td-packager-comp
-      releaseTag: v0.2.32
+      releaseTag: v0.2.34
 pythonRequirements: []

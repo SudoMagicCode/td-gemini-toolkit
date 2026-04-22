@@ -51,10 +51,19 @@ class ThinkingConfig:
         self.thinking_level = level
 
 
+class SpeechConfig:
+    def __init__(self):
+        self.voiceName = TTSVoiceName.KORE
+
+    def SetPrebuiltVoice(self, voice: TTSVoiceName):
+        self.voiceName = voice
+
+
 class GenerationConfig:
     def __init__(self):
         self._image_config = None
         self._thinking_config = None
+        self._speech_config = None
         pass
 
     def AddThinkingConfig(self) -> ThinkingConfig:
@@ -64,6 +73,10 @@ class GenerationConfig:
     def AddImageConfig(self) -> ImageConfig:
         self._image_config = ImageConfig()
         return self._image_config
+
+    def AddSpeechConfig(self) -> SpeechConfig:
+        self._speech_config = SpeechConfig()
+        return self._speech_config
 
     def render(self) -> dict:
         config = {}
@@ -78,6 +91,16 @@ class GenerationConfig:
             # add thinking config
             config["thinkingConfig"] = {
                 "thinkingLevel": str(self._thinking_config.thinking_level)
+            }
+
+        if self._speech_config is not None:
+            # add thinking config
+            config["speechConfig"] = {
+                "voiceConfig": {
+                    "prebuiltVoiceConfig": {
+                        "voiceName": str(self._speech_config.voiceName)
+                    }
+                }
             }
 
         return config
@@ -267,7 +290,8 @@ class GeminiOutputPart:
             self.mime_type = input["inlineData"]["mimeType"]
             self.data = input["inlineData"]["data"]
 
-        self.thought_signature = input["thoughtSignature"]
+        if "thoughtSignature" in input:
+            self.thought_signature = input["thoughtSignature"]
         pass
 
 

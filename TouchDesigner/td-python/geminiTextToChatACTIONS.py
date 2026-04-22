@@ -9,6 +9,7 @@ request_engine = op("base_request_engine")
 
 def OpCreated():
     msg_formatter(f"{parent.geminiCOMP.name} created")
+    resolveApiKeyServer()
     pass
 
 

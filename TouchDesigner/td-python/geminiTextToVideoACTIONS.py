@@ -11,6 +11,7 @@ animation_channel = op("speed1")
 
 def OpCreated():
     msg_formatter(f"{parent.geminiCOMP.name} created")
+    resolveApiKeyServer()
     pass
 
 

@@ -10,6 +10,7 @@ output_buffer = op("text_output_buffer")
 
 def OpCreated():
     msg_formatter(f"{parent.geminiCOMP.name} created")
+    resolveApiKeyServer()
     pass
 
 

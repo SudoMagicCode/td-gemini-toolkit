@@ -9,6 +9,7 @@ output_buffer = op("script1")
 
 def OpCreated():
     msg_formatter(f"{parent.geminiCOMP.name} created")
+    resolveApiKeyServer()
     pass
 
 

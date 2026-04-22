@@ -6,16 +6,19 @@ from geminiObjects import *
 
 
 class ChatRequestObject(RequestObjectBase):
-    def __init__(self, input: GeminiInput, output: fifoDAT):
+    def __init__(
+        self,
+        input: GeminiInput,
+        output: fifoDAT,
+        model: Model = Model.GEMINI_3_FLASH_PREVIEW,
+    ):
         data = input.render()
         data_string = json.dumps(data)
         super().__init__(data_string)
 
         self._output = output
 
-        self._url = CreateEndpoint(
-            Model.GEMINI_3_FLASH_PREVIEW, Operation.GENERATE_CONTENT
-        )
+        self._url = CreateEndpoint(model, Operation.GENERATE_CONTENT)
         self._method = "POST"
         self._header = {"Content-Type": "application/json"}
 

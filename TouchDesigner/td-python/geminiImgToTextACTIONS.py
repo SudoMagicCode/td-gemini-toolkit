@@ -5,6 +5,7 @@ from geminiTerminalLogs import msg_formatter
 
 request_engine = op("base_request_engine")
 output_buffer = op("text_output_buffer")
+current_model = geminiObjects.Model.GEMINI_3_FLASH_PREVIEW
 
 
 def OpCreated():
@@ -15,6 +16,10 @@ def OpCreated():
 
 def onExit():
     pass
+
+
+def resolveCurrentModel() -> str:
+    return current_model.value.split("/")[1]
 
 
 def CreateRequest(textOp: textDAT, top: TOP):
@@ -44,7 +49,9 @@ def createRequest(dat: textDAT, top: TOP):
     userContent.addPart(textPart)
 
     # create a request object which resolves to the output_buffer
-    request = ImageTextToTextRequestObject(geminiInput, output_buffer)
+    request = ImageTextToTextRequestObject(
+        geminiInput, output_buffer, model=current_model
+    )
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)

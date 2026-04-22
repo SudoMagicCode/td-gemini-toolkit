@@ -2,6 +2,7 @@ from apiKeyActions import *
 import geminiObjects
 from geminiRequests import TextToImageRequestObject
 from geminiTerminalLogs import msg_formatter
+import enumPars
 
 request_engine = op("base_request_engine")
 output_buffer = op("script1")
@@ -34,6 +35,8 @@ def createRequest(textOp: textDAT):
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
 
+    model = enumPars.ImageModels[parent.geminiCOMP.par.Model.eval()].value.model
+
     # create input object
     geminiInput = geminiObjects.GeminiInput()
     userContent = geminiInput.addUserContent()
@@ -60,7 +63,7 @@ def createRequest(textOp: textDAT):
     # debug(resolution, aspect)
 
     # create a request object which resolves to the output_buffer
-    request = TextToImageRequestObject(geminiInput, output_buffer)
+    request = TextToImageRequestObject(geminiInput, output_buffer, model=model)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)

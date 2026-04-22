@@ -8,6 +8,7 @@ class Models(StrEnum):
     GEMINI_2_5_FLASH_PREVIEW_TTS = "models/gemini-2.5-flash-preview-tts"
     GEMINI_3_1_PRO_PREVIEW = "models/gemini-3.1-pro-preview"
     GEMINI_3_1_PRO_IMAGE_PREVIEW = "models/gemini-3.1-pro-image-preview"
+    GEMINI_3_0_PRO_IMAGE_PREVIEW = "models/gemini-3-pro-image-preview"
     GEMINI_3_FLASH_PREVIEW = "models/gemini-3-flash-preview"
     GEMINI_3_1_FLASH_LITE_PREVIEW = "models/gemini-3.1-flash-lite-preview"
     GEMINI_3_1_FLASH_IMAGE_PREVIEW = "models/gemini-3.1-flash-image-preview"

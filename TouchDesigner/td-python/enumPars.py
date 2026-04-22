@@ -15,6 +15,19 @@ class TextModels(Enum):
     )
 
 
+class ImageModels(Enum):
+    """
+    Gemini Text Models
+    """
+
+    GEMINI_3_0_PRO_IMAGE_PREVIEW = ModelAsPar(
+        Models.GEMINI_3_0_PRO_IMAGE_PREVIEW, "Nano Banana Pro"
+    )
+    GEMINI_3_1_FLASH_IMAGE_PREVIEW = ModelAsPar(
+        Models.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Nano Banana 2"
+    )
+
+
 class VeoModels(Enum):
     """
     VEO Models

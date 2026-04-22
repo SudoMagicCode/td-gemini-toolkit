@@ -8,6 +8,7 @@ request_engine = op("base_request_engine")
 
 def OpCreated():
     msg_formatter(f"{parent.geminiCOMP.name} created")
+    resolveApiKeyServer()
     pass
 
 
@@ -51,5 +52,5 @@ def Generate(par: Par):
 
 def Cancel(par: Par):
     """Generate new output on demand"""
-    request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
+    request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())

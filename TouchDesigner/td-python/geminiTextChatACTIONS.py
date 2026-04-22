@@ -7,6 +7,16 @@ request_engine = op("base_request_engine")
 output_buffer = op("text_output_buffer")
 
 
+def OpCreated():
+    msg_formatter(f"{parent.geminiCOMP.name} created")
+    resolveApiKeyServer()
+    pass
+
+
+def onExit():
+    pass
+
+
 def CreateRequest(textOp: textDAT):
     """Gate against requests when there's currently one in progress"""
     if parent.geminiCOMP.par.Generating.eval():
@@ -46,5 +56,5 @@ def createRequest(textOp: textDAT):
 
 def Generatenew(par: Par):
     """Generate new output on demand"""
-    CreateRequest(op("null_buffer"))
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
+    CreateRequest(op("null_buffer"))

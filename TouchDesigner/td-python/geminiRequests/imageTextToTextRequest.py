@@ -6,7 +6,12 @@ from geminiObjects import *
 
 
 class ImageTextToTextRequestObject(RequestObjectBase):
-    def __init__(self, input: GeminiInput, output: textDAT):
+    def __init__(
+        self,
+        input: GeminiInput,
+        output: textDAT,
+        model: Model = Model.GEMINI_3_FLASH_PREVIEW,
+    ):
         data = input.render()
         data_string = json.dumps(data)
         super().__init__(data_string)

@@ -5,15 +5,21 @@ from geminiTerminalLogs import msg_formatter
 import enumPars
 
 request_engine = op("base_request_engine")
+current_model = geminiObjects.Model.GEMINI_3_FLASH_PREVIEW
 
 
 def OpCreated():
     msg_formatter(f"{parent.geminiCOMP.name} created")
+    resolveApiKeyServer()
     pass
 
 
 def onExit():
     pass
+
+
+def resolveCurrentModel() -> str:
+    return current_model.value.split("/")[1]
 
 
 def CreateRequest(
@@ -41,7 +47,7 @@ def createRequest(fifo: fifoDAT, context: DAT):
     geminiInput.addContent(contents)
 
     # create a request object which resolves to the output_buffer
-    request = ChatRequestObject(geminiInput, fifo)
+    request = ChatRequestObject(geminiInput, fifo, model=current_model)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -66,5 +72,5 @@ def Generate(par: Par):
 
 def Cancel(par: Par):
     """Cancel running request"""
-    request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
+    request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())

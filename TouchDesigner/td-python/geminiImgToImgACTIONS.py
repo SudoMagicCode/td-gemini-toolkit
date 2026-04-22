@@ -2,6 +2,7 @@ from apiKeyActions import *
 import geminiObjects
 from geminiRequests import ImageTextToImageRequestObject
 from geminiTerminalLogs import msg_formatter
+import enumPars
 
 request_engine = op("base_request_engine")
 output_buffer = op("script1")
@@ -9,6 +10,7 @@ output_buffer = op("script1")
 
 def OpCreated():
     msg_formatter(f"{parent.geminiCOMP.name} created")
+    resolveApiKeyServer()
     pass
 
 
@@ -30,6 +32,8 @@ def CreateRequest(textOp: textDAT, top: TOP):
 
 
 def createRequest(dat: textDAT, top: TOP):
+    model = enumPars.ImageModels[parent.geminiCOMP.par.Model.eval()].value.model
+
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(dat)
     imagePart = geminiObjects.Adaptors.TOPtoGeminiImagePart(top)
@@ -61,7 +65,7 @@ def createRequest(dat: textDAT, top: TOP):
         imageConfig.SetImageSize(resolution)
 
     # create a request object which resolves to the output_buffer
-    request = ImageTextToImageRequestObject(geminiInput, output_buffer)
+    request = ImageTextToImageRequestObject(geminiInput, output_buffer, model=model)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -84,5 +88,5 @@ def Generate(par: Par):
 
 def Cancel(par: Par):
     """Cancel running request"""
-    request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
+    request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())

@@ -45,5 +45,5 @@ def Generate(par: Par):
 
 def Cancel(par: Par):
     """Generate new output on demand"""
-    CreateRequest(op("null_buffer"))
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
+    CreateRequest(op("null_buffer"))

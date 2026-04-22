@@ -30,6 +30,11 @@ tasks:
       - python {{.SCRIPTS}}/create-release.py
     silent: true
 
+  release-bundle-zip:
+    desc: Creates release-bundle then zips files
+    deps: [zip-bundle, release-bundle]
+    silent: true
+
   release-bundle:
     desc: Creates a release which contains many .tox files
     env:
@@ -38,6 +43,16 @@ tasks:
     cmds:
       - python {{.SCRIPTS}}/create-release.py
     silent: true
+
+  zip-bundle:
+    desc: Creates a .zip archive of all .tox files
+    internal: true
+    env:
+      SM_RELEASE_DIR: "{{.RELEASE}}"
+    cmds:
+      - python {{.SCRIPTS}}/zip-tox-files.py
+    silent: true
+
 
   test-env-vars:
     env:

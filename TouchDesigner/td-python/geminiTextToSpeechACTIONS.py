@@ -1,9 +1,10 @@
 from apiKeyActions import *
 import geminiObjects
-from geminiRequests import TextToTextRequestObject
+from geminiRequests import TextToSpeechRequest
 from geminiTerminalLogs import msg_formatter
 
 request_engine = op("base_request_engine")
+output_buffer = op("audiofilein1")
 
 
 def OpCreated():
@@ -16,20 +17,34 @@ def onExit():
     pass
 
 
-def CreateRequest():
+def CreateRequest(textOp: DAT):
     """Gate against requests when there's currently one in progress"""
     if parent.geminiCOMP.par.Generating.eval():
         msg_formatter(
             f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
         )
     else:
-        createRequest()
+        createRequest(textOp)
 
 
-def createRequest():
+def createRequest(textOp: DAT):
+
+    # grab text from buffer
+    textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
+
+    # create input object
+    geminiInput = geminiObjects.GeminiInput()
+    userContent = geminiInput.addUserContent()
+
+    # add a text part to the contents
+    userContent.addPart(textPart)
+
+    config = geminiInput.addGenerationConfig()
+    speechConfig = config.AddSpeechConfig()
+    speechConfig.SetPrebuiltVoice(geminiObjects.TTSVoiceName.KORE)
 
     # create a request object which resolves to the output_buffer
-    request: callable
+    request = TextToSpeechRequest(geminiInput, output_buffer)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)

@@ -5,12 +5,12 @@ from RequestBroker import RequestObjectBase
 from geminiObjects import *
 
 
-class ImageTextToTextRequestObject(RequestObjectBase):
+class TextToAudioRequest(RequestObjectBase):
     def __init__(
         self,
         input: GeminiInput,
-        output: textDAT,
-        model: Model = Model.GEMINI_3_FLASH_PREVIEW,
+        output: audiofileinCHOP,
+        model: Model = Model.LYRIA_3_CLIP_PREVIEW,
     ):
         data = input.render()
         data_string = json.dumps(data)
@@ -25,14 +25,23 @@ class ImageTextToTextRequestObject(RequestObjectBase):
     def resolve(self, result: bytes):
         text = result.decode("utf-8", errors="ignore")
         output = GeminiOutput.fromJson(text)
-        output_text = ""
 
         for candidate in output.candidates:
             for part in candidate.content.parts:
-                output_text = output_text + part.text + "\n"
+                if part.data is not None:
+                    if len(part.data) > 0:
+                        audio_bytes = base64.b64decode(part.data)
+                        try:
+                            self._output.parent.geminiCOMP.vfs["temp.mp3"].destroy()
+                        except:
+                            pass
+                        self._output.parent.geminiCOMP.vfs.addByteArray(
+                            audio_bytes, "temp.mp3"
+                        )
+        path = self._output.parent.geminiCOMP.path
 
-        self._output.text = output_text
-        self._output.store("metadata", output.usage_metadata.toDict())
+        self._output.par.file = f"vfs:{path}:temp.mp3"
+        self._output.par.reloadpulse.pulse()
         return None
 
     def error(self, error):

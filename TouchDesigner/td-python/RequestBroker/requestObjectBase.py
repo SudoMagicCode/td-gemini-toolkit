@@ -8,7 +8,7 @@ class RequestObjectBase(ABC):
         self._status: dict[str, Any] = {}
         self._completed = False
         self._result: bytes = b""
-        self._url: str = ""
+        self._path: str = ""
         self._header: dict[str, str] = {}
         self._method: str = "POST"
         self._on_done_cb: callable = None
@@ -52,8 +52,8 @@ class RequestObjectBase(ABC):
             self._on_done_cb()
         self.error(error)
 
-    def url(self) -> str:
-        return self._url
+    def url(self, base: str) -> str:
+        return f"{base}/{self._path}"
 
     def method(self) -> str:
         return self._method

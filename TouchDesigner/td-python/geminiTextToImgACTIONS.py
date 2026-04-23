@@ -35,7 +35,10 @@ def createRequest(textOp: textDAT):
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
 
-    model = enumPars.ImageModels[parent.geminiCOMP.par.Model.eval()].value.model
+    image_model_par_enum = enumPars.ImageModels[parent.geminiCOMP.par.Model.eval()]
+
+    model: geminiObjects.Model = image_model_par_enum.value.model
+    isPreview: bool = model.isPreview
 
     # create input object
     geminiInput = geminiObjects.GeminiInput()
@@ -71,7 +74,8 @@ def createRequest(textOp: textDAT):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request)
+    requestId = request_engine.MakeRequest(request, isPreview=isPreview)
+
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 

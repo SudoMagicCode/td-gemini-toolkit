@@ -16,7 +16,7 @@ class Model(object):
         return self._preview
 
 
-class Models(StrEnum):
+class Models(Enum):
     """Gemini Models"""
 
     # Preview models

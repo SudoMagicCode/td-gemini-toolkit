@@ -8,7 +8,7 @@ class TextToTextRequestObject(RequestObjectBase):
         self,
         input: GeminiInput,
         outputOp: textDAT,
-        model: Model = Model.GEMINI_3_FLASH_PREVIEW,
+        model: Model = Models.GEMINI_3_FLASH_PREVIEW,
     ):
         data = input.render()
         data_string = json.dumps(data)

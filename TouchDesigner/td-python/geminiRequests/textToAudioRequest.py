@@ -10,7 +10,7 @@ class TextToAudioRequest(RequestObjectBase):
         self,
         input: GeminiInput,
         output: audiofileinCHOP,
-        model: Model = Model.LYRIA_3_CLIP_PREVIEW,
+        model: Model = Models.LYRIA_3_CLIP_PREVIEW,
     ):
         data = input.render()
         data_string = json.dumps(data)

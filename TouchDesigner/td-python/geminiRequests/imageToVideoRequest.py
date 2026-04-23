@@ -24,7 +24,7 @@ class ImageToVideoRequestObject(RequestObjectBase):
         self,
         input: GeminiVideoInput,
         outputOp: moviefileinTOP,
-        model: Model = Model.VEO_3_1_GENERATE_PREVIEW,
+        model: Model = Models.VEO_3_1_GENERATE_PREVIEW,
     ):
         data = input.render()
         data_string = json.dumps(data)

@@ -5,7 +5,7 @@ from geminiTerminalLogs import msg_formatter
 
 request_engine = op("base_request_engine")
 output_buffer = op("audiofilein1")
-current_model: geminiObjects.Model = geminiObjects.Model.GEMINI_3_1_FLASH_PREVIEW_TTS
+current_model: geminiObjects.Model = geminiObjects.Models.GEMINI_3_1_FLASH_PREVIEW_TTS
 
 
 def OpCreated():
@@ -19,7 +19,7 @@ def onExit():
 
 
 def resolveCurrentModel() -> str:
-    return current_model.value.split("/")[1]
+    return current_model.value.model.split("/")[1]
 
 
 def CreateRequest(textOp: DAT):

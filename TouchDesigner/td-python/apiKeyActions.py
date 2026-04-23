@@ -31,6 +31,13 @@ def resolveApiKeyServer():
             pass
 
 
+def resolveEndpointInfo() -> dict:
+    """"""
+    info = {"baseURL": "foo", "previewURL": "bar", "apiKey": "bang"}
+
+    return info
+
+
 def Addapikey(tdPar: Par) -> None:
     """Parameter function used to add API key from TD Par interface"""
     geminiTerminalLogs.msg_formatter("adding api key")

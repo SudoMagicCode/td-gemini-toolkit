@@ -1,9 +1,11 @@
 from apiKeyActions import *
 import geminiObjects
-from geminiRequests import TextToTextRequestObject
+from geminiRequests import AudioToTextRequest
 from geminiTerminalLogs import msg_formatter
+import uuid
 
 request_engine = op("base_request_engine")
+output_buffer = op("text_output_buffer")
 
 
 def OpCreated():
@@ -16,20 +18,30 @@ def onExit():
     pass
 
 
-def CreateRequest():
+def CreateRequest(path: str, textOp: DAT):
     """Gate against requests when there's currently one in progress"""
     if parent.geminiCOMP.par.Generating.eval():
         msg_formatter(
             f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
         )
     else:
-        createRequest()
+        createRequest(path, textOp)
 
 
-def createRequest():
+def createRequest(path: str, textOp: DAT):
+    textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
+    audioPart = geminiObjects.Adaptors.FiletoGeminiAudioPart(path, "audio/wav")
+
+    # create input object
+    geminiInput = geminiObjects.GeminiInput()
+    userContent = geminiInput.addUserContent()
+
+    # add a text part to the contents
+    userContent.addPart(textPart)
+    userContent.addPart(audioPart)
 
     # create a request object which resolves to the output_buffer
-    request: callable
+    request = AudioToTextRequest(geminiInput, output_buffer)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -47,10 +59,20 @@ def createRequest():
 
 def Generate(par: Par):
     """Generate new output on demand"""
-    CreateRequest(op("null_buffer"))
+    path = op("audiofileout1").par.file.eval()
+    CreateRequest(path, op("null_buffer"))
 
 
 def Cancel(par: Par):
     """Generate new output on demand"""
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
     request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
+
+
+def Record(par: Par):
+    if par.eval():
+        path = f"{app.tempFolder}/{uuid.uuid4()}.wav"
+        op("audiofileout1").par.file = path
+        op("audiofileout1").par.record = 1
+    else:
+        op("audiofileout1").par.record = 0

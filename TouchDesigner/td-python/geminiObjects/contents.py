@@ -19,6 +19,16 @@ class GeminiContentTextPart(GeminiContentPart):
         part = {"text": self._text}
         return part
 
+class GeminiContentAudioPart(GeminiContentPart):
+    def __init__(self, mime_type: str, audio_bytes: bytes):
+        self._mime_type = mime_type
+        self._data = base64.b64encode(audio_bytes).decode("utf-8")
+
+    def renderPart(self) -> dict:
+        return {"inline_data": {"mime_type": self._mime_type, "data": self._data}}
+
+
+
 
 class GeminiContentImagePart(GeminiContentPart):
     def __init__(self, mime_type: str, image_bytes: bytes):

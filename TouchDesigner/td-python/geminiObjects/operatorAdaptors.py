@@ -1,6 +1,12 @@
 import contents
 
 
+def FiletoGeminiAudioPart(path: str, audioType: str) -> contents.GeminiContentAudioPart:
+    with open(path, "rb") as audio_file:
+        wav_bytes = audio_file.read()
+    return contents.GeminiContentAudioPart(audioType, wav_bytes)
+
+
 def TOPtoGeminiImagePart(top: TOP) -> contents.GeminiContentImagePart:
     data = top.saveByteArray(".jpeg")
     return contents.GeminiContentImagePart("image/jpeg", data)
@@ -21,8 +27,6 @@ def FIFODattoGeminiContents(fifo: fifoDAT) -> list[contents.GeminiContent]:
 
 
 # Fiforow is defined as [ROLE, TEXT]
-
-
 def GeminiContentToFifoRow(content: contents.GeminiOutputContent) -> list[str]:
     role = content.role
     output_text = ""

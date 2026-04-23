@@ -5,7 +5,7 @@ from geminiTerminalLogs import msg_formatter
 
 request_engine = op("base_request_engine")
 output_buffer = op("audiofilein1")
-current_model = geminiObjects.Model.GEMINI_3_1_FLASH_PREVIEW_TTS
+current_model: geminiObjects.Model = geminiObjects.Model.GEMINI_3_1_FLASH_PREVIEW_TTS
 
 
 def OpCreated():
@@ -58,7 +58,8 @@ def createRequest(textOp: DAT):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request)
+    requestId = request_engine.MakeRequest(request, isPreview=current_model.isPreview)
+
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 

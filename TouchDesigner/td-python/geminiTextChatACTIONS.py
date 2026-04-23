@@ -28,6 +28,12 @@ def CreateRequest(textOp: textDAT):
 
 
 def createRequest(textOp: textDAT):
+
+    text_model_par_enum = enumPars.TextModels[parent.geminiCOMP.par.Model.eval()]
+
+    model: geminiObjects.Model = text_model_par_enum.value.model
+    isPreview: bool = model.isPreview
+
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
 
@@ -47,7 +53,8 @@ def createRequest(textOp: textDAT):
     request.onDone = cleanup
 
     # make the request
-    request_engine.MakeRequest(request)
+    request_engine.MakeRequest(request, isPreview=isPreview)
+
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 
     # set state of par for "Generating"

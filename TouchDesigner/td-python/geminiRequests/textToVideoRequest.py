@@ -8,7 +8,7 @@ class TextToVideoCheckRequest(RequestObjectBase):
     def __init__(self, name: str, resolver: "TextToVideoRequestObject"):
         self._resolver = resolver
         super().__init__("")
-        self._url = CreateRawEndpoint(name)
+        self._path = CreateRawPath(name)
         self._method = "GET"
         self._header = {"Content-Type": "application/json"}
 
@@ -32,7 +32,7 @@ class TextToVideoRequestObject(RequestObjectBase):
 
         self._output = outputOp
 
-        self._url = CreateEndpoint(model, Operation.PREDICT_LONG_RUNNING)
+        self._path = CreatePath(model, Operation.PREDICT_LONG_RUNNING)
         self._method = "POST"
         self._header = {"Content-Type": "application/json"}
 

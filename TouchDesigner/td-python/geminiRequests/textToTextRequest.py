@@ -16,7 +16,8 @@ class TextToTextRequestObject(RequestObjectBase):
 
         self._output = outputOp
 
-        self._url = CreateEndpoint(model, Operation.GENERATE_CONTENT)
+        # use default
+        self._path = CreatePath(model, Operation.GENERATE_CONTENT)
         self._method = "POST"
         self._header = {"Content-Type": "application/json"}
 

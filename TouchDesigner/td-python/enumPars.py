@@ -28,6 +28,15 @@ class ImageModels(Enum):
     )
 
 
+class AudioModels(Enum):
+    """
+    Gemini Audio Models
+    """
+
+    LYRIA_3_CLIP_PREVIEW = ModelAsPar(Models.LYRIA_3_CLIP_PREVIEW, "Lyria 3 Clip")
+    LYRIA_3_PRO_PREVIEW = ModelAsPar(Models.LYRIA_3_PRO_PREVIEW, "Lyria 3 Pro")
+
+
 class VeoModels(Enum):
     """
     VEO Models

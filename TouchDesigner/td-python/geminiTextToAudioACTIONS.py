@@ -2,11 +2,11 @@ from apiKeyActions import *
 import geminiObjects
 from geminiRequests import TextToAudioRequest
 from geminiTerminalLogs import msg_formatter
+import enumPars
 
 request_engine = op("base_request_engine")
 output_buffer = op("audiofilein1")
 img_input_buffer = op("null_image_buffer")
-current_model = geminiObjects.Model.LYRIA_3_CLIP_PREVIEW
 
 
 def OpCreated():
@@ -17,10 +17,6 @@ def OpCreated():
 
 def onExit():
     pass
-
-
-def resolveCurrentModel() -> str:
-    return current_model.value.split("/")[1]
 
 
 def CreateRequest(textOp: DAT, top: TOP):
@@ -38,6 +34,8 @@ def createRequest(textOp: DAT, top: TOP):
     geminiInput = geminiObjects.GeminiInput()
     userContent = geminiInput.addUserContent()
 
+    model = enumPars.AudioModels[parent.geminiCOMP.par.Model.eval()].value.model
+
     # add a text part to the contents
     userContent.addPart(textPart)
 
@@ -47,7 +45,7 @@ def createRequest(textOp: DAT, top: TOP):
         userContent.addPart(imagePart)
 
     # create a request object which resolves to the output_buffer
-    request = TextToAudioRequest(geminiInput, output_buffer, model=current_model)
+    request = TextToAudioRequest(geminiInput, output_buffer, model=model)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)

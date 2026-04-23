@@ -17,7 +17,7 @@ class TextModels(Enum):
 
 class ImageModels(Enum):
     """
-    Gemini Text Models
+    Gemini Image Models
     """
 
     GEMINI_3_0_PRO_IMAGE_PREVIEW = ModelAsPar(
@@ -39,7 +39,7 @@ class AudioModels(Enum):
 
 class VeoModels(Enum):
     """
-    VEO Models
+    VEO Video Models
     """
 
     VEO_3_1_GENERATE_PREVIEW = ModelAsPar(Models.VEO_3_1_GENERATE_PREVIEW, "VEO 3.1")

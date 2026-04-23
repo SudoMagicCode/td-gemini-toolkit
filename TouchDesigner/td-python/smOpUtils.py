@@ -1,8 +1,14 @@
 from dataclasses import dataclass
+import geminiTerminalLogs
+
+GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta"
+GEMINI_PREVIEW_URL = "https://generativelanguage.googleapis.com/v1beta"
 
 
 @dataclass
 class ModelAsPar:
+    """"""
+
     model: enum
     label: str
 
@@ -12,6 +18,8 @@ class ModelAsPar:
 
 @dataclass
 class menuPars:
+    """"""
+
     menuNames: list
     menuLabels: list
 
@@ -26,6 +34,37 @@ class menuPars:
         menuNames = [each.name for each in info]
         menuLabels = [each.value.label for each in info]
         return menuPars(menuLabels=menuLabels, menuNames=menuNames)
+
+
+@dataclass
+class apiEndpoint:
+    """"""
+
+    name: str
+    baseUrl: str
+    previewUrl: str
+    apiKey: str
+
+    def __repr__(self) -> str:
+        return self.name
+
+    @classmethod
+    def fromDict(cls, info: dict):
+        return cls(
+            name=info.get("name"),
+            baseUrl=info.get("baseUrl"),
+            previewUrl=info.get("previewUrl"),
+            apiKey=info.get("apiKey"),
+        )
+
+    def asDict(self) -> dict:
+        info = {
+            "name": self.name,
+            "baseUrl": self.baseUrl,
+            "previewUrl": self.previewUrl,
+            "apiKey": self.apiKey,
+        }
+        return info
 
 
 # op used for capturing user's API key
@@ -52,7 +91,7 @@ def get_api_key() -> None:
         buttonIndex = info.get("buttonNum")
         api_key = info.get("enteredText")
         if buttonIndex == 1:
-            parent.geminiCOMP.store("gemini_apiKey", api_key)
+            createDefaultEndpoint(api_key)
 
         else:
             return None
@@ -60,5 +99,69 @@ def get_api_key() -> None:
     api_pop_dialog.Open(callback=pop_dialog_cb)
 
 
+def createDefaultEndpoint(apiKey: str) -> None:
+    # ensure we have endpoints to work with
+    checkEndpoints()
+
+    # fetch endpoints
+    endpoints = parent.geminiCOMP.fetch("endpoints")
+
+    # create new default
+    newEndpoint = createEndpoint(
+        "default", GEMINI_BASE_URL, GEMINI_PREVIEW_URL, apiKey=apiKey
+    )
+    endpoints["default"] = newEndpoint.asDict()
+    updateApiEndpointPar()
+
+
+def updateApiEndpointPar(targetOp: OP = parent.geminiCOMP) -> None:
+    """"""
+    endpoints = targetOp.fetch("endpoints", None)
+    if endpoints == None:
+        parent.geminiCOMP.par.Hasapikey = False
+        return
+    else:
+        set_menu_par(
+            parent.geminiCOMP, "Apiendpoint", parent.geminiCOMP.fetch("endpoints")
+        )
+
+
+def addEndpoint(name: str, baseUrl: str, previewUrl: str, apiKey: str) -> None:
+    # ensure we have endpoints to work with
+    checkEndpoints()
+    endpoints = parent.geminiCOMP.fetch("endpoints")
+
+    # create new endpoint
+    newEndpoint = apiEndpoint(name, baseUrl, previewUrl, apiKey)
+
+    # add to storage
+    endpoints[newEndpoint.name] = newEndpoint.asDict()
+
+    # update drop down pars
+    updateApiEndpointPar()
+
+
+def createEndpoint(
+    name: str, baseUrl: str, previewUrl: str, apiKey: str
+) -> apiEndpoint:
+    return apiEndpoint(name, baseUrl, previewUrl, apiKey)
+
+
+def checkEndpoints() -> None:
+    """"""
+    endpoints = parent.geminiCOMP.fetch("endpoints", None)
+    if endpoints == None:
+        geminiTerminalLogs.msg_formatter(
+            f"{parent.geminiCOMP.name} creating endpoints dict"
+        )
+        endpoints = {}
+        parent.geminiCOMP.store("endpoints", endpoints)
+
+
 def set_par_state(targetOp: OP, par: str, state: bool) -> None:
     targetOp.par[par] = state
+
+
+def set_menu_par(targetOp: OP, par: str, endpoints: dict) -> None:
+    targetOp.par[par].menuNames = list(endpoints.keys())
+    targetOp.par[par].menuLabels = list(endpoints.keys())

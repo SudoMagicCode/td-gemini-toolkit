@@ -7,6 +7,7 @@ import uuid
 current_model = geminiObjects.Model.GEMINI_3_FLASH_PREVIEW
 request_engine = op("base_request_engine")
 output_buffer = op("text_output_buffer")
+timeout_timer = op("timer_audio_timeout")
 
 
 def OpCreated():
@@ -91,6 +92,7 @@ def Record(par: Par):
         path = f"{app.tempFolder}/{uuid.uuid4()}.wav"
         parent.geminiCOMP.par.Tempfile = path
         op("audiofileout1").par.record = 1
+        timeout_timer.par.start.pulse()
 
     else:
         op("audiofileout1").par.record = 0

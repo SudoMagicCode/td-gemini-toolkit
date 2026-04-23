@@ -4,18 +4,25 @@ from geminiRequests import AudioToTextRequest
 from geminiTerminalLogs import msg_formatter
 import uuid
 
+current_model = geminiObjects.Model.GEMINI_3_FLASH_PREVIEW
 request_engine = op("base_request_engine")
 output_buffer = op("text_output_buffer")
 
 
 def OpCreated():
     msg_formatter(f"{parent.geminiCOMP.name} created")
+    parent.geminiCOMP.par.Record = False
+    parent.geminiCOMP.par.Tempfile = ""
     resolveApiKeyServer()
     pass
 
 
 def onExit():
     pass
+
+
+def resolveCurrentModel() -> str:
+    return current_model.value.split("/")[1]
 
 
 def CreateRequest(path: str, textOp: DAT):
@@ -41,7 +48,7 @@ def createRequest(path: str, textOp: DAT):
     userContent.addPart(audioPart)
 
     # create a request object which resolves to the output_buffer
-    request = AudioToTextRequest(geminiInput, output_buffer)
+    request = AudioToTextRequest(geminiInput, output_buffer, model=current_model)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -59,7 +66,17 @@ def createRequest(path: str, textOp: DAT):
 
 def Generate(par: Par):
     """Generate new output on demand"""
-    path = op("audiofileout1").par.file.eval()
+    if parent.geminiCOMP.par.Usesourcefile.eval():
+        path = parent.geminiCOMP.par.Sourcefile.eval()
+    else:
+        if parent.geminiCOMP.par.Tempfile.eval() != "":
+            path = parent.geminiCOMP.par.Tempfile.eval()
+        else:
+            msg_formatter(
+                f"WARN {parent.geminiCOMP.name} has no temp file, please record something first"
+            )
+            return
+
     CreateRequest(path, op("null_buffer"))
 
 
@@ -72,7 +89,11 @@ def Cancel(par: Par):
 def Record(par: Par):
     if par.eval():
         path = f"{app.tempFolder}/{uuid.uuid4()}.wav"
-        op("audiofileout1").par.file = path
+        parent.geminiCOMP.par.Tempfile = path
         op("audiofileout1").par.record = 1
+
     else:
         op("audiofileout1").par.record = 0
+        # if autogenerate is on let's submit our recorded files right away
+        if parent.geminiCOMP.par.Autogenerate.eval():
+            run(Generate, parent.geminiCOMP.par.Generate, delayFrames=10)

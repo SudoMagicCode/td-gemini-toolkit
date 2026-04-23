@@ -67,3 +67,17 @@ def Cancel(par: Par):
     """Generate new output on demand"""
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
     request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
+
+
+def Exportaudiofile(par: Par):
+    """Export audio file from VFS"""
+    # ensure we have a file to export
+    if parent.geminiCOMP.par.File.eval() != "":
+
+        vfsFile: VFSFile = parent.geminiCOMP.vfs["temp.mp3"]
+
+        # prompt user for target directory
+        output_dir = ui.chooseFolder()
+        if output_dir != "":
+            # user selected a target directory
+            vfsFile.export(output_dir)

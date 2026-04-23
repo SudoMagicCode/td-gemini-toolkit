@@ -19,6 +19,7 @@ class GeminiContentTextPart(GeminiContentPart):
         part = {"text": self._text}
         return part
 
+
 class GeminiContentAudioPart(GeminiContentPart):
     def __init__(self, mime_type: str, audio_bytes: bytes):
         self._mime_type = mime_type
@@ -26,8 +27,6 @@ class GeminiContentAudioPart(GeminiContentPart):
 
     def renderPart(self) -> dict:
         return {"inline_data": {"mime_type": self._mime_type, "data": self._data}}
-
-
 
 
 class GeminiContentImagePart(GeminiContentPart):
@@ -316,7 +315,6 @@ class GeminiCandidate:
     def __init__(self, input: dict):
         self.content = GeminiOutputContent(input["content"])
         self.finish_reason = input["finishReason"]
-        self.index = input["index"]
         pass
 
 

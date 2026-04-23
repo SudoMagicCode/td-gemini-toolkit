@@ -1,5 +1,5 @@
 from contents import *
-from models import Models
+from models import Models, Model
 from operations import RpcOperations
 from vars import *
 from generationConfig import *
@@ -10,5 +10,6 @@ import operatorAdaptors
 Adaptors = operatorAdaptors
 
 # gemini specific enums
-Model = Models
+Models = Models
+Model
 Operation = RpcOperations

@@ -37,7 +37,10 @@ def createRequest(dat: textDAT, top: TOP):
 
     output_buffer.par.file = ""
 
-    model = enumPars.VeoModels[parent.geminiCOMP.par.Model.eval()].value.model
+    veo_model_par_enum = enumPars.VeoModels[parent.geminiCOMP.par.Model.eval()]
+    model: geminiObjects.Model = veo_model_par_enum.value.model
+    isPreview: bool = model.isPreview
+
     prompt = dat.text
 
     # create input object
@@ -73,7 +76,8 @@ def createRequest(dat: textDAT, top: TOP):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request)
+    requestId = request_engine.MakeRequest(request, isPreview=isPreview)
+
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 

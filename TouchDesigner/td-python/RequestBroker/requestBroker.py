@@ -157,12 +157,22 @@ class RequestBroker:
         # delete the request object from lookup
         del self._requestLookup[id]
 
-    def MakeRequest(self, requestObject: RequestObjectBase) -> int:
+    def MakeRequest(
+        self, requestObject: RequestObjectBase, isPreview: bool = False
+    ) -> int:
 
-        requestObject._header["x-goog-api-key"] = self._apiKey
+        endpointData = parent.geminiCOMP.resolveEndpointInfo()
+        base_url = endpointData["baseURL"]
+        key = endpointData["apiKey"]
+
+        requestObject._header["x-goog-api-key"] = key
+
+        if isPreview:
+            base_url = endpointData["previewURL"]
+
         id = self._makeRequest(
             requestObject,
-            url=requestObject.url(),
+            url=requestObject.url(base_url),
             method=requestObject.method(),
             header=requestObject.header(),
         )

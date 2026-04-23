@@ -34,7 +34,10 @@ def createRequest(textOp: DAT, top: TOP):
     geminiInput = geminiObjects.GeminiInput()
     userContent = geminiInput.addUserContent()
 
-    model = enumPars.AudioModels[parent.geminiCOMP.par.Model.eval()].value.model
+    audio_model_par_enum = enumPars.AudioModels[parent.geminiCOMP.par.Model.eval()]
+
+    model: geminiObjects.Model = audio_model_par_enum.value.model
+    isPreview: bool = model.isPreview
 
     # add a text part to the contents
     userContent.addPart(textPart)
@@ -53,7 +56,8 @@ def createRequest(textOp: DAT, top: TOP):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request)
+    requestId = request_engine.MakeRequest(request, isPreview=isPreview)
+
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 

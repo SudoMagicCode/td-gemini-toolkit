@@ -56,7 +56,8 @@ def createRequest(path: str, textOp: DAT):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request)
+    requestId = request_engine.MakeRequest(request, isPreview=current_model.isPreview)
+
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 

@@ -40,8 +40,9 @@ class TextToAudioRequest(RequestObjectBase):
                         )
         path = self._output.parent.geminiCOMP.path
 
-        self._output.par.file = f"vfs:{path}:temp.mp3"
-        self._output.par.reloadpulse.pulse()
+        self._output.parent.geminiCOMP.par.File.expr = 'f"vfs:{me.path}:temp.mp3"'
+        self._output.parent.geminiCOMP.par.Reloadpulse.pulse()
+
         return None
 
     def error(self, error):

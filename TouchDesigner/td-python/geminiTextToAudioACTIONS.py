@@ -5,6 +5,7 @@ from geminiTerminalLogs import msg_formatter
 
 request_engine = op("base_request_engine")
 output_buffer = op("audiofilein1")
+current_model = geminiObjects.Model.LYRIA_3_CLIP_PREVIEW
 
 
 def OpCreated():
@@ -15,6 +16,10 @@ def OpCreated():
 
 def onExit():
     pass
+
+
+def resolveCurrentModel() -> str:
+    return current_model.value.split("/")[1]
 
 
 def CreateRequest(textOp: DAT):
@@ -37,7 +42,7 @@ def createRequest(textOp: DAT):
     userContent.addPart(textPart)
 
     # create a request object which resolves to the output_buffer
-    request = TextToAudioRequest(geminiInput, output_buffer)
+    request = TextToAudioRequest(geminiInput, output_buffer, model=current_model)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)

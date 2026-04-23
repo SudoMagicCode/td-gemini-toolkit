@@ -9,12 +9,16 @@ class ParActionsHandler:
     def HandleParChange(self, par: Par):
         """"""
 
-        try:
-            func = getattr(self.actions, par.name)
-            func(par)
-        except Exception as e:
-            if self.debug:
-                print(e)
-            else:
-                pass
+        # only attempt action calls if there's an available function
+        if hasattr(self.actions, par.name):
+
+            # wrap with try and except so we can debug
+            try:
+                func = getattr(self.actions, par.name)
+                func(par)
+            except Exception as e:
+                if self.debug:
+                    print(e)
+                else:
+                    pass
         return

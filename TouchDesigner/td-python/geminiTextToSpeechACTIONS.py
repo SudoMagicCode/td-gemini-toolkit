@@ -5,6 +5,7 @@ from geminiTerminalLogs import msg_formatter
 
 request_engine = op("base_request_engine")
 output_buffer = op("audiofilein1")
+current_model = geminiObjects.Model.GEMINI_3_1_FLASH_PREVIEW_TTS
 
 
 def OpCreated():
@@ -15,6 +16,10 @@ def OpCreated():
 
 def onExit():
     pass
+
+
+def resolveCurrentModel() -> str:
+    return current_model.value.split("/")[1]
 
 
 def CreateRequest(textOp: DAT):
@@ -31,6 +36,7 @@ def createRequest(textOp: DAT):
 
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
+    voice = geminiObjects.TTSVoiceName[parent.geminiCOMP.par.Voice.eval()]
 
     # create input object
     geminiInput = geminiObjects.GeminiInput()
@@ -41,10 +47,10 @@ def createRequest(textOp: DAT):
 
     config = geminiInput.addGenerationConfig()
     speechConfig = config.AddSpeechConfig()
-    speechConfig.SetPrebuiltVoice(geminiObjects.TTSVoiceName.KORE)
+    speechConfig.SetPrebuiltVoice(voice)
 
     # create a request object which resolves to the output_buffer
-    request = TextToSpeechRequest(geminiInput, output_buffer)
+    request = TextToSpeechRequest(geminiInput, output_buffer, model=current_model)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)

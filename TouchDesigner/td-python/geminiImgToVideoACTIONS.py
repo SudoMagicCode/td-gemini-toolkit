@@ -64,7 +64,7 @@ def createRequest(dat: textDAT, top: TOP):
 
     # create a request object which resolves to the output_buffer
     request: ImageToVideoRequestObject = ImageToVideoRequestObject(
-        geminiInput, output_buffer
+        geminiInput, output_buffer, model=model
     )
 
     def cleanup():

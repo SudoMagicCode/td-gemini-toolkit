@@ -5,6 +5,7 @@ from geminiTerminalLogs import msg_formatter
 
 request_engine = op("base_request_engine")
 output_buffer = op("audiofilein1")
+img_input_buffer = op("null_image_buffer")
 current_model = geminiObjects.Model.LYRIA_3_CLIP_PREVIEW
 
 
@@ -22,24 +23,28 @@ def resolveCurrentModel() -> str:
     return current_model.value.split("/")[1]
 
 
-def CreateRequest(textOp: DAT):
+def CreateRequest(textOp: DAT, top: TOP):
     """Gate against requests when there's currently one in progress"""
     if parent.geminiCOMP.par.Generating.eval():
         msg_formatter(
             f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
         )
     else:
-        createRequest(textOp)
+        createRequest(textOp, top)
 
 
-def createRequest(textOp: DAT):
+def createRequest(textOp: DAT, top: TOP):
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
-
     geminiInput = geminiObjects.GeminiInput()
     userContent = geminiInput.addUserContent()
 
     # add a text part to the contents
     userContent.addPart(textPart)
+
+    # include image if user has enabled parameter
+    if parent.geminiCOMP.par.Includeimage.eval():
+        imagePart = geminiObjects.Adaptors.TOPtoGeminiImagePart(top)
+        userContent.addPart(imagePart)
 
     # create a request object which resolves to the output_buffer
     request = TextToAudioRequest(geminiInput, output_buffer, model=current_model)
@@ -60,7 +65,7 @@ def createRequest(textOp: DAT):
 
 def Generate(par: Par):
     """Generate new output on demand"""
-    CreateRequest(op("null_buffer"))
+    CreateRequest(op("null_buffer"), img_input_buffer)
 
 
 def Cancel(par: Par):

@@ -33,8 +33,7 @@ def CreateRequest(textOp: textDAT):
 
 def createRequest(textOp: textDAT):
     text_model_par_enum = enumPars.TextModels[parent.geminiCOMP.par.Model.eval()]
-
-    model: geminiObjects.GeminiModel = text_model_par_enum.value.model
+    model: geminiObjects.GeminiModel = text_model_par_enum.value.model.value
     isPreview: bool = model.isPreview
 
     # grab text from buffer

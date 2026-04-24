@@ -38,7 +38,7 @@ def createRequest(dat: textDAT, top: TOP):
     output_buffer.par.file = ""
 
     veo_model_par_enum = enumPars.VeoModels[parent.geminiCOMP.par.Model.eval()]
-    model: geminiObjects.GeminiModel = veo_model_par_enum.value.model
+    model: geminiObjects.GeminiModel = veo_model_par_enum.value.model.value
     isPreview: bool = model.isPreview
 
     prompt = dat.text

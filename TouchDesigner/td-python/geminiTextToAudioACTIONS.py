@@ -36,7 +36,7 @@ def createRequest(textOp: DAT, top: TOP):
 
     audio_model_par_enum = enumPars.AudioModels[parent.geminiCOMP.par.Model.eval()]
 
-    model: geminiObjects.GeminiModel = audio_model_par_enum.value.model
+    model: geminiObjects.GeminiModel = audio_model_par_enum.value.model.value
     isPreview: bool = model.isPreview
 
     # add a text part to the contents

@@ -52,7 +52,9 @@ def createRequest(textOp: DAT):
     speechConfig.SetPrebuiltVoice(voice)
 
     # create a request object which resolves to the output_buffer
-    request = TextToSpeechRequest(geminiInput, output_buffer, model=current_model)
+    request = TextToSpeechRequest(
+        geminiInput, output_buffer, model=current_model.value.model.value
+    )
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -60,7 +62,9 @@ def createRequest(textOp: DAT):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request, isPreview=current_model.isPreview)
+    requestId = request_engine.MakeRequest(
+        request, isPreview=current_model.value.model.value.isPreview
+    )
 
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")

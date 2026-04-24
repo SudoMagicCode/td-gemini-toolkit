@@ -48,6 +48,7 @@ class RequestBroker:
             header=header,
             data=requestObject.input(),
         )
+        print(url)
         self._requestLookup[id] = requestObject
         msg_formatter(f"{self._thisOp.path} broker making request")
         return id
@@ -161,14 +162,14 @@ class RequestBroker:
         self, requestObject: RequestObjectBase, isPreview: bool = False
     ) -> int:
 
-        endpointData = parent.geminiCOMP.resolveEndpointInfo()
-        base_url = endpointData["baseURL"]
+        endpointData = parent.geminiCOMP.mod.apiKeyActions.resolveEndpointInfo()
+        base_url = endpointData["baseUrl"]
         key = endpointData["apiKey"]
 
         requestObject._header["x-goog-api-key"] = key
 
         if isPreview:
-            base_url = endpointData["previewURL"]
+            base_url = endpointData["previewUrl"]
 
         id = self._makeRequest(
             requestObject,

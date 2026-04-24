@@ -8,8 +8,8 @@ class StudioTextModels(Enum):
     """
     Gemini Text Models
     """
-    GEMINI_3_1_FLASH_LITE_PREVIEW   = ModelAsPar(StudioModels.GEMINI_3_1_FLASH_LITE_PREVIEW, "Gemini 2.5 Pro")
-    GEMINI_3_1_PRO_PREVIEW          = ModelAsPar(StudioModels.GEMINI_3_1_PRO_PREVIEW, "Gemini 3 Flash Preview")
+    GEMINI_3_1_FLASH_LITE_PREVIEW   = ModelAsPar(StudioModels.GEMINI_3_1_FLASH_LITE_PREVIEW, "Gemini 3.1 Flash Lite Preview")
+    GEMINI_3_1_PRO_PREVIEW          = ModelAsPar(StudioModels.GEMINI_3_1_PRO_PREVIEW, "Gemini 3.1 Pro Preview")
 
 class StudioImageModels(Enum):
     """

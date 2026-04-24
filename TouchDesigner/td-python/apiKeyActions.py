@@ -68,6 +68,10 @@ def resolveEndpointInfo(targetOp: OP = parent.geminiCOMP) -> dict:
         return storage_info
 
 
+def Addnewendpoint(tdPar: Par) -> None:
+    parent.geminiCOMP.op("base_assets/container_pop_add_endpoint").Open()
+
+
 def Adddefaultapikey(tdPar: Par) -> None:
     """Parameter function used to add API key from TD Par interface"""
     geminiTerminalLogs.msg_formatter("adding api key")

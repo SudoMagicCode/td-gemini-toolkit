@@ -4,7 +4,7 @@ from geminiRequests import AudioToTextRequest
 from geminiTerminalLogs import msg_formatter
 import uuid
 
-current_model = geminiObjects.Models.GEMINI_3_FLASH_PREVIEW
+current_model: geminiObjects.GeminiModel = geminiObjects.Models.GEMINI_3_FLASH_PREVIEW
 request_engine = op("base_request_engine")
 output_buffer = op("text_output_buffer")
 timeout_timer = op("timer_audio_timeout")
@@ -23,7 +23,7 @@ def onExit():
 
 
 def resolveCurrentModel() -> str:
-    return current_model.value.model.split("/")[1]
+    return current_model.model.split("/")[1]
 
 
 def CreateRequest(path: str, textOp: DAT):

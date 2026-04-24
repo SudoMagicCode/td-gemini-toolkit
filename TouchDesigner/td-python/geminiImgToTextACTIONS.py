@@ -5,7 +5,7 @@ from geminiTerminalLogs import msg_formatter
 
 request_engine = op("base_request_engine")
 output_buffer = op("text_output_buffer")
-current_model = geminiObjects.Models.GEMINI_3_FLASH_PREVIEW
+current_model: geminiObjects.GeminiModel = geminiObjects.Models.GEMINI_3_FLASH_PREVIEW
 
 
 def OpCreated():
@@ -19,7 +19,7 @@ def onExit():
 
 
 def resolveCurrentModel() -> str:
-    return current_model.value.model.split("/")[1]
+    return current_model.model.split("/")[1]
 
 
 def CreateRequest(textOp: textDAT, top: TOP):
@@ -39,7 +39,7 @@ def createRequest(dat: textDAT, top: TOP):
 
     text_model_par_enum = enumPars.TextModels[parent.geminiCOMP.par.Model.eval()]
 
-    model: geminiObjects.Model = text_model_par_enum.value.model
+    model: geminiObjects.GeminiModel = text_model_par_enum.value.model
     isPreview: bool = model.isPreview
 
     # grab text from buffer

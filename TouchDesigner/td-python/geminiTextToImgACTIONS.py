@@ -37,7 +37,7 @@ def createRequest(textOp: textDAT):
 
     image_model_par_enum = enumPars.ImageModels[parent.geminiCOMP.par.Model.eval()]
 
-    model: geminiObjects.Model = image_model_par_enum.value.model
+    model: geminiObjects.GeminiModel = image_model_par_enum.value.model
     isPreview: bool = model.isPreview
 
     # create input object

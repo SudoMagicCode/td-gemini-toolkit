@@ -10,7 +10,7 @@ class ChatRequestObject(RequestObjectBase):
         self,
         input: GeminiInput,
         output: fifoDAT,
-        model: Model = Models.GEMINI_3_FLASH_PREVIEW,
+        model: GeminiModel = Models.GEMINI_3_FLASH_PREVIEW,
     ):
         data = input.render()
         data_string = json.dumps(data)

@@ -10,7 +10,7 @@ class TextToImageRequestObject(RequestObjectBase):
         self,
         input: GeminiInput,
         output: scriptTOP,
-        model: Model = Models.GEMINI_3_1_FLASH_IMAGE_PREVIEW,
+        model: GeminiModel = Models.GEMINI_3_1_FLASH_IMAGE_PREVIEW,
     ):
         data = input.render()
         data_string = json.dumps(data)

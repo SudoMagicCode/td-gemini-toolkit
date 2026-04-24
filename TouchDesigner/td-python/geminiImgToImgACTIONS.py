@@ -34,7 +34,7 @@ def CreateRequest(textOp: textDAT, top: TOP):
 def createRequest(dat: textDAT, top: TOP):
 
     image_model_par_enum = enumPars.ImageModels[parent.geminiCOMP.par.Model.eval()]
-    model: geminiObjects.Model = image_model_par_enum.value.model
+    model: geminiObjects.GeminiModel = image_model_par_enum.value.model
     isPreview: bool = model.isPreview
 
     # grab text from buffer

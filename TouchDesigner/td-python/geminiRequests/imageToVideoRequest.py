@@ -41,7 +41,11 @@ class ImageToVideoRequestObject(RequestObjectBase):
         data = json.loads(text)
 
         if "done" not in data:
-            return ImageToVideoCheckRequest(data["name"], self)
+            name: str = data["name"]
+            # the path that comes back from the model is too long for the url parser in the request broker
+            # so we split it at an appropraite place
+            parts = name.split("/google/")
+            return ImageToVideoCheckRequest(parts[1], self)
 
         filePath = data["response"]["generateVideoResponse"]["generatedSamples"][0][
             "video"

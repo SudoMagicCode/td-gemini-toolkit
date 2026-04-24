@@ -43,7 +43,11 @@ class TextToVideoRequestObject(RequestObjectBase):
         print(text)
 
         if "done" not in data:
-            return TextToVideoCheckRequest(data["name"], self)
+            name: str = data["name"]
+            # the path that comes back from the model is too long for the url parser in the request broker
+            # so we split it at an appropraite place
+            parts = name.split("/google/")
+            return TextToVideoCheckRequest(parts[1], self)
 
         print(data["response"])
         filePath = data["response"]["generateVideoResponse"]["generatedSamples"][0][

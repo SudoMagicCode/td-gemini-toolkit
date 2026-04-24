@@ -48,7 +48,6 @@ class StudioModels(Enum):
 
 
 
-
 class VertexModels(Enum):
 
     """Gemini Models"""

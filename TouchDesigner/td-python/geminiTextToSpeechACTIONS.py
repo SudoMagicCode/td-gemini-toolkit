@@ -21,7 +21,7 @@ def onExit():
 
 
 def resolveCurrentModel() -> str:
-    return current_model.model.split("/")[1]
+    return current_model.value.model.split("/")[1]
 
 
 def CreateRequest(textOp: DAT):

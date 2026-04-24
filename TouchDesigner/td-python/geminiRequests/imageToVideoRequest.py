@@ -4,6 +4,28 @@ from RequestBroker import RequestObjectBase
 from geminiObjects import *
 
 
+class VertexImageToVideoCheckRequest(RequestObjectBase):
+    def __init__(self, path: str, name: str, resolver: "ImageToVideoRequestObject"):
+        self._resolver = resolver
+
+        data = {
+            "operationName": name,
+        }
+
+        data_string = json.dumps(data)
+
+        super().__init__(data_string)
+        self._path = path
+        self._method = "POST"
+        self._header = {"Content-Type": "application/json"}
+
+    def resolve(self, result: bytes) -> Self:
+        return self._resolver.resolve(result)
+
+    def error(self, error):
+        return self._resolver.error(error)
+
+
 class ImageToVideoCheckRequest(RequestObjectBase):
     def __init__(self, name: str, resolver: "ImageToVideoRequestObject"):
         self._resolver = resolver
@@ -31,7 +53,7 @@ class ImageToVideoRequestObject(RequestObjectBase):
         super().__init__(data_string)
 
         self._output = outputOp
-
+        self._model = model
         self._path = CreatePath(model.model, Operation.PREDICT_LONG_RUNNING)
         self._method = "POST"
         self._header = {"Content-Type": "application/json"}
@@ -42,10 +64,31 @@ class ImageToVideoRequestObject(RequestObjectBase):
 
         if "done" not in data:
             name: str = data["name"]
-            # the path that comes back from the model is too long for the url parser in the request broker
-            # so we split it at an appropraite place
-            parts = name.split("/google/")
-            return ImageToVideoCheckRequest(parts[1], self)
+            if name.find("/google") != -1:
+                checkPath = CreatePath(
+                    self._model.model, Operation.FETCH_PREDICT_OPERATION
+                )
+                return VertexImageToVideoCheckRequest(checkPath, name, self)
+            #     # the path that comes back from the model is too long for the url parser in the request broker
+            #     # so we split it at an appropraite place
+            #     parts = name.split("/google/")
+            #     return TextToVideoCheckRequest(parts[1], self)
+            return ImageToVideoCheckRequest(name, self)
+
+        if "@type" in data["response"]:
+            # this is a vertex response
+            base64Video = data["response"]["videos"][0]["bytesBase64Encoded"]
+            video_bytes = base64.b64decode(base64Video)
+            try:
+                self._output.parent.geminiCOMP.vfs["temp.mp4"].destroy()
+            except:
+                pass
+            self._output.parent.geminiCOMP.vfs.addByteArray(video_bytes, "temp.mp4")
+
+            path = self._output.parent.geminiCOMP.path
+            self._output.par.file = f"vfs:{path}:temp.mp4"
+            self._output.par.reloadpulse.pulse()
+            return
 
         filePath = data["response"]["generateVideoResponse"]["generatedSamples"][0][
             "video"

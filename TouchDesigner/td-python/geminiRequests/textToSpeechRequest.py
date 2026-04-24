@@ -3,6 +3,7 @@ import base64
 
 from RequestBroker import RequestObjectBase
 from geminiObjects import *
+from geminiTerminalLogs import msg_formatter
 
 import wave
 import io
@@ -62,7 +63,9 @@ class TextToSpeechRequest(RequestObjectBase):
                             self._output.parent.geminiCOMP.vfs["temp.wav"].destroy()
                         except Exception:
                             pass
-                        print("adding vfs")
+                        msg_formatter(
+                            f"{self._output.parent().name} adding vfs", indent=1
+                        )
                         self._output.parent.geminiCOMP.vfs.addByteArray(
                             audio_bytes, "temp.wav"
                         )

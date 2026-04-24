@@ -46,7 +46,9 @@ class ImageToVideoRequestObject(RequestObjectBase):
         filePath = data["response"]["generateVideoResponse"]["generatedSamples"][0][
             "video"
         ]["uri"]
-        key = self._output.parent.geminiCOMP.fetch("gemini_apiKey")
+
+        # resolve apiKey from geminiCOMP
+        key = parent.geminiCOMP.mod.apiKeyActions.resolveEndpointInfo().get("apiKey")
         self._output.par.file = filePath + f"&key={key}"
 
     def error(self, error):

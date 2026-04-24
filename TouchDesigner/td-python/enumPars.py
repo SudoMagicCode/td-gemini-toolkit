@@ -64,11 +64,14 @@ class VeoModels(Enum):
     VEO_3_1_GENERATE_PREVIEW        = ModelAsPar(Models.VEO_3_1_GENERATE_PREVIEW, "VEO 3.1 Preview")
     VEO_3_1_FAST_GENERATE_PREVIEW   = ModelAsPar(Models.VEO_3_1_FAST_GENERATE_PREVIEW, "VEO 3.1 Fast Preview")
     VEO_3_1_LITE_GENERATE_PREVIEW   = ModelAsPar(Models.VEO_3_1_LITE_GENERATE_PREVIEW, "VEO 3.1 Lite Preview")
+
     VEO_2_0_GENERATE_001            = ModelAsPar(Models.VEO_2_0_GENERATE_001, "VEO 2.0 Generate 001")
     VEO_3_0_GENERATE_001            = ModelAsPar(Models.VEO_3_0_GENERATE_001, "VEO 3.0 Generate 001")
     VEO_3_0_FAST_GENERATE_001       = ModelAsPar(Models.VEO_3_0_FAST_GENERATE_001, "VEO 3.0 Fast Generate 001")
-    VEO_3_1_GENERATE_001            = ModelAsPar(Models.VEO_3_1_GENERATE_001, "VEO 3.1 Generate 001")
-    VEO_3_1_FAST_GENERATE_001       = ModelAsPar(Models.VEO_3_1_FAST_GENERATE_001, "VEO 3.1 Fast Generate 001")
-    VEO_3_1_LITE_GENERATE_001       = ModelAsPar(Models.VEO_3_1_LITE_GENERATE_001, "VEO 3.1 Lite Generate 001")
+
+    # NOTE not available for consumer API keys
+    # VEO_3_1_GENERATE_001            = ModelAsPar(Models.VEO_3_1_GENERATE_001, "VEO 3.1 Generate 001")
+    # VEO_3_1_FAST_GENERATE_001       = ModelAsPar(Models.VEO_3_1_FAST_GENERATE_001, "VEO 3.1 Fast Generate 001")
+    # VEO_3_1_LITE_GENERATE_001       = ModelAsPar(Models.VEO_3_1_LITE_GENERATE_001, "VEO 3.1 Lite Generate 001")
 
 # fmt: on

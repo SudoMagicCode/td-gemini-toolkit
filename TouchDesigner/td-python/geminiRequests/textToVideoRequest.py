@@ -50,7 +50,7 @@ class TextToVideoRequestObject(RequestObjectBase):
             "video"
         ]["uri"]
 
-        key = self._output.parent.geminiCOMP.fetch("gemini_apiKey")
+        key = parent.geminiCOMP.mod.apiKeyActions.resolveEndpointInfo().get("apiKey")
         self._output.par.file = filePath + f"&key={key}"
 
     def error(self, error):

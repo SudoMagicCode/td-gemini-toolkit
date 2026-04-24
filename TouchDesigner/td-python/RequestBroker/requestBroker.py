@@ -25,14 +25,17 @@ class RequestBroker:
 
     @property
     def _apiKey(self) -> str:
-        if parent.geminiCOMP.fetch("gemini_apiKey", None) == None:
+        key = parent.geminiCOMP.mod.apiKeyActions.resolveEndpointInfo().get(
+            "apiKey", None
+        )
+        if key is None:
             msg_formatter(
                 "Missing api key, please ensure you've added an API key to your component"
             )
             self._thisOp.parent().addScriptError("Missing Gemini API Key")
             raise ValueError("Missing api key")
         else:
-            return parent.geminiCOMP.fetch("gemini_apiKey")
+            return key
 
     def _makeRequest(
         self,

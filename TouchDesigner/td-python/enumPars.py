@@ -17,12 +17,13 @@ class StudioImageModels(Enum):
     Gemini Image Models
     """
 
+    # NOTE Depreciated according to google
     # Vanity - these models are duplicates of other models with vanity marketing names
-    NANO_BANANA_PRO                 = ModelAsPar(StudioModels.GEMINI_3_PRO_IMAGE_PREVIEW, "Nano Banana Pro")
-    NANO_BANANA_2                   = ModelAsPar(StudioModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Nano Banana 2")
+    # NANO_BANANA_PRO                 = ModelAsPar(StudioModels.GEMINI_3_PRO_IMAGE_PREVIEW, "Nano Banana Pro")
+    # NANO_BANANA_2                   = ModelAsPar(StudioModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Nano Banana 2")
+    # GEMINI_3_PRO_IMAGE_PREVIEW    = ModelAsPar(StudioModels.GEMINI_3_PRO_IMAGE_PREVIEW, "Gemini 3.0 Pro Image Preview")
 
     # Actual
-    GEMINI_3_PRO_IMAGE_PREVIEW    = ModelAsPar(StudioModels.GEMINI_3_PRO_IMAGE_PREVIEW, "Gemini 3.0 Pro Image Preview")
     GEMINI_3_1_PRO_IMAGE_PREVIEW    = ModelAsPar(StudioModels.GEMINI_3_1_PRO_IMAGE_PREVIEW, "Gemini 3.1 Pro Image Preview")
     GEMINI_3_1_FLASH_IMAGE_PREVIEW  = ModelAsPar(StudioModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Gemini 3.1 Flash Image Preview")
 
@@ -73,17 +74,20 @@ class VertexImageModels(Enum):
     Gemini Image Models
     """
 
+    # NOTE Depreciated according to google
     # Vanity - these models are duplicates of other models with vanity marketing names
-    NANO_BANANA_PRO                 = ModelAsPar(VertexModels.GEMINI_3_1_PRO_IMAGE_PREVIEW, "Nano Banana Pro")
-    NANO_BANANA_2                   = ModelAsPar(VertexModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Nano Banana 2")
+    # NANO_BANANA_PRO                 = ModelAsPar(VertexModels.GEMINI_3_1_PRO_IMAGE_PREVIEW, "Nano Banana Pro")
+    # NANO_BANANA_2                   = ModelAsPar(VertexModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Nano Banana 2")
+    # GEMINI_2_5_FLASH_IMAGE          = ModelAsPar(VertexModels.GEMINI_2_5_FLASH_IMAGE, "Gemini 2.5 Flash Image")
+
+    # NOTE removed due to inconsistent return payload
+    # IMAGEN_3_0_GENERATE_002         = ModelAsPar(VertexModels.IMAGEN_3_0_GENERATE_002, "Imagen 3.0 Generate 002")
+    # IMAGEN_3_0_FAST_GENERATE_001    = ModelAsPar(VertexModels.IMAGEN_3_0_FAST_GENERATE_001, "Imagen 3.0 Fast Generate 001")
+    # IMAGEN_4_0_GENERATE_PREDICT     = ModelAsPar(VertexModels.IMAGEN_4_0_GENERATE_PREDICT, "Imagen 4.0 Generate Predict")
 
     # Actual
-    GEMINI_2_5_FLASH_IMAGE          = ModelAsPar(VertexModels.GEMINI_2_5_FLASH_IMAGE, "Gemini 2.5 Flash Image")
     GEMINI_3_1_FLASH_IMAGE_PREVIEW  = ModelAsPar(VertexModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Gemini 3.0 Pro Image Preview")
     GEMINI_3_1_PRO_IMAGE_PREVIEW    = ModelAsPar(VertexModels.GEMINI_3_1_PRO_IMAGE_PREVIEW, "Gemini 3.1 Pro Image Preview")
-    IMAGEN_3_0_GENERATE_002         = ModelAsPar(VertexModels.IMAGEN_3_0_GENERATE_002, "Imagen 3.0 Generate 002")
-    IMAGEN_3_0_FAST_GENERATE_001    = ModelAsPar(VertexModels.IMAGEN_3_0_FAST_GENERATE_001, "Imagen 3.0 Fast Generate 001")
-    IMAGEN_4_0_GENERATE_PREDICT     = ModelAsPar(VertexModels.IMAGEN_4_0_GENERATE_PREDICT, "Imagen 4.0 Generate Predict")
 
 
 class VertexAudioModels(Enum):

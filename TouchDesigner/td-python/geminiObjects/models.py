@@ -55,12 +55,12 @@ class VertexModels(Enum):
     GEMINI_2_5_FLASH                    = GeminiModel("models/gemini-2.5-flash", False)
     GEMINI_2_5_FLASH_IMAGE              = GeminiModel("models/gemini-2.5-flash-image", False)
     GEMINI_2_5_PRO                      = GeminiModel("models/gemini-2.5-pro", False)
-    GEMINI_3_PRO_IMAGE_PREVIEW          = GeminiModel("models/gemini-3-pro-image-preview", True)
     GEMINI_3_1_FLASH_LITE_PREVIEW       = GeminiModel("models/gemini-3.1-flash-lite-preview", True)
+    GEMINI_3_1_PRO_PREVIEW              = GeminiModel("models/gemini-3.1-pro-preview", True)
     
     # image models
     GEMINI_3_1_FLASH_IMAGE_PREVIEW      = GeminiModel("models/gemini-3.1-flash-image-preview", True)
-    GEMINI_3_1_PRO_IMAGE_PREVIEW        = GeminiModel("models/gemini-3.1-pro-image-preview", True)
+    GEMINI_3_PRO_IMAGE_PREVIEW          = GeminiModel("models/gemini-3-pro-image-preview", True)
     IMAGEN_3_0_GENERATE_002             = GeminiModel("models/imagen-3.0-generate-002", False)
     IMAGEN_3_0_FAST_GENERATE_001        = GeminiModel("models/imagen-3.0-fast-generate-001", False)
     IMAGEN_4_0_GENERATE_PREDICT         = GeminiModel("models/imagen-4.0-generate-001", False)

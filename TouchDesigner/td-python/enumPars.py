@@ -16,13 +16,8 @@ class StudioImageModels(Enum):
     Gemini Image Models
     """
 
-    # NOTE Depreciated according to google
-    # Vanity - these models are duplicates of other models with vanity marketing names
-    # NANO_BANANA_PRO                 = ModelAsPar(StudioModels.GEMINI_3_PRO_IMAGE_PREVIEW, "Nano Banana Pro")
-    # NANO_BANANA_2                   = ModelAsPar(StudioModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Nano Banana 2")
-    # GEMINI_3_PRO_IMAGE_PREVIEW    = ModelAsPar(StudioModels.GEMINI_3_PRO_IMAGE_PREVIEW, "Gemini 3.0 Pro Image Preview")
-
     # Actual
+    GEMINI_3_PRO_IMAGE_PREVIEW      = ModelAsPar(StudioModels.GEMINI_3_PRO_IMAGE_PREVIEW, "Gemini 3.0 Pro Image Preview")
     GEMINI_3_1_PRO_IMAGE_PREVIEW    = ModelAsPar(StudioModels.GEMINI_3_1_PRO_IMAGE_PREVIEW, "Gemini 3.1 Pro Image Preview")
     GEMINI_3_1_FLASH_IMAGE_PREVIEW  = ModelAsPar(StudioModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Gemini 3.1 Flash Image Preview")
 
@@ -73,9 +68,6 @@ class VertexImageModels(Enum):
     """
 
     # NOTE Depreciated according to google
-    # Vanity - these models are duplicates of other models with vanity marketing names
-    # NANO_BANANA_PRO                 = ModelAsPar(VertexModels.GEMINI_3_1_PRO_IMAGE_PREVIEW, "Nano Banana Pro")
-    # NANO_BANANA_2                   = ModelAsPar(VertexModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Nano Banana 2")
     # GEMINI_2_5_FLASH_IMAGE          = ModelAsPar(VertexModels.GEMINI_2_5_FLASH_IMAGE, "Gemini 2.5 Flash Image")
 
     # NOTE removed due to inconsistent return payload
@@ -84,8 +76,11 @@ class VertexImageModels(Enum):
     # IMAGEN_4_0_GENERATE_PREDICT     = ModelAsPar(VertexModels.IMAGEN_4_0_GENERATE_PREDICT, "Imagen 4.0 Generate Predict")
 
     # Actual
+    GEMINI_3_PRO_IMAGE_PREVIEW      = ModelAsPar(VertexModels.GEMINI_3_PRO_IMAGE_PREVIEW, "Gemini 3.0 Pro Image Preview")
     GEMINI_3_1_FLASH_IMAGE_PREVIEW  = ModelAsPar(VertexModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Gemini 3.1 Flash Image Preview")
-    GEMINI_3_1_PRO_IMAGE_PREVIEW    = ModelAsPar(VertexModels.GEMINI_3_1_PRO_IMAGE_PREVIEW, "Gemini 3.1 Pro Image Preview")
+
+    # NOTE removed due to unavailability from response
+    # GEMINI_3_1_PRO_IMAGE_PREVIEW    = ModelAsPar(VertexModels.GEMINI_3_1_PRO_IMAGE_PREVIEW, "Gemini 3.1 Pro Image Preview")
 
 
 class VertexAudioModels(Enum):

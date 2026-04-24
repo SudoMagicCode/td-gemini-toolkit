@@ -89,7 +89,7 @@ class VertexAudioModels(Enum):
     Gemini Audio Models
     """
 
-    LYRIA_002                       = ModelAsPar(VertexModels.LYRIA_002, "Lyria 002")
+    # LYRIA_002                       = ModelAsPar(VertexModels.LYRIA_002, "Lyria 002")
     LYRIA_3_CLIP_PREVIEW            = ModelAsPar(VertexModels.LYRIA_3_CLIP_PREVIEW, "Lyria 3 Clip")
     LYRIA_3_PRO_PREVIEW             = ModelAsPar(VertexModels.LYRIA_3_PRO_PREVIEW, "Lyria 3 Pro")
 
@@ -110,7 +110,9 @@ class VertexVeoModels(Enum):
     VEO Video Models
     """
 
-    VEO_2_0_GENERATE_001            = ModelAsPar(VertexModels.VEO_2_0_GENERATE_001, "VEO 2.0 Generate 001")
+    # NOTE removed due to unavailability from response
+    # VEO_2_0_GENERATE_001            = ModelAsPar(VertexModels.VEO_2_0_GENERATE_001, "VEO 2.0 Generate 001")
+
     VEO_3_0_GENERATE_001            = ModelAsPar(VertexModels.VEO_3_0_GENERATE_001, "VEO 3.0 Generate 001")
     VEO_3_0_FAST_GENERATE_001       = ModelAsPar(VertexModels.VEO_3_0_FAST_GENERATE_001, "VEO 3.0 Fast Generate 001")
     VEO_3_1_GENERATE_001            = ModelAsPar(VertexModels.VEO_3_1_GENERATE_001, "VEO 3.1 Generate 001")

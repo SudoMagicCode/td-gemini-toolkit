@@ -39,17 +39,15 @@ def createRequest(textOp: textDAT):
     output_buffer.par.file = ""
 
     endpointInfo = resolveEndpointInfo()
+
+    # resolve model
     modelType = endpointInfo.get("modelType")
     if modelType == "studio":
-        veo_model_par_enum = enumPars.StudioVeoModels[
-            parent.geminiCOMP.par.Model.eval()
-        ]
+        model_par_enum = enumPars.StudioVeoModels[parent.geminiCOMP.par.Model.eval()]
     else:
-        veo_model_par_enum = enumPars.VertexVeoModels[
-            parent.geminiCOMP.par.Model.eval()
-        ]
+        model_par_enum = enumPars.VertexVeoModels[parent.geminiCOMP.par.Model.eval()]
 
-    model: geminiObjects.GeminiModel = veo_model_par_enum.value.model.value
+    model: geminiObjects.GeminiModel = model_par_enum.value.model.value
     isPreview: bool = model.isPreview
 
     prompt = textOp.text

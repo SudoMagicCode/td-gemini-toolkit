@@ -32,27 +32,32 @@ def resolveApiKeyServer() -> None:
 
 
 def _resolveApiKeyServer():
-    # ensure that we have key server to pull a key from
-    if hasattr(op, "geminiAPIKeyServer"):
-        # get endpoint info
-        endpoints = op.geminiAPIKeyServer.fetch("endpoints")
-        # add to local storage as deep copy
-        parent.geminiCOMP.store("endpoints", copy.deepcopy(endpoints))
-        # update pars
-        smOpUtils.updateApiEndpointPar()
-
-        # get info and update has apikey state
-        info = resolveEndpointInfo()
-        if info == None:
-            parent.geminiCOMP.par.Hasapikey = False
-        else:
-            if info.get("apiKey") == None or info.get("apiKey") == "":
-                parent.geminiCOMP.par.Hasapikey = False
-            else:
-                parent.geminiCOMP.par.Hasapikey = True
+    if parent.geminiCOMP.par.opshortcut.eval() == "geminiAPIKeyServer":
+        # skip - we are the API key server
+        pass
 
     else:
-        pass
+        # ensure that we have key server to pull a key from
+        if hasattr(op, "geminiAPIKeyServer"):
+            # get endpoint info
+            endpoints = op.geminiAPIKeyServer.fetch("endpoints")
+            # add to local storage as deep copy
+            parent.geminiCOMP.store("endpoints", copy.deepcopy(endpoints))
+            # update pars
+            smOpUtils.updateApiEndpointPar()
+
+            # get info and update has apikey state
+            info = resolveEndpointInfo()
+            if info == None:
+                parent.geminiCOMP.par.Hasapikey = False
+            else:
+                if info.get("apiKey") == None or info.get("apiKey") == "":
+                    parent.geminiCOMP.par.Hasapikey = False
+                else:
+                    parent.geminiCOMP.par.Hasapikey = True
+
+        else:
+            pass
 
 
 def resolveEndpointInfo(targetOp: OP = parent.geminiCOMP) -> dict:

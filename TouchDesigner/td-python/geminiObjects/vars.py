@@ -2,7 +2,7 @@ import models
 import operations
 
 
-def CreatePath(model: models.Models, operation: operations.RpcOperations) -> str:
+def CreatePath(model: models.VertexModels, operation: operations.RpcOperations) -> str:
     return f"{model}:{operation}"
 
 

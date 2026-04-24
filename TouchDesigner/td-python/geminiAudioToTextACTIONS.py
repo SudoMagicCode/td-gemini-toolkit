@@ -4,7 +4,9 @@ from geminiRequests import AudioToTextRequest
 from geminiTerminalLogs import msg_formatter
 import uuid
 
-current_model: geminiObjects.GeminiModel = geminiObjects.Models.GEMINI_3_FLASH_PREVIEW
+current_model: geminiObjects.GeminiModel = (
+    geminiObjects.VertexModels.GEMINI_3_FLASH_PREVIEW
+)
 request_engine = op("base_request_engine")
 output_buffer = op("text_output_buffer")
 timeout_timer = op("timer_audio_timeout")

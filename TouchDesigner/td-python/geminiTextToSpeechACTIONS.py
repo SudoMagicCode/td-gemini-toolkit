@@ -6,7 +6,7 @@ from geminiTerminalLogs import msg_formatter
 request_engine = op("base_request_engine")
 output_buffer = op("audiofilein1")
 current_model: geminiObjects.GeminiModel = (
-    geminiObjects.Models.GEMINI_3_1_FLASH_PREVIEW_TTS
+    geminiObjects.VertexModels.GEMINI_3_1_FLASH_PREVIEW_TTS
 )
 
 

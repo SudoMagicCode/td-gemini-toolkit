@@ -3,6 +3,32 @@ import smOpUtils
 import geminiTerminalLogs
 
 GEMINI_KEY_NAME = "gemini_apiKey"
+modelMap = {
+    "base_text_to_text": {
+        "studio": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.StudioTextModels)",
+        "vertex": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.VertexTextModels)",
+    },
+    "base_text_to_img": {
+        "studio": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.StudioImageModels)",
+        "vertex": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.VertexImageModels)",
+    },
+    "base_img_to_img": {
+        "studio": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.StudioImageModels)",
+        "vertex": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.VertexImageModels)",
+    },
+    "base_text_to_video": {
+        "studio": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.StudioVeoModels)",
+        "vertex": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.VertexVeoModels)",
+    },
+    "base_image_to_video": {
+        "studio": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.StudioVeoModels)",
+        "vertex": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.VertexVeoModels)",
+    },
+    "base_text_to_audio": {
+        "studio": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.StudioAudioModels)",
+        "vertex": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.VertexAudioModels)",
+    },
+}
 
 
 def resolveApiKeyServer() -> None:
@@ -106,6 +132,13 @@ def Apiendpoint(tdPar: Par) -> None:
             smOpUtils.set_par_state(parent.geminiCOMP, "Hasapikey", False)
         else:
             smOpUtils.set_par_state(parent.geminiCOMP, "Hasapikey", True)
+            if parent.geminiCOMP.name in modelMap.keys():
+                menuSourceStr = modelMap.get(parent.geminiCOMP.name).get("vertex")
+                if info.get("modelType") == "studio":
+                    menuSourceStr = modelMap.get(parent.geminiCOMP.name).get("studio")
+                smOpUtils.updateMenuSource(parent.geminiCOMP, "Model", menuSourceStr)
+            else:
+                pass
 
 
 def Distributeendpoints(tdPar: Par) -> None:

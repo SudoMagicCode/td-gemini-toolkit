@@ -42,7 +42,7 @@ class StudioTTSModels(Enum):
 
     GEMINI_2_5_FLASH_PREVIEW_TTS    = ModelAsPar(StudioModels.GEMINI_2_5_FLASH_PREVIEW_TTS, "Gemini 2.5 Flash Preview TTS")
     GEMINI_2_5_PRO_PREVIEW_TTS      = ModelAsPar(StudioModels.GEMINI_2_5_PRO_PREVIEW_TTS, "Gemini 2.5 Pro Preview TTS")
-    GEMINI_3_1_FLASH_PREVIEW_TTS    = ModelAsPar(StudioModels.GEMINI_3_1_FLASH_PREVIEW_TTS, "Gemini 2.5 Flash TTS")
+    GEMINI_3_1_FLASH_PREVIEW_TTS    = ModelAsPar(StudioModels.GEMINI_3_1_FLASH_PREVIEW_TTS, "Gemini 3.1 Flash TTS")
 
 
 
@@ -51,7 +51,7 @@ class StudioVeoModels(Enum):
     VEO Video Models
     """
 
-    VEO_3_1_GENERATE_PREVIEW        = ModelAsPar(StudioModels.VEO_3_1_GENERATE_PREVIEW, "VEO 3.1 Preview")
+    VEO_3_1_GENERATE_PREVIEW        = ModelAsPar(StudioModels.VEO_3_1_GENERATE_PREVIEW, "VEO 3.1 Generate Preview")
     VEO_3_1_FAST_GENERATE_PREVIEW   = ModelAsPar(StudioModels.VEO_3_1_FAST_GENERATE_PREVIEW, "VEO 3.1 Fast Preview")
     VEO_3_1_LITE_GENERATE_PREVIEW   = ModelAsPar(StudioModels.VEO_3_1_LITE_GENERATE_PREVIEW, "VEO 3.1 Lite Preview")
 
@@ -84,7 +84,7 @@ class VertexImageModels(Enum):
     # IMAGEN_4_0_GENERATE_PREDICT     = ModelAsPar(VertexModels.IMAGEN_4_0_GENERATE_PREDICT, "Imagen 4.0 Generate Predict")
 
     # Actual
-    GEMINI_3_1_FLASH_IMAGE_PREVIEW  = ModelAsPar(VertexModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Gemini 3.0 Pro Image Preview")
+    GEMINI_3_1_FLASH_IMAGE_PREVIEW  = ModelAsPar(VertexModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Gemini 3.1 Flash Image Preview")
     GEMINI_3_1_PRO_IMAGE_PREVIEW    = ModelAsPar(VertexModels.GEMINI_3_1_PRO_IMAGE_PREVIEW, "Gemini 3.1 Pro Image Preview")
 
 

@@ -222,6 +222,7 @@ TOX name `base_audio_to_text`
 ![base_gemini_key_server](assets/readme-imgs/base_audio_to_text.png)
 
 Summary
+A TouchDesigner component for generating synthetic text from audio with the Google Gemini API. Example use cases here include the ability to transcribe contents from a file to text.
 
 Controls
 
@@ -247,6 +248,7 @@ TOX name `base_text_to_audio`
 ![base_gemini_key_server](assets/readme-imgs/base_text_to_audio.png)
 
 Summary
+A TouchDesigner component for generating synthetic audio with the Google Gemini API.
 
 Controls
 
@@ -279,6 +281,7 @@ TOX name `base_text_to_speech`
 ![base_gemini_key_server](assets/readme-imgs/base_text_to_speech.png)
 
 Summary
+A TouchDesigner component for generating synthetic speech with the Google Gemini API.
 
 Controls
 

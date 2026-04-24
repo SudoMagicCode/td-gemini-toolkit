@@ -11,7 +11,19 @@ def onStart():
     """
     Called when the project starts.
     """
-    gemini_ops = root.findChildren(tags=["gemini"])
+    apiKey_server = op("base_comps/base_gemini_key_server")
+
+    DEFAULT_API_KEY = me.var("DEFAULT_API_KEY")
+    UCLA_BASE = me.var("UCLA_BASE_KEY")
+    UCLA_PREVIEW = me.var("UCLA_PREVIEW_KEY")
+    UCLA_API_KEY = me.var("UCLA_KEY")
+
+    apiKey_server.mod.apiKeyActions.smOpUtils.createDefaultEndpoint(DEFAULT_API_KEY)
+    apiKey_server.mod.apiKeyActions.smOpUtils.addEndpoint(
+        "UCLA", UCLA_BASE, UCLA_PREVIEW, UCLA_API_KEY
+    )
+
+    apiKey_server.par.Distributeendpoints.pulse()
     return
 
 

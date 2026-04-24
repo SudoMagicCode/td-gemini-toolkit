@@ -8,3 +8,4 @@ class RpcOperations(StrEnum):
     PREDICT_LONG_RUNNING = "predictLongRunning"
     PREDICT = "predict"
     STREAM_GENERATE_CONTENT = "streamGenerateContent"
+    FETCH_PREDICT_OPERATION = "fetchPredictOperation"

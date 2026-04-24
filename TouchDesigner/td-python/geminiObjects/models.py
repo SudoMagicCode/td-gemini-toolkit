@@ -23,12 +23,10 @@ class StudioModels(Enum):
     # Preview models
     
     # text models
-    GEMINI_3_FLASH_PREVIEW              = GeminiModel("models/gemini-3-flash-preview", True)
     GEMINI_3_1_FLASH_LITE_PREVIEW       = GeminiModel("models/gemini-3.1-flash-lite-preview", True)
     GEMINI_3_1_PRO_PREVIEW              = GeminiModel("models/gemini-3.1-pro-preview", True)
 
     # image models
-    GEMINI_3_PRO_IMAGE_PREVIEW          = GeminiModel("models/gemini-3-pro-image-preview", True)
     GEMINI_3_1_PRO_IMAGE_PREVIEW        = GeminiModel("models/gemini-3.1-pro-image-preview", True)
     GEMINI_3_1_FLASH_IMAGE_PREVIEW      = GeminiModel("models/gemini-3.1-flash-image-preview", True)
 
@@ -57,7 +55,6 @@ class VertexModels(Enum):
     GEMINI_2_5_FLASH                    = GeminiModel("models/gemini-2.5-flash", False)
     GEMINI_2_5_FLASH_IMAGE              = GeminiModel("models/gemini-2.5-flash-image", False)
     GEMINI_2_5_PRO                      = GeminiModel("models/gemini-2.5-pro", False)
-    GEMINI_3_FLASH_PREVIEW              = GeminiModel("models/gemini-3-flash-preview", True)
     GEMINI_3_1_FLASH_LITE_PREVIEW       = GeminiModel("models/gemini-3.1-flash-lite-preview", True)
     GEMINI_3_1_PRO_PREVIEW              = GeminiModel("models/gemini-3.1-pro-preview", True)
     

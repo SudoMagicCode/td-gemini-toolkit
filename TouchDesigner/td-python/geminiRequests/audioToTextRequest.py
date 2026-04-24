@@ -17,7 +17,7 @@ class AudioToTextRequest(RequestObjectBase):
 
         self._output = output
 
-        self._path = CreatePath(model, Operation.GENERATE_CONTENT)
+        self._path = CreatePath(model.model, Operation.GENERATE_CONTENT)
         self._method = "POST"
         self._header = {"Content-Type": "application/json"}
 

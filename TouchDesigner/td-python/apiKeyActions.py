@@ -7,48 +7,64 @@ GEMINI_KEY_NAME = "gemini_apiKey"
 
 def resolveApiKeyServer() -> None:
     """API Key Resolver - looks for API Key server COMP to pull a key from"""
-    # if component has existing API key, skip
-    if parent.geminiCOMP.par.Hasapikey.eval():
-        geminiTerminalLogs.msg_formatter(
-            f"{parent.geminiCOMP.name} has existing API Key, skipping"
-        )
 
-    # if component has no api key, check for API Key Server
-    else:
+    # get end point info for the op
+    info = resolveEndpointInfo()
+
+    if info == None:
+        # if there's no info, check for an API key server
+        parent.geminiCOMP.par.Hasapikey = False
         geminiTerminalLogs.msg_formatter(
             f"{parent.geminiCOMP.name} checking for API Key Server"
         )
-        # ensure that we have key server to pull a key from
-        if hasattr(op, "geminiAPIKeyServer"):
-            # check to see if the key server has a valid key
-            if op.geminiAPIKeyServer.fetch(GEMINI_KEY_NAME, None) not in [None, ""]:
-                # store valid key
-                gemini_key = op.geminiAPIKeyServer.fetch(GEMINI_KEY_NAME)
-                parent.geminiCOMP.store(GEMINI_KEY_NAME, gemini_key)
-                geminiTerminalLogs.msg_formatter(
-                    f"{parent.geminiCOMP.name} applying API Key", indent=1
-                )
+        _resolveApiKeyServer()
+
+    else:
+        if info.get("apiKey") == None or info.get("apiKey") == "":
+            parent.geminiCOMP.par.Hasapikey = False
+            _resolveApiKeyServer()
         else:
-            pass
+            # has an existing API key, take no action
+            geminiTerminalLogs.msg_formatter(
+                f"{parent.geminiCOMP.name} has existing API Key, skipping"
+            )
 
 
-def resolveEndpointInfo() -> dict:
+def _resolveApiKeyServer():
+    # ensure that we have key server to pull a key from
+    if hasattr(op, "geminiAPIKeyServer"):
+        # get endpoint info
+        endpoints = op.geminiAPIKeyServer.fetch("endpoints")
+        # add to local storage as deep copy
+        parent.geminiCOMP.store("endpoints", copy.deepcopy(endpoints))
+        # update pars
+        smOpUtils.updateApiEndpointPar()
+
+        # get info and update has apikey state
+        info = resolveEndpointInfo()
+        if info == None:
+            parent.geminiCOMP.par.Hasapikey = False
+        else:
+            if info.get("apiKey") == None or info.get("apiKey") == "":
+                parent.geminiCOMP.par.Hasapikey = False
+            else:
+                parent.geminiCOMP.par.Hasapikey = True
+
+    else:
+        pass
+
+
+def resolveEndpointInfo(targetOp: OP = parent.geminiCOMP) -> dict:
     """"""
-    endpoint_key = parent.geminiCOMP.par.Apiendpoint.eval()
-    print(endpoint_key)
+    endpoint_key = targetOp.par.Apiendpoint.eval()
 
-    endPoint_info = parent.geminiCOMP.fetch("endpoints", {})
+    endPoint_info = targetOp.fetch("endpoints", {})
     storage_info = endPoint_info.get(endpoint_key, {})
 
     if storage_info == None:
         return None
     else:
         return storage_info
-
-
-def addEndpoint(name: str, baseUrl: str, previewUrl: str, apiKey: str) -> None:
-    newEndpoint = smOpUtils.apiEndpoint(name, baseUrl, previewUrl, apiKey)
-    endpoints = parent.geminiCOMP.fetch("endpoints", {})
 
 
 def Adddefaultapikey(tdPar: Par) -> None:
@@ -87,9 +103,9 @@ def Apiendpoint(tdPar: Par) -> None:
         parent.geminiCOMP.par.Hasapikey = False
     else:
         if info.get("apiKey") == None or info.get("apiKey") == "":
-            parent.geminiCOMP.par.Hasapikey = False
+            smOpUtils.set_par_state(parent.geminiCOMP, "Hasapikey", False)
         else:
-            parent.geminiCOMP.par.Hasapikey = True
+            smOpUtils.set_par_state(parent.geminiCOMP, "Hasapikey", True)
 
 
 def Distributeendpoints(tdPar: Par) -> None:
@@ -109,3 +125,12 @@ def Distributeendpoints(tdPar: Par) -> None:
         for each in gemini_ops:
             geminiTerminalLogs.msg_formatter(f"updating {each.name}")
             each.store("endpoints", endPointCopy)
+            smOpUtils.updateApiEndpointPar(each)
+            info = resolveEndpointInfo(each)
+            if info == None:
+                each.par.Hasapikey = False
+            else:
+                if info.get("apiKey") == None or info.get("apiKey") == "":
+                    each.par.Hasapikey = False
+                else:
+                    each.par.Hasapikey = True

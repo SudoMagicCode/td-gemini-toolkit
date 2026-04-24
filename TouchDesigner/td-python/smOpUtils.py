@@ -118,12 +118,10 @@ def updateApiEndpointPar(targetOp: OP = parent.geminiCOMP) -> None:
     """"""
     endpoints = targetOp.fetch("endpoints", None)
     if endpoints == None:
-        parent.geminiCOMP.par.Hasapikey = False
+        targetOp.par.Hasapikey = False
         return
     else:
-        set_menu_par(
-            parent.geminiCOMP, "Apiendpoint", parent.geminiCOMP.fetch("endpoints")
-        )
+        set_menu_par(targetOp, "Apiendpoint", targetOp.fetch("endpoints"))
 
 
 def addEndpoint(name: str, baseUrl: str, previewUrl: str, apiKey: str) -> None:

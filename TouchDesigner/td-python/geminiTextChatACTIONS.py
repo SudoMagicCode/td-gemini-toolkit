@@ -1,4 +1,5 @@
 from apiKeyActions import *
+from geminiCompCallbacks import *
 import geminiObjects
 from geminiRequests import TextToTextRequestObject
 from geminiTerminalLogs import msg_formatter

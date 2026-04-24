@@ -35,10 +35,15 @@ def createRequest(textOp: textDAT):
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
 
-    image_model_par_enum = enumPars.ImageModels[parent.geminiCOMP.par.Model.eval()]
+    # resolve model
+    endpointInfo = resolveEndpointInfo()
+    modelType = endpointInfo.get("modelType")
+    if modelType == "studio":
+        model_par_enum = enumPars.StudioImageModels[parent.geminiCOMP.par.Model.eval()]
+    else:
+        model_par_enum = enumPars.VertexImageModels[parent.geminiCOMP.par.Model.eval()]
 
-    model: geminiObjects.GeminiModel = image_model_par_enum.value.model.value
-    isPreview: bool = model.isPreview
+    currentModel: geminiObjects.GeminiModel = model_par_enum.value.model.value
 
     # create input object
     geminiInput = geminiObjects.GeminiInput()
@@ -66,7 +71,7 @@ def createRequest(textOp: textDAT):
     # debug(resolution, aspect)
 
     # create a request object which resolves to the output_buffer
-    request = TextToImageRequestObject(geminiInput, output_buffer, model=model)
+    request = TextToImageRequestObject(geminiInput, output_buffer, model=currentModel)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -74,7 +79,7 @@ def createRequest(textOp: textDAT):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request, isPreview=isPreview)
+    requestId = request_engine.MakeRequest(request, isPreview=currentModel.isPreview)
 
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")

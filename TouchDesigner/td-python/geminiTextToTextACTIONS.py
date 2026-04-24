@@ -1,4 +1,5 @@
 from apiKeyActions import *
+from geminiCompCallbacks import *
 import geminiObjects
 from geminiRequests import TextToTextRequestObject
 from geminiTerminalLogs import msg_formatter
@@ -32,9 +33,15 @@ def CreateRequest(textOp: textDAT):
 
 
 def createRequest(textOp: textDAT):
-    text_model_par_enum = enumPars.TextModels[parent.geminiCOMP.par.Model.eval()]
-    model: geminiObjects.GeminiModel = text_model_par_enum.value.model.value
-    isPreview: bool = model.isPreview
+    # resolve model
+    endpointInfo = resolveEndpointInfo()
+    modelType = endpointInfo.get("modelType")
+    if modelType == "studio":
+        model_par_enum = enumPars.StudioTextModels[parent.geminiCOMP.par.Model.eval()]
+    else:
+        model_par_enum = enumPars.VertexTextModels[parent.geminiCOMP.par.Model.eval()]
+
+    currentModel: geminiObjects.GeminiModel = model_par_enum.value.model.value
 
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
@@ -47,7 +54,7 @@ def createRequest(textOp: textDAT):
     userContent.addPart(textPart)
 
     # create a request object which resolves to the output_buffer
-    request = TextToTextRequestObject(geminiInput, output_buffer, model=model)
+    request = TextToTextRequestObject(geminiInput, output_buffer, model=currentModel)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -55,7 +62,7 @@ def createRequest(textOp: textDAT):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request, isPreview=isPreview)
+    requestId = request_engine.MakeRequest(request, isPreview=currentModel.isPreview)
 
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")

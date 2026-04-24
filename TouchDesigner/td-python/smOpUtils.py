@@ -41,6 +41,7 @@ class apiEndpoint:
     """"""
 
     name: str
+    modelType: str  # can be either `vertex` or `studio`
     baseUrl: str
     previewUrl: str
     apiKey: str
@@ -52,6 +53,7 @@ class apiEndpoint:
     def fromDict(cls, info: dict):
         return cls(
             name=info.get("name"),
+            modelType=info.get("modelType"),
             baseUrl=info.get("baseUrl"),
             previewUrl=info.get("previewUrl"),
             apiKey=info.get("apiKey"),
@@ -63,6 +65,7 @@ class apiEndpoint:
             "baseUrl": self.baseUrl,
             "previewUrl": self.previewUrl,
             "apiKey": self.apiKey,
+            "modelType": self.modelType,
         }
         return info
 
@@ -108,7 +111,7 @@ def createDefaultEndpoint(apiKey: str) -> None:
 
     # create new default
     newEndpoint = createEndpoint(
-        "default", GEMINI_BASE_URL, GEMINI_PREVIEW_URL, apiKey=apiKey
+        "default", "studio", GEMINI_BASE_URL, GEMINI_PREVIEW_URL, apiKey=apiKey
     )
     endpoints["default"] = newEndpoint.asDict()
     updateApiEndpointPar()
@@ -124,13 +127,15 @@ def updateApiEndpointPar(targetOp: OP = parent.geminiCOMP) -> None:
         set_menu_par(targetOp, "Apiendpoint", targetOp.fetch("endpoints"))
 
 
-def addEndpoint(name: str, baseUrl: str, previewUrl: str, apiKey: str) -> None:
+def addEndpoint(
+    name: str, modelType: str, baseUrl: str, previewUrl: str, apiKey: str
+) -> None:
     # ensure we have endpoints to work with
     checkEndpoints()
     endpoints = parent.geminiCOMP.fetch("endpoints")
 
     # create new endpoint
-    newEndpoint = apiEndpoint(name, baseUrl, previewUrl, apiKey)
+    newEndpoint = apiEndpoint(name, modelType, baseUrl, previewUrl, apiKey)
 
     # add to storage
     endpoints[newEndpoint.name] = newEndpoint.asDict()
@@ -140,9 +145,9 @@ def addEndpoint(name: str, baseUrl: str, previewUrl: str, apiKey: str) -> None:
 
 
 def createEndpoint(
-    name: str, baseUrl: str, previewUrl: str, apiKey: str
+    name: str, modelType: str, baseUrl: str, previewUrl: str, apiKey: str
 ) -> apiEndpoint:
-    return apiEndpoint(name, baseUrl, previewUrl, apiKey)
+    return apiEndpoint(name, modelType, baseUrl, previewUrl, apiKey)
 
 
 def checkEndpoints() -> None:

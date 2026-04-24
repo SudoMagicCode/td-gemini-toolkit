@@ -20,7 +20,7 @@ def onStart():
 
     apiKey_server.mod.apiKeyActions.smOpUtils.createDefaultEndpoint(DEFAULT_API_KEY)
     apiKey_server.mod.apiKeyActions.smOpUtils.addEndpoint(
-        "UCLA", UCLA_BASE, UCLA_PREVIEW, UCLA_API_KEY
+        "UCLA", "vertex", UCLA_BASE, UCLA_PREVIEW, UCLA_API_KEY
     )
 
     apiKey_server.par.Distributeendpoints.pulse()

@@ -24,7 +24,7 @@ class TextToVideoRequestObject(RequestObjectBase):
         self,
         input: GeminiVideoInput,
         outputOp: moviefileinTOP,
-        model: GeminiModel = VertexModels.VEO_3_1_GENERATE_PREVIEW,
+        model: GeminiModel = StudioModels.VEO_3_1_GENERATE_PREVIEW,
     ):
         data = input.render()
         data_string = json.dumps(data)

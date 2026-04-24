@@ -75,28 +75,29 @@ class ImageToVideoRequestObject(RequestObjectBase):
             #     return TextToVideoCheckRequest(parts[1], self)
             return ImageToVideoCheckRequest(name, self)
 
-        if "@type" in data["response"]:
-            # this is a vertex response
-            base64Video = data["response"]["videos"][0]["bytesBase64Encoded"]
-            video_bytes = base64.b64decode(base64Video)
-            try:
-                self._output.parent.geminiCOMP.vfs["temp.mp4"].destroy()
-            except:
-                pass
-            self._output.parent.geminiCOMP.vfs.addByteArray(video_bytes, "temp.mp4")
+        if "generateVideoResponse" in data["response"]:
+            filePath = data["response"]["generateVideoResponse"]["generatedSamples"][0][
+                "video"
+            ]["uri"]
 
-            path = self._output.parent.geminiCOMP.path
-            self._output.par.file = f"vfs:{path}:temp.mp4"
-            self._output.par.reloadpulse.pulse()
+            key = parent.geminiCOMP.mod.apiKeyActions.resolveEndpointInfo().get(
+                "apiKey"
+            )
+            self._output.par.file = filePath + f"&key={key}"
             return
 
-        filePath = data["response"]["generateVideoResponse"]["generatedSamples"][0][
-            "video"
-        ]["uri"]
-
-        # resolve apiKey from geminiCOMP
-        key = parent.geminiCOMP.mod.apiKeyActions.resolveEndpointInfo().get("apiKey")
-        self._output.par.file = filePath + f"&key={key}"
+        # this is a vertex response
+        base64Video = data["response"]["videos"][0]["bytesBase64Encoded"]
+        video_bytes = base64.b64decode(base64Video)
+        try:
+            self._output.parent.geminiCOMP.vfs["temp.mp4"].destroy()
+        except:
+            pass
+        self._output.parent.geminiCOMP.vfs.addByteArray(video_bytes, "temp.mp4")
+        path = self._output.parent.geminiCOMP.path
+        self._output.par.file = f"vfs:{path}:temp.mp4"
+        self._output.par.reloadpulse.pulse()
+        return
 
     def error(self, error):
         if self._on_error_cb is not None:

@@ -1,4 +1,5 @@
 from apiKeyActions import *
+from geminiCompCallbacks import *
 import geminiObjects
 from geminiRequests import TextToVideoRequestObject
 from geminiTerminalLogs import msg_formatter
@@ -38,8 +39,16 @@ def createRequest(textOp: textDAT):
 
     output_buffer.par.file = ""
 
-    veo_model_par_enum = enumPars.VeoModels[parent.geminiCOMP.par.Model.eval()]
-    model: geminiObjects.GeminiModel = veo_model_par_enum.value.model.value
+    endpointInfo = resolveEndpointInfo()
+
+    # resolve model
+    modelType = endpointInfo.get("modelType")
+    if modelType == "studio":
+        model_par_enum = enumPars.StudioVeoModels[parent.geminiCOMP.par.Model.eval()]
+    else:
+        model_par_enum = enumPars.VertexVeoModels[parent.geminiCOMP.par.Model.eval()]
+
+    model: geminiObjects.GeminiModel = model_par_enum.value.model.value
     isPreview: bool = model.isPreview
 
     prompt = textOp.text

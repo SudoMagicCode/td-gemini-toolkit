@@ -6,6 +6,14 @@ GEMINI_PREVIEW_URL = "https://generativelanguage.googleapis.com/v1beta"
 
 
 @dataclass
+class geminiOP:
+    name: str
+    returnType: str
+    studioEnumPar: str
+    vertexEnumPar: str
+
+
+@dataclass
 class ModelAsPar:
     """"""
 

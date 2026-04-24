@@ -1,4 +1,5 @@
 from apiKeyActions import *
+from geminiCompCallbacks import *
 import geminiObjects
 from geminiRequests import TextToAudioRequest
 from geminiTerminalLogs import msg_formatter
@@ -26,7 +27,10 @@ def CreateRequest(textOp: DAT, top: TOP):
             f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
         )
     else:
-        createRequest(textOp, top)
+        if textOp.text == "":
+            msg_formatter(f"WARN {parent.geminiCOMP.name} prompt is empty, skipping")
+        else:
+            createRequest(textOp, top)
 
 
 def createRequest(textOp: DAT, top: TOP):
@@ -34,10 +38,15 @@ def createRequest(textOp: DAT, top: TOP):
     geminiInput = geminiObjects.GeminiInput()
     userContent = geminiInput.addUserContent()
 
-    audio_model_par_enum = enumPars.AudioModels[parent.geminiCOMP.par.Model.eval()]
+    # resolve model
+    endpointInfo = resolveEndpointInfo()
+    modelType = endpointInfo.get("modelType")
+    if modelType == "studio":
+        model_par_enum = enumPars.StudioAudioModels[parent.geminiCOMP.par.Model.eval()]
+    else:
+        model_par_enum = enumPars.VertexAudioModels[parent.geminiCOMP.par.Model.eval()]
 
-    model: geminiObjects.GeminiModel = audio_model_par_enum.value.model.value
-    isPreview: bool = model.isPreview
+    currentModel: geminiObjects.GeminiModel = model_par_enum.value.model.value
 
     # add a text part to the contents
     userContent.addPart(textPart)
@@ -48,7 +57,7 @@ def createRequest(textOp: DAT, top: TOP):
         userContent.addPart(imagePart)
 
     # create a request object which resolves to the output_buffer
-    request = TextToAudioRequest(geminiInput, output_buffer, model=model)
+    request = TextToAudioRequest(geminiInput, output_buffer, model=currentModel)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -56,7 +65,7 @@ def createRequest(textOp: DAT, top: TOP):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request, isPreview=isPreview)
+    requestId = request_engine.MakeRequest(request, isPreview=currentModel.isPreview)
 
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")

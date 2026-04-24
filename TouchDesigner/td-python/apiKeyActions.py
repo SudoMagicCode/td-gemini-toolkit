@@ -1,34 +1,9 @@
 import copy
 import smOpUtils
 import geminiTerminalLogs
+import tdGeminiOp
 
 GEMINI_KEY_NAME = "gemini_apiKey"
-modelMap = {
-    "base_text_to_text": {
-        "studio": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.StudioTextModels)",
-        "vertex": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.VertexTextModels)",
-    },
-    "base_text_to_img": {
-        "studio": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.StudioImageModels)",
-        "vertex": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.VertexImageModels)",
-    },
-    "base_img_to_img": {
-        "studio": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.StudioImageModels)",
-        "vertex": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.VertexImageModels)",
-    },
-    "base_text_to_video": {
-        "studio": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.StudioVeoModels)",
-        "vertex": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.VertexVeoModels)",
-    },
-    "base_image_to_video": {
-        "studio": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.StudioVeoModels)",
-        "vertex": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.VertexVeoModels)",
-    },
-    "base_text_to_audio": {
-        "studio": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.StudioAudioModels)",
-        "vertex": "me.mod.smOpUtils.menuPars.fromEnumPar(me.mod.enumPars.VertexAudioModels)",
-    },
-}
 
 
 def resolveApiKeyServer() -> None:
@@ -124,21 +99,27 @@ def Clearallendpoints(tdPar: Par) -> None:
 
 def Apiendpoint(tdPar: Par) -> None:
     info = resolveEndpointInfo()
+    thisOp = parent.geminiCOMP
+    thisGeminiOp: tdGeminiOp.geminiOP = thisOp.par.Geminioptype.eval()
 
     if info == None:
-        parent.geminiCOMP.par.Hasapikey = False
+        thisOp.par.Hasapikey = False
     else:
         if info.get("apiKey") == None or info.get("apiKey") == "":
-            smOpUtils.set_par_state(parent.geminiCOMP, "Hasapikey", False)
+            smOpUtils.set_par_state(thisOp, "Hasapikey", False)
         else:
-            smOpUtils.set_par_state(parent.geminiCOMP, "Hasapikey", True)
-            if parent.geminiCOMP.name in modelMap.keys():
-                menuSourceStr = modelMap.get(parent.geminiCOMP.name).get("vertex")
+            smOpUtils.set_par_state(thisOp, "Hasapikey", True)
+
+            if thisOp.par.Model.isMenu:
+                menuSourceStr = thisGeminiOp.vertexEnumPar
                 if info.get("modelType") == "studio":
-                    menuSourceStr = modelMap.get(parent.geminiCOMP.name).get("studio")
-                smOpUtils.updateMenuSource(parent.geminiCOMP, "Model", menuSourceStr)
+                    menuSourceStr = thisGeminiOp.studioEnumPar
+                smOpUtils.updateMenuSource(thisOp, "Model", menuSourceStr)
             else:
-                pass
+                modelTarget = thisGeminiOp.vertexEnumPar
+                if info.get("modelType") == "studio":
+                    modelTarget = thisGeminiOp.studioEnumPar
+                thisOp.par.Model = modelTarget
 
 
 def Distributeendpoints(tdPar: Par) -> None:

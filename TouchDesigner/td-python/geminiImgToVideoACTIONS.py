@@ -1,4 +1,5 @@
 from apiKeyActions import *
+from geminiCompCallbacks import *
 import geminiObjects
 from geminiRequests import ImageToVideoRequestObject
 from geminiTerminalLogs import msg_formatter
@@ -27,7 +28,10 @@ def CreateRequest(textOp: textDAT, top: TOP):
             f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
         )
     else:
-        createRequest(textOp, top)
+        if textOp.text == "":
+            msg_formatter(f"WARN {parent.geminiCOMP.name} prompt is empty, skipping")
+        else:
+            createRequest(textOp, top)
 
 
 def createRequest(dat: textDAT, top: TOP):
@@ -37,9 +41,15 @@ def createRequest(dat: textDAT, top: TOP):
 
     output_buffer.par.file = ""
 
-    veo_model_par_enum = enumPars.VeoModels[parent.geminiCOMP.par.Model.eval()]
-    model: geminiObjects.GeminiModel = veo_model_par_enum.value.model.value
-    isPreview: bool = model.isPreview
+    # resolve model
+    endpointInfo = resolveEndpointInfo()
+    modelType = endpointInfo.get("modelType")
+    if modelType == "studio":
+        model_par_enum = enumPars.StudioVeoModels[parent.geminiCOMP.par.Model.eval()]
+    else:
+        model_par_enum = enumPars.VertexVeoModels[parent.geminiCOMP.par.Model.eval()]
+
+    currentModel: geminiObjects.GeminiModel = model_par_enum.value.model.value
 
     prompt = dat.text
 
@@ -67,7 +77,7 @@ def createRequest(dat: textDAT, top: TOP):
 
     # create a request object which resolves to the output_buffer
     request: ImageToVideoRequestObject = ImageToVideoRequestObject(
-        geminiInput, output_buffer, model=model
+        geminiInput, output_buffer, model=currentModel
     )
 
     def cleanup():
@@ -76,7 +86,7 @@ def createRequest(dat: textDAT, top: TOP):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request, isPreview=isPreview)
+    requestId = request_engine.MakeRequest(request, isPreview=currentModel.isPreview)
 
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")

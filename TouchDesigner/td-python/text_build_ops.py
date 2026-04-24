@@ -1,7 +1,7 @@
 def clear_api_keys():
     gemini_ops = root.findChildren(tags=["gemini"])
     for each in gemini_ops:
-        each.unstore("gemini_apiKey")
+        each.unstore("endpoints")
 
 
 def build_ops():

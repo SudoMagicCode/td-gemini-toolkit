@@ -2,7 +2,8 @@ callbackText = """
 def generateOffToOn():
 	#print("generation starting")
 	pass
-def generateOnToOff():
+
+    def generateOnToOff():
 	#print("generation complete")
 	pass
 """

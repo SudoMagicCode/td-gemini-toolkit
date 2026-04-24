@@ -11,7 +11,7 @@ def onStart():
     """
     Called when the project starts.
     """
-    apiKey_server = op("base_comps/base_api_key_server")
+    apiKey_server = op("base_comps/base_api_key_manager")
 
     DEFAULT_API_KEY = me.var("DEFAULT_API_KEY")
     UCLA_BASE = me.var("UCLA_BASE_URL")

@@ -170,13 +170,23 @@ def checkEndpoints() -> None:
 
 
 def set_par_state(targetOp: OP, par: str, state: bool) -> None:
-    targetOp.par[par] = state
+    try:
+        targetOp.par[par] = state
+    except Exception as e:
+        pass
 
 
 def updateMenuSource(targetOp: OP, par: str, menuSource: str) -> None:
-    targetOp.par[par].menuSource = menuSource
+    try:
+        targetOp.par[par].menuSource = menuSource
+
+    except Exception as e:
+        pass
 
 
 def set_menu_par(targetOp: OP, par: str, endpoints: dict) -> None:
-    targetOp.par[par].menuNames = list(endpoints.keys())
-    targetOp.par[par].menuLabels = list(endpoints.keys())
+    try:
+        targetOp.par[par].menuNames = list(endpoints.keys())
+        targetOp.par[par].menuLabels = list(endpoints.keys())
+    except Exception as e:
+        pass

@@ -49,7 +49,7 @@ class VeoParameterResolution(StrEnum):
 
 
 class VeoParameterDuration(StrEnum):
-    DURATION_4 = "4"
+    # DURATION_4 = "4"
     DURATION_6 = "6"
     DURATION_8 = "8"
 

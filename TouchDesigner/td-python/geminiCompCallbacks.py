@@ -16,8 +16,8 @@ def Addcallbacks(par: Par) -> None:
         return
     else:
         callbacks_dat = thisOp.parent().create(textDAT, f"{thisOp.name}_callbacks")
-        callbacks_dat.nodeX = thisOp.nodeX
-        callbacks_dat.nodeY = thisOp.nodeY - 100
+        callbacks_dat.nodeX = thisOp.nodeX + 100
+        callbacks_dat.nodeY = thisOp.nodeY - 120
         callbacks_dat.dock = thisOp
         thisOp.par.Callbacksdat = callbacks_dat.name
         callbacks_dat.viewer = True

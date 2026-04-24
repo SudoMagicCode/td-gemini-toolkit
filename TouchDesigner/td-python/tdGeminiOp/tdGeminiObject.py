@@ -47,8 +47,8 @@ gTxtChat = geminiOP(
     name="Gemini Text Chat",
     opType=geminiOPType.G_TXT_CHAT,
     returnData=geminiReturnData.TEXT,
-    studioEnumPar=geminiObjects.StudioModels.GEMINI_3_1_PRO_PREVIEW.name,
-    vertexEnumPar=geminiObjects.VertexModels.GEMINI_3_1_PRO_PREVIEW.name,
+    studioEnumPar=geminiObjects.StudioModels.GEMINI_3_1_FLASH_LITE_PREVIEW.name,
+    vertexEnumPar=geminiObjects.VertexModels.GEMINI_3_1_FLASH_LITE_PREVIEW.name,
 )
 gImgToTxt = geminiOP(
     name="Gemini Image to Text",

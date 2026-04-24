@@ -62,15 +62,19 @@ def _resolveApiKeyServer():
 
 def resolveEndpointInfo(targetOp: OP = parent.geminiCOMP) -> dict:
     """"""
-    endpoint_key = targetOp.par.Apiendpoint.eval()
-
-    endPoint_info = targetOp.fetch("endpoints", {})
-    storage_info = endPoint_info.get(endpoint_key, {})
-
-    if storage_info == None:
-        return None
+    # skip - we are the API key server
+    if parent.geminiCOMP.par.opshortcut.eval() == "geminiAPIKeyServer":
+        pass
     else:
-        return storage_info
+        endpoint_key = targetOp.par.Apiendpoint.eval()
+
+        endPoint_info = targetOp.fetch("endpoints", {})
+        storage_info = endPoint_info.get(endpoint_key, {})
+
+        if storage_info == None:
+            return None
+        else:
+            return storage_info
 
 
 def Addnewendpoint(tdPar: Par) -> None:
@@ -157,3 +161,25 @@ def Distributeendpoints(tdPar: Par) -> None:
                     each.par.Hasapikey = False
                 else:
                     each.par.Hasapikey = True
+
+
+def Addinfo(tdPar: Par) -> None:
+    add_info_dat()
+
+
+def add_info_dat():
+    op_types = [each.type for each in parent.geminiCOMP.docked]
+    if "examine" in op_types:
+        return
+    else:
+        info: examineDAT = parent.geminiCOMP.parent().create(examineDAT)
+        info.name = f"examine_{parent.geminiCOMP.name}"
+        info.nodeX = parent.geminiCOMP.nodeX
+        info.nodeY = parent.geminiCOMP.nodeY - 120
+        info.dock = parent.geminiCOMP
+
+        info.par.op = parent.geminiCOMP.name
+        info.par.subkey = "endpoints"
+        info.par.language.menuIndex = 5
+        info.par.maxlevels = 3
+        info.viewer = True

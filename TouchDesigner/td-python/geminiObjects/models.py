@@ -25,8 +25,8 @@ class Models(Enum):
     # VEO_3_0_GENERATE_PREVIEW          = Model("models/veo-3.0-generate-001", False) // NOTE: THIS IS NOT PREVIEW
 
     # Preview models
-    GEMINI_2_5_FLASH_PREVIEW_TTS        = GeminiModel("gemini-2.5-flash-preview-tts", True)
-    GEMINI_2_5_PRO_PREVIEW_TTS          = GeminiModel("gemini-2.5-pro-preview-tts", True)
+    GEMINI_2_5_FLASH_PREVIEW_TTS        = GeminiModel("models/gemini-2.5-flash-preview-tts", True)
+    GEMINI_2_5_PRO_PREVIEW_TTS          = GeminiModel("models/gemini-2.5-pro-preview-tts", True)
     GEMINI_3_PRO_IMAGE_PREVIEW          = GeminiModel("models/gemini-3-pro-image-preview", True)
     GEMINI_3_FLASH_PREVIEW              = GeminiModel("models/gemini-3-flash-preview", True)
     GEMINI_3_1_PRO_PREVIEW              = GeminiModel("models/gemini-3.1-pro-preview", True)

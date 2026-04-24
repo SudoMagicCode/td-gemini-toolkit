@@ -5,9 +5,6 @@ from geminiTerminalLogs import msg_formatter
 
 request_engine = op("base_request_engine")
 output_buffer = op("audiofilein1")
-current_model: geminiObjects.GeminiModel = (
-    geminiObjects.VertexModels.GEMINI_3_1_FLASH_PREVIEW_TTS
-)
 
 
 def OpCreated():
@@ -20,10 +17,6 @@ def onExit():
     pass
 
 
-def resolveCurrentModel() -> str:
-    return current_model.value.model.split("/")[1]
-
-
 def CreateRequest(textOp: DAT):
     """Gate against requests when there's currently one in progress"""
     if parent.geminiCOMP.par.Generating.eval():
@@ -31,10 +24,18 @@ def CreateRequest(textOp: DAT):
             f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
         )
     else:
-        createRequest(textOp)
+        if textOp.text == "":
+            msg_formatter(f"WARN {parent.geminiCOMP.name} prompt is empty, skipping")
+        else:
+            createRequest(textOp)
 
 
 def createRequest(textOp: DAT):
+    info = resolveEndpointInfo()
+    if info.get("modelType") == "studio":
+        current_model = geminiObjects.StudioModels[parent.geminiCOMP.par.Model.eval()]
+    else:
+        current_model = geminiObjects.VertexModels[parent.geminiCOMP.par.Model.eval()]
 
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
@@ -52,9 +53,7 @@ def createRequest(textOp: DAT):
     speechConfig.SetPrebuiltVoice(voice)
 
     # create a request object which resolves to the output_buffer
-    request = TextToSpeechRequest(
-        geminiInput, output_buffer, model=current_model.value.model.value
-    )
+    request = TextToSpeechRequest(geminiInput, output_buffer, model=current_model.value)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -63,7 +62,7 @@ def createRequest(textOp: DAT):
 
     # make the request
     requestId = request_engine.MakeRequest(
-        request, isPreview=current_model.value.model.value.isPreview
+        request, isPreview=current_model.value.isPreview
     )
 
     parent.geminiCOMP.par.Requestid = requestId

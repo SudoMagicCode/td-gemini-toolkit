@@ -4,9 +4,7 @@ from geminiRequests import AudioToTextRequest
 from geminiTerminalLogs import msg_formatter
 import uuid
 
-current_model: geminiObjects.GeminiModel = (
-    geminiObjects.VertexModels.GEMINI_3_FLASH_PREVIEW
-)
+
 request_engine = op("base_request_engine")
 output_buffer = op("text_output_buffer")
 timeout_timer = op("timer_audio_timeout")
@@ -24,10 +22,6 @@ def onExit():
     pass
 
 
-def resolveCurrentModel() -> str:
-    return current_model.value.model.split("/")[1]
-
-
 def CreateRequest(path: str, textOp: DAT):
     """Gate against requests when there's currently one in progress"""
     if parent.geminiCOMP.par.Generating.eval():
@@ -39,6 +33,12 @@ def CreateRequest(path: str, textOp: DAT):
 
 
 def createRequest(path: str, textOp: DAT):
+    info = resolveEndpointInfo()
+    if info.get("modelType") == "studio":
+        current_model = geminiObjects.StudioModels[parent.geminiCOMP.par.Model.eval()]
+    else:
+        current_model = geminiObjects.VertexModels[parent.geminiCOMP.par.Model.eval()]
+
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
     audioPart = geminiObjects.Adaptors.FiletoGeminiAudioPart(path, "audio/wav")
 
@@ -51,9 +51,7 @@ def createRequest(path: str, textOp: DAT):
     userContent.addPart(audioPart)
 
     # create a request object which resolves to the output_buffer
-    request = AudioToTextRequest(
-        geminiInput, output_buffer, model=current_model.value.model.value
-    )
+    request = AudioToTextRequest(geminiInput, output_buffer, model=current_model.value)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -62,7 +60,7 @@ def createRequest(path: str, textOp: DAT):
 
     # make the request
     requestId = request_engine.MakeRequest(
-        request, isPreview=current_model.isPreview.value.model.value
+        request, isPreview=current_model.value.isPreview
     )
 
     parent.geminiCOMP.par.Requestid = requestId

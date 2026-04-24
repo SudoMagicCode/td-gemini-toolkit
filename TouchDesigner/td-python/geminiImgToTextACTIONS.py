@@ -5,9 +5,6 @@ from geminiTerminalLogs import msg_formatter
 
 request_engine = op("base_request_engine")
 output_buffer = op("text_output_buffer")
-current_model: geminiObjects.GeminiModel = (
-    geminiObjects.VertexModels.GEMINI_3_FLASH_PREVIEW
-)
 
 
 def OpCreated():
@@ -18,10 +15,6 @@ def OpCreated():
 
 def onExit():
     pass
-
-
-def resolveCurrentModel() -> str:
-    return current_model.value.model.split("/")[1]
 
 
 def CreateRequest(textOp: textDAT, top: TOP):
@@ -38,11 +31,11 @@ def CreateRequest(textOp: textDAT, top: TOP):
 
 
 def createRequest(dat: textDAT, top: TOP):
-
-    text_model_par_enum = enumPars.TextModels[parent.geminiCOMP.par.Model.eval()]
-
-    model: geminiObjects.GeminiModel = text_model_par_enum.value.model.value
-    isPreview: bool = model.isPreview
+    info = resolveEndpointInfo()
+    if info.get("modelType") == "studio":
+        current_model = geminiObjects.StudioModels[parent.geminiCOMP.par.Model.eval()]
+    else:
+        current_model = geminiObjects.VertexModels[parent.geminiCOMP.par.Model.eval()]
 
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(dat)
@@ -58,7 +51,7 @@ def createRequest(dat: textDAT, top: TOP):
 
     # create a request object which resolves to the output_buffer
     request = ImageTextToTextRequestObject(
-        geminiInput, output_buffer, model=current_model
+        geminiInput, output_buffer, model=current_model.value
     )
 
     def cleanup():
@@ -67,7 +60,9 @@ def createRequest(dat: textDAT, top: TOP):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request, isPreview=isPreview)
+    requestId = request_engine.MakeRequest(
+        request, isPreview=current_model.value.isPreview
+    )
 
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")

@@ -20,10 +20,6 @@ def onExit():
     pass
 
 
-def resolveCurrentModel() -> str:
-    return current_model.value.model.split("/")[1]
-
-
 def CreateRequest(
     fifo: fifoDAT, newEntry: str, role: str = "user", context: DAT = op("null_context")
 ):
@@ -40,18 +36,20 @@ def CreateRequest(
 
 
 def createRequest(fifo: fifoDAT, context: DAT):
+    info = resolveEndpointInfo()
+    if info.get("modelType") == "studio":
+        current_model = geminiObjects.StudioModels[parent.geminiCOMP.par.Model.eval()]
+    else:
+        current_model = geminiObjects.VertexModels[parent.geminiCOMP.par.Model.eval()]
 
-    # grab text from buffer
     # create input object
     geminiInput = geminiObjects.GeminiInput()
 
     contents = geminiObjects.Adaptors.FIFODattoGeminiContents(context)
     geminiInput.addContent(contents)
-
+    print(type(current_model.value))
     # create a request object which resolves to the output_buffer
-    request = ChatRequestObject(
-        geminiInput, fifo, model=current_model.value.model.value
-    )
+    request = ChatRequestObject(geminiInput, fifo, model=current_model.value)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -60,7 +58,7 @@ def createRequest(fifo: fifoDAT, context: DAT):
 
     # make the request
     requestId = request_engine.MakeRequest(
-        request, isPreview=current_model.value.model.value.isPreview
+        request, isPreview=current_model.value.isPreview
     )
 
     parent.geminiCOMP.par.Requestid = requestId

@@ -24,15 +24,18 @@ def CreateRequest(textOp: textDAT):
             f"WARN {parent.geminiCOMP.name} is currently generating text, skipping"
         )
     else:
-        createRequest(textOp=textOp)
+        if textOp.text == "":
+            msg_formatter(f"WARN {parent.geminiCOMP.name} prompt is empty, skipping")
+        else:
+            createRequest(textOp=textOp)
 
 
 def createRequest(textOp: textDAT):
-
-    text_model_par_enum = enumPars.TextModels[parent.geminiCOMP.par.Model.eval()]
-
-    model: geminiObjects.GeminiModel = text_model_par_enum.value.model.value
-    isPreview: bool = model.isPreview
+    info = resolveEndpointInfo()
+    if info.get("modelType") == "studio":
+        current_model = geminiObjects.StudioModels[parent.geminiCOMP.par.Model.eval()]
+    else:
+        current_model = geminiObjects.VertexModels[parent.geminiCOMP.par.Model.eval()]
 
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
@@ -45,7 +48,9 @@ def createRequest(textOp: textDAT):
     userContent.addPart(textPart)
 
     # create a request object which resolves to the output_buffer
-    request = TextToTextRequestObject(userContent, output_buffer)
+    request = TextToTextRequestObject(
+        userContent, output_buffer, model=current_model.value
+    )
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -53,7 +58,7 @@ def createRequest(textOp: textDAT):
     request.onDone = cleanup
 
     # make the request
-    request_engine.MakeRequest(request, isPreview=isPreview)
+    request_engine.MakeRequest(request, current_model.value.isPreview)
 
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
 

@@ -5,7 +5,9 @@ from geminiTerminalLogs import msg_formatter
 
 request_engine = op("base_request_engine")
 output_buffer = op("text_output_buffer")
-current_model: geminiObjects.GeminiModel = geminiObjects.Models.GEMINI_3_FLASH_PREVIEW
+current_model: geminiObjects.GeminiModel = (
+    geminiObjects.VertexModels.GEMINI_3_FLASH_PREVIEW
+)
 
 
 def OpCreated():

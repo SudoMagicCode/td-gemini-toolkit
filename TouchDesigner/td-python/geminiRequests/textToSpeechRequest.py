@@ -38,7 +38,7 @@ class TextToSpeechRequest(RequestObjectBase):
         self,
         input: GeminiInput,
         output: audiofileinCHOP,
-        model: GeminiModel = Models.GEMINI_3_1_FLASH_PREVIEW_TTS,
+        model: GeminiModel = VertexModels.GEMINI_3_1_FLASH_PREVIEW_TTS,
     ):
         data = input.render()
         data_string = json.dumps(data)

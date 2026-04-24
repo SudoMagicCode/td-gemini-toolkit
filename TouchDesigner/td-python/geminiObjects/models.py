@@ -17,13 +17,10 @@ class GeminiModel(object):
 
 
 # fmt: off
-class Models(Enum):
+
+class StudioModels(Enum):
 
     """Gemini Models"""
-
-    # GEMINI_3_1_PREVIEW_TTS            = Model("models/gemini-3.1-flash-tts-preview", True) // NOTE: THIS DOES NOT EXIST
-    # VEO_3_0_GENERATE_PREVIEW          = Model("models/veo-3.0-generate-001", False) // NOTE: THIS IS NOT PREVIEW
-
     # Preview models
     GEMINI_2_5_FLASH_PREVIEW_TTS        = GeminiModel("models/gemini-2.5-flash-preview-tts", True)
     GEMINI_2_5_PRO_PREVIEW_TTS          = GeminiModel("models/gemini-2.5-pro-preview-tts", True)
@@ -40,6 +37,11 @@ class Models(Enum):
     LYRIA_3_CLIP_PREVIEW                = GeminiModel("models/lyria-3-clip-preview", True)
     LYRIA_3_PRO_PREVIEW                 = GeminiModel("models/lyria-3-pro-preview", True)
 
+
+
+class VertexModels(Enum):
+
+    """Gemini Models"""
     # enterprise models
     GEMINI_2_5_FLASH                    = GeminiModel("models/gemini-2.5-flash", False)
     GEMINI_2_5_FLASH_IMAGE              = GeminiModel("models/gemini-2.5-flash-image", False)

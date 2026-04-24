@@ -6,9 +6,6 @@ from geminiTerminalLogs import msg_formatter
 import enumPars
 
 request_engine = op("base_request_engine")
-current_model: geminiObjects.GeminiModel = (
-    geminiObjects.VertexModels.DEPRECATED_GEMINI_3_FLASH_PREVIEW
-)
 
 
 def OpCreated():

@@ -53,7 +53,7 @@ class TTSModels(Enum):
     GEMINI_2_5_PRO_PREVIEW_TTS      = ModelAsPar(Models.GEMINI_2_5_PRO_PREVIEW_TTS, "Gemini 2.5 Pro Preview TTS")
     GEMINI_2_5_FLASH_TTS            = ModelAsPar(Models.GEMINI_2_5_FLASH_TTS, "Gemini 2.5 Flash TTS")
     GEMINI_2_5_PRO_TTS              = ModelAsPar(Models.GEMINI_2_5_PRO_TTS, "Gemini 2.5 Pro TTS")
-    GEMINI_3_1_PREVIEW_TTS          = ModelAsPar(Models.GEMINI_3_1_PREVIEW_TTS, "Gemini 3.1 Preview TTS")
+    GEMINI_3_1_FLASH_PREVIEW_TTS          = ModelAsPar(Models.GEMINI_3_1_FLASH_PREVIEW_TTS, "Gemini 3.1 Flash Preview TTS")
 
 
 class VeoModels(Enum):

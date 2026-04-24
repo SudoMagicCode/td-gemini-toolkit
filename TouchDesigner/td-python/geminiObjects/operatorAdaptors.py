@@ -31,6 +31,8 @@ def GeminiContentToFifoRow(content: contents.GeminiOutputContent) -> list[str]:
     role = content.role
     output_text = ""
     for part in content.parts:
+        if part.thought:
+            continue
         output_text = output_text + part.text + "\n"
     return [role, output_text]
 

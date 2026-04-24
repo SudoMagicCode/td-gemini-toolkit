@@ -29,6 +29,8 @@ class TextToAudioRequest(RequestObjectBase):
         for candidate in output.candidates:
             for part in candidate.content.parts:
                 if part.data is not None:
+                    if part.thought:
+                        continue
                     if len(part.data) > 0:
                         audio_bytes = base64.b64decode(part.data)
                         try:

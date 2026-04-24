@@ -8,7 +8,6 @@ class StudioTextModels(Enum):
     """
     Gemini Text Models
     """
-    GEMINI_3_FLASH_PREVIEW          = ModelAsPar(StudioModels.GEMINI_3_FLASH_PREVIEW, "Gemini 2.5 Flash")
     GEMINI_3_1_FLASH_LITE_PREVIEW   = ModelAsPar(StudioModels.GEMINI_3_1_FLASH_LITE_PREVIEW, "Gemini 2.5 Pro")
     GEMINI_3_1_PRO_PREVIEW          = ModelAsPar(StudioModels.GEMINI_3_1_PRO_PREVIEW, "Gemini 3 Flash Preview")
 
@@ -18,11 +17,10 @@ class StudioImageModels(Enum):
     """
 
     # Vanity - these models are duplicates of other models with vanity marketing names
-    NANO_BANANA_PRO                 = ModelAsPar(StudioModels.GEMINI_3_PRO_IMAGE_PREVIEW, "Nano Banana Pro")
+    NANO_BANANA_PRO                 = ModelAsPar(StudioModels.DEPRECATED_GEMINI_3_PRO_IMAGE_PREVIEW, "Nano Banana Pro")
     NANO_BANANA_2                   = ModelAsPar(StudioModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Nano Banana 2")
 
     # Actual
-    GEMINI_3_PRO_IMAGE_PREVIEW    = ModelAsPar(StudioModels.GEMINI_3_PRO_IMAGE_PREVIEW, "Gemini 3.0 Pro Image Preview")
     GEMINI_3_1_PRO_IMAGE_PREVIEW    = ModelAsPar(StudioModels.GEMINI_3_1_PRO_IMAGE_PREVIEW, "Gemini 3.1 Pro Image Preview")
     GEMINI_3_1_FLASH_IMAGE_PREVIEW  = ModelAsPar(StudioModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Gemini 3.1 Flash Image Preview")
 
@@ -64,7 +62,6 @@ class VertexTextModels(Enum):
 
     GEMINI_2_5_FLASH                = ModelAsPar(VertexModels.GEMINI_2_5_FLASH, "Gemini 2.5 Flash")
     GEMINI_2_5_PRO                  = ModelAsPar(VertexModels.GEMINI_2_5_PRO, "Gemini 2.5 Pro")
-    GEMINI_3_FLASH_PREVIEW          = ModelAsPar(VertexModels.GEMINI_3_FLASH_PREVIEW, "Gemini 3 Flash Preview")
     GEMINI_3_1_FLASH_LITE_PREVIEW   = ModelAsPar(VertexModels.GEMINI_3_1_FLASH_LITE_PREVIEW, "Gemini 3.1 Flash Lite Preview")
     GEMINI_3_1_PRO_PREVIEW          = ModelAsPar(VertexModels.GEMINI_3_1_PRO_PREVIEW, "Gemini 3.1 Pro Preview")    
 
@@ -74,7 +71,7 @@ class VertexImageModels(Enum):
     """
 
     # Vanity - these models are duplicates of other models with vanity marketing names
-    NANO_BANANA_PRO                 = ModelAsPar(VertexModels.GEMINI_3_1_PRO_IMAGE_PREVIEW, "Nano Banana Pro")
+    NANO_BANANA_PRO                 = ModelAsPar(VertexModels, "Nano Banana Pro")
     NANO_BANANA_2                   = ModelAsPar(VertexModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Nano Banana 2")
 
     # Actual

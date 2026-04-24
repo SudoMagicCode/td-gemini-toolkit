@@ -1,5 +1,6 @@
 import json
 import base64
+import mimetypes
 
 from RequestBroker import RequestObjectBase
 from geminiObjects import *
@@ -28,10 +29,14 @@ class ImageTextToImageRequestObject(RequestObjectBase):
         output = GeminiOutput.fromJson(text)
         for candidate in output.candidates:
             for part in candidate.content.parts:
-                if len(part.data) > 0:
-                    img_bytes = base64.b64decode(part.data)
-                    self._output.store("image_data", img_bytes)
-                    self._output.store("mime", ".jpg")
+                if part.data is not None:
+                    if part.thought:
+                        continue
+                    if len(part.data) > 0:
+                        img_bytes = base64.b64decode(part.data)
+                        self._output.store("image_data", img_bytes)
+                        extension = mimetypes.guess_extension(part.mime_type)
+                        self._output.store("mime", extension)
 
         self._output.store("metadata", output.usage_metadata.toDict())
         return None

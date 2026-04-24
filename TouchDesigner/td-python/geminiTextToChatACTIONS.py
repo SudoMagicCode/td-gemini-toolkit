@@ -7,7 +7,7 @@ import enumPars
 
 request_engine = op("base_request_engine")
 current_model: geminiObjects.GeminiModel = (
-    geminiObjects.VertexModels.GEMINI_3_FLASH_PREVIEW
+    geminiObjects.VertexModels.DEPRECATED_GEMINI_3_FLASH_PREVIEW
 )
 
 

@@ -290,6 +290,10 @@ class GeminiOutputPart:
         self.inline_data = None
         self.mime_type = None
         self.data = None
+        self.thought = False
+
+        if "thought" in input:
+            self.thought = input["thought"]
 
         if "text" in input:
             self.text = input["text"]

@@ -47,15 +47,15 @@ gTxtChat = geminiOP(
     name="Gemini Text Chat",
     opType=geminiOPType.G_TXT_CHAT,
     returnData=geminiReturnData.TEXT,
-    studioEnumPar=geminiObjects.StudioModels.DEPRECATED_GEMINI_3_FLASH_PREVIEW.name,
-    vertexEnumPar=geminiObjects.VertexModels.DEPRECATED_GEMINI_3_FLASH_PREVIEW.name,
+    studioEnumPar=geminiObjects.StudioModels.GEMINI_3_1_PRO_PREVIEW.name,
+    vertexEnumPar=geminiObjects.VertexModels.GEMINI_3_1_PRO_PREVIEW.name,
 )
 gImgToTxt = geminiOP(
     name="Gemini Image to Text",
     opType=geminiOPType.G_IMG_TO_TXT,
     returnData=geminiReturnData.TEXT,
-    studioEnumPar=geminiObjects.StudioModels.DEPRECATED_GEMINI_3_FLASH_PREVIEW.name,
-    vertexEnumPar=geminiObjects.VertexModels.DEPRECATED_GEMINI_3_FLASH_PREVIEW.name,
+    studioEnumPar=geminiObjects.StudioModels.GEMINI_3_1_PRO_PREVIEW.name,
+    vertexEnumPar=geminiObjects.VertexModels.GEMINI_3_1_PRO_PREVIEW.name,
 )
 gTxtToImg = geminiOP(
     name="Gemini Text to Image",
@@ -89,8 +89,8 @@ gAudioToTxt = geminiOP(
     name="Gemini Audio to Text",
     opType=geminiOPType.G_AUDIO_TO_TXT,
     returnData=geminiReturnData.TEXT,
-    studioEnumPar=geminiObjects.StudioModels.DEPRECATED_GEMINI_3_FLASH_PREVIEW.name,
-    vertexEnumPar=geminiObjects.VertexModels.DEPRECATED_GEMINI_3_FLASH_PREVIEW.name,
+    studioEnumPar=geminiObjects.StudioModels.GEMINI_3_1_PRO_PREVIEW.name,
+    vertexEnumPar=geminiObjects.VertexModels.GEMINI_3_1_PRO_PREVIEW.name,
 )
 gTxtToAudio = geminiOP(
     name="Gemini Text to Audio",

@@ -95,7 +95,7 @@ class TextToVideoRequestObject(RequestObjectBase):
             pass
         self._output.parent.geminiCOMP.vfs.addByteArray(video_bytes, "temp.mp4")
         path = self._output.parent.geminiCOMP.path
-        self._output.par.file = f"vfs:{path}:temp.mp4"
+        self._output.par.file.expr = 'f"vfs:{parent.geminiCOMP.path}:temp.mp4"'
         self._output.par.reloadpulse.pulse()
         return
 

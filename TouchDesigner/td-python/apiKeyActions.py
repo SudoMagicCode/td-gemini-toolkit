@@ -9,26 +9,30 @@ GEMINI_KEY_NAME = "gemini_apiKey"
 def resolveApiKeyServer() -> None:
     """API Key Resolver - looks for API Key server COMP to pull a key from"""
 
-    # get end point info for the op
-    info = resolveEndpointInfo()
-
-    if info == None:
-        # if there's no info, check for an API key server
-        parent.geminiCOMP.par.Hasapikey = False
-        geminiTerminalLogs.msg_formatter(
-            f"{parent.geminiCOMP.name} checking for API Key Server"
-        )
-        _resolveApiKeyServer()
-
+    if parent.geminiCOMP.par.opshortcut.eval() == "geminiAPIKeyServer":
+        # skip - we are the API key server
+        pass
     else:
-        if info.get("apiKey") == None or info.get("apiKey") == "":
+        # get end point info for the op
+        info = resolveEndpointInfo()
+
+        if info == None:
+            # if there's no info, check for an API key server
             parent.geminiCOMP.par.Hasapikey = False
-            _resolveApiKeyServer()
-        else:
-            # has an existing API key, take no action
             geminiTerminalLogs.msg_formatter(
-                f"{parent.geminiCOMP.name} has existing API Key, skipping"
+                f"{parent.geminiCOMP.name} checking for API Key Server"
             )
+            _resolveApiKeyServer()
+
+        else:
+            if info.get("apiKey") == None or info.get("apiKey") == "":
+                parent.geminiCOMP.par.Hasapikey = False
+                _resolveApiKeyServer()
+            else:
+                # has an existing API key, take no action
+                geminiTerminalLogs.msg_formatter(
+                    f"{parent.geminiCOMP.name} has existing API Key, skipping"
+                )
 
 
 def _resolveApiKeyServer():

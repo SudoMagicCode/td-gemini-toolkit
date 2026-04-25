@@ -130,6 +130,7 @@ def updateApiEndpointPar(targetOp: OP = parent.geminiCOMP) -> None:
     endpoints = targetOp.fetch("endpoints", None)
     if endpoints == None:
         targetOp.par.Hasapikey = False
+        clear_menu_par(targetOp, "Apiendpoint")
         return
     else:
         set_menu_par(targetOp, "Apiendpoint", targetOp.fetch("endpoints"))
@@ -180,6 +181,14 @@ def updateMenuSource(targetOp: OP, par: str, menuSource: str) -> None:
     try:
         targetOp.par[par].menuSource = menuSource
 
+    except Exception as e:
+        pass
+
+
+def clear_menu_par(targetOp: OP, par: str):
+    try:
+        targetOp.par[par].menuNames = []
+        targetOp.par[par].menuLabels = []
     except Exception as e:
         pass
 

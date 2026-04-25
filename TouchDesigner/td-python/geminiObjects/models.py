@@ -27,7 +27,7 @@ class StudioModels(Enum):
     GEMINI_3_1_PRO_PREVIEW              = GeminiModel("models/gemini-3.1-pro-preview", True)
 
     # image models
-    GEMINI_3_1_PRO_IMAGE_PREVIEW        = GeminiModel("models/gemini-3.1-pro-image-preview", True)
+    GEMINI_3_PRO_IMAGE_PREVIEW          = GeminiModel("models/gemini-3-pro-image-preview", True)
     GEMINI_3_1_FLASH_IMAGE_PREVIEW      = GeminiModel("models/gemini-3.1-flash-image-preview", True)
 
     # audio models

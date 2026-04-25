@@ -42,7 +42,7 @@ class ImageConfig:
     def __init__(self):
         # defaults
         self.aspect = GenerationAspectRatio.ASPECT_1_1
-        self.image_size = GenerationImageSize.RESOLUTION_512
+        self.image_size = GenerationImageSize.RESOLUTION_1K
 
     def SetAspect(self, aspect: GenerationAspectRatio):
         self.aspect = aspect

@@ -19,7 +19,7 @@ class StudioImageModels(Enum):
     # GEMINI_3_PRO_IMAGE_PREVIEW      = ModelAsPar(StudioModels.GEMINI_3_PRO_IMAGE_PREVIEW, "Gemini 3.0 Pro Image Preview")
 
     # Actual
-    GEMINI_3_1_PRO_IMAGE_PREVIEW    = ModelAsPar(StudioModels.GEMINI_3_1_PRO_IMAGE_PREVIEW, "Gemini 3.1 Pro Image Preview")
+    GEMINI_3_PRO_IMAGE_PREVIEW    = ModelAsPar(StudioModels.GEMINI_3_PRO_IMAGE_PREVIEW, "Gemini 3 Pro Image Preview")
     GEMINI_3_1_FLASH_IMAGE_PREVIEW  = ModelAsPar(StudioModels.GEMINI_3_1_FLASH_IMAGE_PREVIEW, "Gemini 3.1 Flash Image Preview")
 
 class StudioAudioModels(Enum):
@@ -112,7 +112,6 @@ class VertexVeoModels(Enum):
 
     # NOTE removed due to unavailability from response
     # VEO_2_0_GENERATE_001            = ModelAsPar(VertexModels.VEO_2_0_GENERATE_001, "VEO 2.0 Generate 001")
-
     VEO_3_0_GENERATE_001            = ModelAsPar(VertexModels.VEO_3_0_GENERATE_001, "VEO 3.0 Generate 001")
     VEO_3_0_FAST_GENERATE_001       = ModelAsPar(VertexModels.VEO_3_0_FAST_GENERATE_001, "VEO 3.0 Fast Generate 001")
     VEO_3_1_GENERATE_001            = ModelAsPar(VertexModels.VEO_3_1_GENERATE_001, "VEO 3.1 Generate 001")

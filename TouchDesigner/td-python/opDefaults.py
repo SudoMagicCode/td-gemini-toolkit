@@ -4,12 +4,13 @@ txtToChat = op("/base_root/base_project/base_comps/base_txt_to_chat")
 imgToTxt = op("/base_root/base_project/base_comps/base_img_to_txt")
 txtToImg = op("/base_root/base_project/base_comps/base_txt_to_img")
 imgToImg = op("/base_root/base_project/base_comps/base_img_to_img")
-txtTovVid = op("/base_root/base_project/base_comps/base_txt_to_vid")
+txtToVid = op("/base_root/base_project/base_comps/base_txt_to_vid")
 imgToVid = op("/base_root/base_project/base_comps/base_img_to_vid")
 audioToTxt = op("/base_root/base_project/base_comps/base_audio_to_txt")
 txtToAudio = op("/base_root/base_project/base_comps/base_txt_to_audio")
 txtToSpeech = op("/base_root/base_project/base_comps/base_txt_to_speech")
 
+opBuilder = op("/base_root/base_project/base_save_for_release")
 
 defaults = {
     apiKeyManager: {
@@ -59,7 +60,7 @@ defaults = {
         "Defaultprompt": "Transform this image into a dreamlike 80s magazine landscape Do not include any words.",
         "Autogenerate": False,
     },
-    txtTovVid: {
+    txtToVid: {
         "Requestid": 0,
         "Generating": False,
         "Hasapikey": False,

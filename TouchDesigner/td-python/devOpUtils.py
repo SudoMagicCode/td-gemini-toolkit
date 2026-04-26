@@ -10,14 +10,13 @@ def clear_endpoints(targetOp: OP):
 
 
 def set_defaults():
+    print("Setting defaults")
     # loop through each operator
     for each_op, pars_dict in opDefaults.defaults.items():
-
+        print(f"---> Setting defaults for {each_op.name}")
         # loop though defaults
         for each_par, value in pars_dict.items():
             # set default
-            print(each_par, value)
-            print(each_op.par[each_par])
             each_op.par[each_par].default = value
             # set par to default value
             each_op.par[each_par] = value
@@ -26,6 +25,7 @@ def set_defaults():
 
 
 def clear_output_buffers():
+    print("Clearing output buffers")
     opDefaults.txtToTxt.op("text_output_buffer").clear()
     opDefaults.txtToChat.par.Clearchathistory.pulse()
     opDefaults.imgToTxt.op("text_output_buffer").clear()
@@ -33,6 +33,7 @@ def clear_output_buffers():
 
 
 def clear_storage():
+    print("Clearing storage")
     opDefaults.txtToTxt.op("text_output_buffer").unstore("metadata")
 
     opDefaults.txtToChat.op("fifo1").unstore("metadata")
@@ -49,8 +50,11 @@ def clear_storage():
 
 
 def clear_vfs():
+    print("Clearing VFS")
     opDefaults.txtToAudio.par.Deleteaudiofile.pulse()
     opDefaults.txtToSpeech.par.Deleteaudiofile.pulse()
+    opDefaults.txtToVid.par.Deletevideofile.pulse()
+    opDefaults.imgToVid.par.Deletevideofile.pulse()
 
 
 def set_endpoints():
@@ -71,6 +75,7 @@ def set_endpoints():
 
 
 def clear_api_keys():
+    print("Clearing API Keys")
     gemini_ops = root.findChildren(tags=["gemini"])
     for each in gemini_ops:
         each.unstore("endpoints")
@@ -82,7 +87,7 @@ def BuildOps():
     clear_output_buffers()
     clear_storage()
     clear_vfs()
-    op("base_save_for_release").par.Package.pulse()
+    opDefaults.opBuilder.par.Package.pulse()
 
 
 def QuitProject():

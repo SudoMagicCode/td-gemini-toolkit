@@ -1,11 +1,10 @@
-def clear_api_keys():
-    gemini_ops = root.findChildren(tags=["gemini"])
-    for each in gemini_ops:
-        each.unstore("endpoints")
+from opDefaults import defaults
+import devOpUtils
 
 
 def build_ops():
-    clear_api_keys()
+    devOpUtils.clear_api_keys()
+    devOpUtils.set_defaults()
     op("base_save_for_release").par.Package.pulse()
 
 

@@ -10,7 +10,7 @@ def OpCreated():
     msg_formatter(f"{parent.geminiCOMP.name} created")
     resolveApiKeyServer()
     smOpUtils.checkEndpoints()
-    add_info_dat()
+    run(add_info_dat, delayFrames=10)
     pass
 
 

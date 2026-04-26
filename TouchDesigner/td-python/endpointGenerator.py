@@ -6,6 +6,9 @@ class EndpointGenerator:
     def __init__(self, ownerOp: OP) -> None:
         self.Owner = ownerOp
         self.WindowCOMP: windowCOMP = ownerOp.op("window1")
+        self.default_preview_url: str = (
+            "https://aiplatform.googleapis.com/v1/publishers/google"
+        )
         msg_formatter("Endpoint Generator created")
 
     def Add(self) -> None:
@@ -52,7 +55,7 @@ class EndpointGenerator:
         self.Owner.par.Endpointname = ""
         self.Owner.par.Endpointtype.menuIndex = 0
         self.Owner.par.Endpointbaseurl = ""
-        self.Owner.par.Endpointpreviewurl = ""
+        self.Owner.par.Endpointpreviewurl = self.default_preview_url
         self.Owner.par.Endpointapikey = ""
 
     def Open(self) -> None:

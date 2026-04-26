@@ -95,12 +95,14 @@ def Cancel(par: Par):
 
 def Record(par: Par):
     if par.eval():
+        msg_formatter("recording audio for transcription")
         path = f"{app.tempFolder}/{uuid.uuid4()}.wav"
         parent.geminiCOMP.par.Tempfile = path
         op("audiofileout1").par.record = 1
         timeout_timer.par.start.pulse()
 
     else:
+        msg_formatter("stopping recording audio for transcription")
         op("audiofileout1").par.record = 0
         # if autogenerate is on let's submit our recorded files right away
         if parent.geminiCOMP.par.Autogenerate.eval():

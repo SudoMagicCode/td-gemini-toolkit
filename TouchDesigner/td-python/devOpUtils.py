@@ -26,7 +26,7 @@ def set_defaults():
 
 
 def clear_output_buffers():
-    opDefaults.txtToText.op("text_output_buffer").clear()
+    opDefaults.txtToTxt.op("text_output_buffer").clear()
     opDefaults.txtToChat.par.Clearchathistory.pulse()
     opDefaults.imgToTxt.op("text_output_buffer").clear()
     opDefaults.audioToTxt.op("text_output_buffer").clear()

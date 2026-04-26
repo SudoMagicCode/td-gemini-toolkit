@@ -130,3 +130,23 @@ def resolutionFromPars() -> tuple[int, int]:
 
     resolution = (x, y)
     return resolution
+
+
+def Exportvideofile(par: Par):
+    if parent.geminiCOMP.par.Hasvfs.eval():
+
+        vfsFile: VFSFile = parent.geminiCOMP.vfs["temp.mp4"]
+
+        # prompt user for target directory
+        output_dir = ui.chooseFolder()
+        if output_dir != "":
+            # user selected a target directory
+            vfsFile.export(output_dir)
+            msg_formatter(f"Exporting video to file from {parent.geminiCOMP.name} VFS")
+
+
+def Deletevideofile(par: Par):
+    if parent.geminiCOMP.par.Hasvfs.eval():
+        parent.geminiCOMP.op("moviefilein1").par.file = ""
+        parent.geminiCOMP.vfs["temp.mp4"].destroy()
+        msg_formatter(f"Removing video file from {parent.geminiCOMP.name} VFS")

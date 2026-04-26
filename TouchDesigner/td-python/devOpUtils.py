@@ -12,18 +12,17 @@ def clear_endpoints(targetOp: OP):
 def set_defaults():
     # loop through each operator
     for each_op, pars_dict in opDefaults.defaults.items():
-        target_op = op(each_op)
-        print(target_op)
+
         # loop though defaults
         for each_par, value in pars_dict.items():
             # set default
             print(each_par, value)
-            print(target_op.par[each_par])
-            target_op.par[each_par].default = value
+            print(each_op.par[each_par])
+            each_op.par[each_par].default = value
             # set par to default value
-            target_op.par[each_par] = value
+            each_op.par[each_par] = value
 
-        clear_endpoints(target_op)
+        clear_endpoints(each_op)
 
 
 def clear_output_buffers():
@@ -34,7 +33,7 @@ def clear_output_buffers():
 
 
 def clear_storage():
-    opDefaults.txtToText.op("text_output_buffer").unstore("metadata")
+    opDefaults.txtToTxt.op("text_output_buffer").unstore("metadata")
 
     opDefaults.txtToChat.op("fifo1").unstore("metadata")
 
@@ -46,10 +45,12 @@ def clear_storage():
     opDefaults.imgToImg.op("script1").unstore("image_data")
     opDefaults.imgToImg.op("script1").unstore("metadata")
 
-    opDefaults.audioToTxt.op("text_output_buffer").unstore("metadata")
+    op(opDefaults.audioToTxt).op("text_output_buffer").unstore("metadata")
 
 
-def clear_vfs(): ...
+def clear_vfs():
+    opDefaults.txtToAudio.par.Deleteaudiofile.pulse()
+    opDefaults.txtToSpeech.par.Deleteaudiofile.pulse()
 
 
 def set_endpoints():

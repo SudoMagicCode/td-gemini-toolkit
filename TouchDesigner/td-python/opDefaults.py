@@ -1,14 +1,14 @@
-apiKeyManager = op("base_comps/base_api_key_manager")
-txtToTxt = "base_comps/base_txt_to_txt"
-txtToChat = "base_comps/base_txt_to_chat"
-imgToTxt = "base_comps/base_img_to_txt"
-txtToImg = "base_comps/base_txt_to_img"
-imgToImg = "base_comps/base_img_to_img"
-txtTovVid = "base_comps/base_txt_to_vid"
-imgToVid = "base_comps/base_img_to_vid"
-audioToTxt = "base_comps/base_audio_to_txt"
-txtToAudio = "base_comps/base_txt_to_audio"
-txtToSpeech = "base_comps/base_txt_to_speech"
+apiKeyManager = op("/base_root/base_project/base_comps/base_api_key_manager")
+txtToTxt = op("/base_root/base_project/base_comps/base_txt_to_txt")
+txtToChat = op("/base_root/base_project/base_comps/base_txt_to_chat")
+imgToTxt = op("/base_root/base_project/base_comps/base_img_to_txt")
+txtToImg = op("/base_root/base_project/base_comps/base_txt_to_img")
+imgToImg = op("/base_root/base_project/base_comps/base_img_to_img")
+txtTovVid = op("/base_root/base_project/base_comps/base_txt_to_vid")
+imgToVid = op("/base_root/base_project/base_comps/base_img_to_vid")
+audioToTxt = op("/base_root/base_project/base_comps/base_audio_to_txt")
+txtToAudio = op("/base_root/base_project/base_comps/base_txt_to_audio")
+txtToSpeech = op("/base_root/base_project/base_comps/base_txt_to_speech")
 
 
 defaults = {

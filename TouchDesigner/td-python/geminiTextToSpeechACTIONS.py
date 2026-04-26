@@ -84,6 +84,13 @@ def Cancel(par: Par):
     request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
 
 
+def Deleteaudiofile(par: Par):
+    msg_formatter(f"Removing audio file from {parent.geminiCOMP.name} VFS")
+    if parent.geminiCOMP.par.File.eval() != "":
+        parent.geminiCOMP.par.File = ""
+        parent.geminiCOMP.vfs["temp.mp3"].destroy()
+
+
 def Exportaudiofile(par: Par):
     """Export audio file from VFS"""
     # ensure we have a file to export

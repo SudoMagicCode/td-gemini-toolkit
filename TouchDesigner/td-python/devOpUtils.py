@@ -1,10 +1,6 @@
 import opDefaults
 
 
-def QuitProject():
-    print("QUITTING")
-
-
 def clear_endpoints(targetOp: OP):
     try:
         targetOp.par.Apiendpoint.menuNames = []
@@ -38,19 +34,22 @@ def clear_output_buffers():
 
 
 def clear_storage():
-    op("base_comps/base_text_to_text/text_output_buffer").unstore("metadata")
+    opDefaults.txtToText.op("text_output_buffer").unstore("metadata")
 
-    op("base_comps/base_text_to_chat/fifo1").unstore("metadata")
+    opDefaults.txtToChat.op("fifo1").unstore("metadata")
 
-    op("base_comps/base_img_to_text/text_output_buffer").unstore("metadata")
+    opDefaults.imgToTxt.op("text_output_buffer").unstore("metadata")
 
-    op("base_comps/base_img_to_img/script1").unstore("image_data")
-    op("base_comps/base_img_to_img/script1").unstore("metadata")
+    opDefaults.txtToImg.op("script1").unstore("image_data")
+    opDefaults.txtToImg.op("script1").unstore("metadata")
 
-    op("base_comps/base_text_to_img/script1").unstore("image_data")
-    op("base_comps/base_text_to_img/script1").unstore("metadata")
+    opDefaults.imgToImg.op("script1").unstore("image_data")
+    opDefaults.imgToImg.op("script1").unstore("metadata")
 
-    op("base_comps/base_audio_to_text/text_output_buffer").unstore("metadata")
+    opDefaults.audioToTxt.op("text_output_buffer").unstore("metadata")
+
+
+def clear_vfs(): ...
 
 
 def set_endpoints():
@@ -81,4 +80,13 @@ def BuildOps():
     set_defaults()
     clear_output_buffers()
     clear_storage()
+    clear_vfs()
     op("base_save_for_release").par.Package.pulse()
+
+
+def QuitProject():
+    clear_output_buffers()
+    clear_storage()
+    clear_api_keys()
+    clear_vfs()
+    project.quit(force=True)

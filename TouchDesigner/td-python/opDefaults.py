@@ -1,8 +1,21 @@
+apiKeyManager = op("base_comps/base_api_key_manager")
+txtToTxt = "base_comps/base_txt_to_txt"
+txtToChat = "base_comps/base_txt_to_chat"
+imgToTxt = "base_comps/base_img_to_txt"
+txtToImg = "base_comps/base_txt_to_img"
+imgToImg = "base_comps/base_img_to_img"
+txtTovVid = "base_comps/base_txt_to_vid"
+imgToVid = "base_comps/base_img_to_vid"
+audioToTxt = "base_comps/base_audio_to_txt"
+txtToAudio = "base_comps/base_txt_to_audio"
+txtToSpeech = "base_comps/base_txt_to_speech"
+
+
 defaults = {
-    "base_comps/base_api_key_manager": {
+    apiKeyManager: {
         "Selectedviewer": "icon",
     },
-    "base_comps/base_text_to_text": {
+    txtToTxt: {
         "Requestid": 0,
         "Generating": False,
         "Hasapikey": False,
@@ -11,7 +24,7 @@ defaults = {
         "Defaultprompt": "Draft a one-sentence synthwave spell to optimize system logic and purge latency.",
         "Autogenerate": False,
     },
-    "base_comps/base_text_to_chat": {
+    txtToChat: {
         "Requestid": 0,
         "Generating": False,
         "Hasapikey": False,
@@ -20,7 +33,7 @@ defaults = {
         "Defaultprompt": "In a couple sentences, explain how quartz timing serves as the fundamental ritual for computing precision. Include a citation.",
         "Autogenerate": False,
     },
-    "base_comps/base_img_to_text": {
+    imgToTxt: {
         "Requestid": 0,
         "Generating": False,
         "Hasapikey": False,
@@ -29,7 +42,7 @@ defaults = {
         "Defaultprompt": "Provide a one-sentence description, focusing on light, energy, or mechanical components.",
         "Autogenerate": False,
     },
-    "base_comps/base_text_to_img": {
+    txtToImg: {
         "Requestid": 0,
         "Generating": False,
         "Hasapikey": False,
@@ -37,7 +50,7 @@ defaults = {
         "Defaultprompt": "Generate a cinematic shot of a 1980s beige desktop computer pulsing with warm, protective neon magic.",
         "Autogenerate": False,
     },
-    "base_comps/base_img_to_img": {
+    imgToImg: {
         "Requestid": 0,
         "Generating": False,
         "Hasapikey": False,
@@ -46,7 +59,7 @@ defaults = {
         "Defaultprompt": "Transform this image into a dreamlike 80s magazine landscape Do not include any words.",
         "Autogenerate": False,
     },
-    "base_comps/base_text_to_video": {
+    txtTovVid: {
         "Requestid": 0,
         "Generating": False,
         "Hasapikey": False,
@@ -55,7 +68,7 @@ defaults = {
         "Defaultprompt": "A arcane magical glyphs weaving through a 1980s-style grid landscape inside a retro-futuristic monitor.",
         "Autogenerate": False,
     },
-    "base_comps/base_image_to_video": {
+    imgToVid: {
         "Requestid": 0,
         "Generating": False,
         "Hasapikey": False,
@@ -64,7 +77,7 @@ defaults = {
         "Defaultprompt": "Transform this image into a vaporwave neon timelapse. ",
         "Autogenerate": False,
     },
-    "base_comps/base_audio_to_text": {
+    audioToTxt: {
         "Requestid": 0,
         "Generating": False,
         "Hasapikey": False,
@@ -74,7 +87,7 @@ defaults = {
         "Defaultprompt": "Transcribe this audio, include only the transcription in your response.",
         "Autogenerate": False,
     },
-    "base_comps/base_text_to_audio": {
+    txtToAudio: {
         "Requestid": 0,
         "Generating": False,
         "Hasapikey": False,
@@ -84,7 +97,7 @@ defaults = {
         "Includeimage": False,
         "Autogenerate": False,
     },
-    "base_comps/base_text_to_speech": {
+    txtToSpeech: {
         "Requestid": 0,
         "Generating": False,
         "Hasapikey": False,

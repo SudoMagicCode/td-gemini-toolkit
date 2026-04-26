@@ -1,4 +1,4 @@
-from opDefaults import defaults
+import opDefaults
 
 
 def QuitProject():
@@ -15,7 +15,7 @@ def clear_endpoints(targetOp: OP):
 
 def set_defaults():
     # loop through each operator
-    for each_op, pars_dict in defaults.items():
+    for each_op, pars_dict in opDefaults.defaults.items():
         target_op = op(each_op)
         print(target_op)
         # loop though defaults
@@ -31,10 +31,10 @@ def set_defaults():
 
 
 def clear_output_buffers():
-    op("base_comps/base_text_to_text/text_output_buffer").clear()
-    op("base_comps/base_text_to_chat").par.Clearchathistory.pulse()
-    op("base_comps/base_img_to_text/text_output_buffer").clear()
-    op("base_comps/base_audio_to_text/text_output_buffer").clear()
+    opDefaults.txtToText.op("text_output_buffer").clear()
+    opDefaults.txtToChat.par.Clearchathistory.pulse()
+    opDefaults.imgToTxt.op("text_output_buffer").clear()
+    opDefaults.audioToTxt.op("text_output_buffer").clear()
 
 
 def clear_storage():

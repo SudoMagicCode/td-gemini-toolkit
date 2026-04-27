@@ -35,14 +35,8 @@ def CreateRequest(textOp: textDAT, top: TOP):
 def createRequest(dat: textDAT, top: TOP):
 
     # resolve model
-    endpointInfo = resolveEndpointInfo()
-    modelType = endpointInfo.get("modelType")
-    if modelType == "studio":
-        model_par_enum = enumPars.StudioImageModels[parent.geminiCOMP.par.Model.eval()]
-    else:
-        model_par_enum = enumPars.VertexImageModels[parent.geminiCOMP.par.Model.eval()]
-
-    currentModel: geminiObjects.GeminiModel = model_par_enum.value.model.value
+    # resolve model
+    current_model: geminiObjects.GeminiModel = parent.geminiCOMP.ResolveModel()
 
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(dat)
@@ -76,7 +70,7 @@ def createRequest(dat: textDAT, top: TOP):
 
     # create a request object which resolves to the output_buffer
     request = ImageTextToImageRequestObject(
-        geminiInput, output_buffer, model=currentModel
+        geminiInput, output_buffer, model=current_model
     )
 
     def cleanup():
@@ -85,7 +79,7 @@ def createRequest(dat: textDAT, top: TOP):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request, isPreview=currentModel.isPreview)
+    requestId = request_engine.MakeRequest(request, isPreview=current_model.isPreview)
 
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")

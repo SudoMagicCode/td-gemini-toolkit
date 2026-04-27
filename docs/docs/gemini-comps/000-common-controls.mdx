@@ -1,0 +1,36 @@
+---
+slug: gemini-ops/key-manager
+---
+
+# Common Controls
+
+## Gemini Page - Available on all Components
+
+Parameter Name | Parameter | Type | Description |
+--- | --- | --- | --- |
+Gemini Op Type | `Geminioptype` | python | *(Read Only)* Object type descriptor for op
+OP Viewer | `Opviewer` | menu | Viewer options for operator
+Generating | `Generating` | toggle | *(Read Only)* Indicator for if this COMP is currently waiting on a response from the Gemini API |
+Request ID | `Requestid` | int | *(Read Only)* Used for tracking the current request for this COMP |
+AI Studio Model | `Studiomodel` | string or menu | Available Studio Models
+Vertex Model | `Vertexmodel` | string or menu | Available Vertex Models
+Auto Generate | `Autogenerate` | toggle | Toggle on to automatically submit request when the text input changes |
+Generate | `Generate` | pulse | Manually start generation process |
+Force Generate | `Forcegenerate` | pulse | Cancels current image generation and starts a new one
+Cancel | `Cancel` | pulse | Cancel the currently running request |
+
+## Advanced Page
+Parameter Name | Parameter | Type | Description |
+--- | --- | --- | --- |
+Add Callbacks | `Addcallbacks` | pulse | Adds a callbacks dat with two methods `generateOffToOn()` and `generateOnToOff()`
+
+
+## API Page
+
+Parameter Name | Parameter | Type | Description |
+--- | --- | --- | --- |
+Has API Key | `Hasapikey` | toggle | *(Read Only)* Indicator for if this COMP has an API Key set to use with Gemini API |
+Add API Key | `Addapikey` | pulse | Adds an API key to this COMP |
+Distribute API Key | `Distributeapikey` | pulse | Distributes the API key from this COMP to all other gemini COMPs |
+Clear API Key | `Clearapikey` | pulse | Clears this COMP's API key |
+

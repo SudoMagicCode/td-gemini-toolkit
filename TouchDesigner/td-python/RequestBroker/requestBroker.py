@@ -197,4 +197,8 @@ class RequestBroker:
         pass
 
     def CancelRequest(self, id: int) -> None:
-        self._cancelRequest(id)
+        # guard against cases where an id can not be found. Ensure that a failed  cancel request call doesn't block any other operations in TouchDesigner
+        try:
+            self._cancelRequest(id)
+        except Exception as e:
+            msg_formatter(e)

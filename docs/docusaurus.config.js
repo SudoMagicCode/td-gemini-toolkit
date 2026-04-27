@@ -93,15 +93,15 @@ const config = {
       footer: {
         style: 'dark',
         links: [
-          {
-            title: 'Docs',
-            items: [
-              {
-                label: 'Overview',
-                to: '/',
-              },
-            ],
-          },
+          // {
+          //   title: 'Docs',
+          //   items: [
+          //     {
+          //       label: 'Overview',
+          //       to: '/',
+          //     },
+          //   ],
+          // },
           // {
           //   title: 'Community',
           //   items: [
@@ -112,7 +112,7 @@ const config = {
           //   ],
           // },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} TD Gemini Toolkit, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} TD Gemini Toolkit, Summoned by SudoMagic`,
       },
       prism: {
         theme: prismThemes.github,

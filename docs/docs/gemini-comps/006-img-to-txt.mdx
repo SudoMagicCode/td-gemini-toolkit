@@ -1,0 +1,28 @@
+---
+slug: gemini-ops/img-to-txt
+
+---
+
+# Image to Text
+
+TOX name `base_img_to_text`
+
+![base_gemini_key_server](imgs/base_img_to_text.png)
+
+Summary
+A TouchDesigner component for generating synthetic text from an image and a prompt with the Google Gemini API.
+
+Controls
+
+Parameter Name | Parameter | Type | Description |
+--- | --- | --- | --- |
+Input Resolution | `Inputresolution` | menu | Downscale options for reducing the image resolution - reducing your input resolution by a half or quarter will help maintain high performance |
+Default Prompt | `Defaultprompt` | string | The prompt used when no input `Text DAT` is connected |
+Aspect Ratio | `Aspectratio` | menu | The output image aspect ratio |
+
+Outputs
+
+Output Index | Name | Type | Description |
+--- | --- | --- | --- |
+0 | `out_response` | `DAT` | Contains the response back from the Google Gemini API |
+1 | `out_metadata` | `DAT` | Contains the metadata back from the Google Gemini API, this includes data like total token count, and prompt token count |

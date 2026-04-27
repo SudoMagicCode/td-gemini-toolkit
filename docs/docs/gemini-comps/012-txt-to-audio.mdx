@@ -1,0 +1,36 @@
+---
+slug: gemini-ops/txt-to-audio
+---
+
+# Text to Audio
+
+TOX name `base_text_to_audio`
+
+![base_gemini_key_server](imgs/base_text_to_audio.png)
+
+Summary
+A TouchDesigner component for generating synthetic audio with the Google Gemini API.
+
+Controls
+
+Parameter Name | Parameter | Type | Description |
+--- | --- | --- | --- |
+Input Resolution | `Inputresolution` | menu | Downscale options for reducing the image resolution - reducing your input resolution by a half or quarter will help maintain high performance |
+Include Image | `Includeimage` | toggle | Specifies if an input image will be used when submitting the prompt to the Gemini API |
+Export Audio File | `Exportaudiofile` | pulse | Allows for exporting audio from component - using this parameter will open a dialog asking you where to save the file |
+File | `File` | file | *(Read Only)* Path of source. |
+Reload | `Reloadpulse` | pulse | Instantly reload the file from disk. |
+Play | `Play` | toggle | Audio will playback when this is set to 1 and stop when set to 0. |
+Speed | `Speed` | float | This is a speed multiplier which only works when Play Mode is Sequential. A value of 1 is the default playback speed. A value of 2 is double speed, 0.5 is half speed and so on. This node can not play audio backwards so negative values will not work well. |
+Cue | `Cue` | toggle | Jumps to Cue Point when set to 1. Only available when Play Mode is Sequential. |
+Pulse Cue | `Cuepulse` | pulse | Instantly jumps to the Cue Point. |
+Repeat | `Repeat` | menu | Repeats the audio stream when the end is reached. |
+Volume | `Volume` | float | Set the level the file is read in at. A setting of 1 is full signal while 0 is muted. |
+Fade In/Out | `Fade` | toggle | about |
+
+Outputs
+
+Output Index | Name | Type | Description |
+--- | --- | --- | --- |
+0 | `out_response` | `TOP` | The video output from the Google Gemini API |
+1 | `out_response_audio` | `CHOP` | The video audio output from the Google Gemini API |

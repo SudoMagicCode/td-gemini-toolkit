@@ -1,0 +1,26 @@
+---
+slug: gemini-ops/txt-to-text
+---
+
+# Text to Text
+TOX name `base_text_to_text`
+
+![base_gemini_key_server](imgs/base_text_to_text.png)
+
+Summary
+
+A TouchDesigner component for generating synthetic text with the Google Gemini API based on an input prompt. The first input to this component should be a `Text DAT` - the contents of this `DAT` will be used as the prompt for generating text.
+
+Controls
+
+Parameter Name | Parameter | Type | Description |
+--- | --- | --- | --- |
+Default Prompt | `Defaultprompt` | string | The prompt used when no input `Text DAT` is connected |
+Model | `Model` | menu | The Gemini Model to use for processing this text prompt |
+
+Outputs
+
+Output Index | Name | Type | Description |
+--- | --- | --- | --- |
+0 | `out_response` | `DAT` | Contains the response back from the Google Gemini API |
+1 | `out_metadata` | `DAT` | Contains the metadata back from the Google Gemini API, this includes data like total token count, and prompt token count |

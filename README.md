@@ -19,9 +19,9 @@ The TouchDesigner Gemini Toolkit is built on the principle that you want to get 
 
 ### Drag and Drop
 
-Get started using the Gemini Toolkit by dragging and dropping the `tox` files into your TouchDesigner projects. We recommend first adding  the `api_key_manager` to your project. Here you can add both Studio and Enterprise API keys for the respective Google AI platforms. By adding the [`api_key_manager`](https://sudomagiccode.github.io/td-gemini-toolkit/gemini-comps/gemini-ops/key-manager) first, every component you add after will pull credentials from the manager making it easy to work quickly in your project.
+Get started using the Gemini Toolkit by dragging and dropping the `tox` files into your TouchDesigner projects. We recommend first adding  the `api_key_manager` to your project. Here you can add both Studio and Enterprise API keys for the respective Google AI platforms. By adding the [`api_key_manager`](https://sudomagiccode.github.io/td-gemini-toolkit/gemini-comps/key-manager) first, every component you add after will pull credentials from the manager making it easy to work quickly in your project.
 
-API Keys are kept in the storage of your operators. The [`api_key_manager`](https://sudomagiccode.github.io/td-gemini-toolkit/gemini-comps/gemini-ops/key-manager) has several convenience mechanics for both distributing and clearing keys from your project.
+API Keys are kept in the storage of your operators. The [`api_key_manager`](https://sudomagiccode.github.io/td-gemini-toolkit/gemini-comps/key-manager) has several convenience mechanics for both distributing and clearing keys from your project.
 
 Next add any of the model components to your project:
 

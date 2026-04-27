@@ -16,6 +16,7 @@ def set_defaults():
         print(f"---> Setting defaults for {each_op.name}")
         # loop though defaults
         for each_par, value in pars_dict.items():
+            print(each_par)
             # set default
             each_op.par[each_par].default = value
             # set par to default value

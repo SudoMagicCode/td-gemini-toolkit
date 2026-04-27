@@ -15,13 +15,16 @@ A TouchDesigner component for generating synthetic text from audio with the Goog
 
 ## Controls
 
+Refer to the [Common Controls](common-controls) for a list of all available parameters.
+
+
 Parameter Name | Parameter | Type | Description |
 --- | --- | --- | --- |
 Source File | `Sourcefile` | file | Available when Use Source File is true, this allows you to select a file from disk to use for the audio transcription model |
 Use Source File | `Usesourcefile` | toggle | Use a file from disk, or record audio directly in TouchDesigner |
 Temp File | `Tempfile` | file | *(Read Only)* Path to currently used temp file |
+Recording Timeout | `Recordingtimeout` | int | The number of seconds that can elapse before the Recording process will stop automatically. This ensures you don't accidentally fill your whole hard drive with an audio recording.
 Record | `Record` | toggle | turns recoding on and off |
-Default Prompt | `Defaultprompt` | string | The prompt used when no input `Text DAT` is connected |
 
 ## Outputs
 

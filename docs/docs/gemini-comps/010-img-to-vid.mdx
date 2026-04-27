@@ -14,13 +14,28 @@ TOX name `base_img_to_vid`
 
 ## Controls
 
+Refer to the [Common Controls](common-controls) for a list of all available parameters.
+
+
 Parameter Name | Parameter | Type | Description |
 --- | --- | --- | --- |
-Default Prompt | `Defaultprompt` | string | The prompt used when no input `Text DAT` is connected |
-Model | `Model` | menu | The Gemini Model to use for processing this text prompt |
+Input Resolution | `Inputresolution` | menu | Downscale options for reducing the image resolution - reducing your input resolution by a half or quarter will help maintain high performance |
 Resolution | `Resolution` | menu | The output image resolution |
 Aspect Ratio | `Aspectratio` | menu | The output image aspect ratio |
 Video
+Has VFS | `Hasvfs` | Toggle | (*Read Only*) |
+Export Video File | `Exportvideofile` | pulse | Allows for exporting video from component - this is only available if the file stored in VFS |
+Fade In | `Fadein` | toggle | Fades in video when it is done loading
+Reload | `Reload` | toggle | Reload par from video device in
+Reloadpulse | `Reloadpulse` | pulse | Instantly reload the file from disk. |
+Play | `Play` | toggle | Controls play parameter moviefilein TOP |
+Speed | `Speed` | float | Controls playback speed of moviefilein TOP |
+Cue | `Cue` | toggle | Jumps to Cue Point when set to on |
+Pulse Cue | `Cuepulse` | pulse | Instantly jumps to the Cue Point |
+Loopcrossfade | `Loopcrossfade | float | Loopcrossfade parameter from moviefilein TOP
+Audio Loop | `Audioloop` | menu | Audio Loop parameter from moviefilein TOP |
+Interpolate Frames | `Interpolateframes` | toggle | Interpolate Frames parameter from moviefilein TOP |
+Delete Video File | `Deletevideofile` | pulse | Deletes video file stored in VFS - this is only available if the file is stored in VFS
 
 ## Outputs
 

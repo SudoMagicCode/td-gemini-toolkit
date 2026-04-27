@@ -11,17 +11,17 @@ Here you'll find a collection of custom TouchDesigner Components that use the Go
 
 If you're just getting started and setting up a rapid prototype, then using an AI Studio API key is likely the fastest and easiest pathway for testing your ideas. If you're standing up a long running installation, you likely need the stability and pricing structure from Google Cloud's Vertex solution. This project handles both of these cases and provides some utility components, include an API Key Manager that makes it easy to centrally organize your Keys, and distribute them to all of the components in your project.
 
-# Setup
+## Setup
 
-## Download the `package.zip`
+### Download the `package.zip`
 
-The TouchDesigner Gemini Toolkit is built on the principle that you want to get working quickly. For that reason you should get started by downloading the latest release of `tox` files [from the releases page](https://github.com/SudoMagicCode/td-gemini-tools/releases). Navigate to the latest release, click on `show all assets` and download the `package.zip` file. This file contains all of the single `tox` files packaged into a single library you can download.
+The TouchDesigner Gemini Toolkit is built on the principle that you want to get working quickly. For that reason you should get started by downloading the latest release of `tox` files [from the releases page](https://github.com/SudoMagicCode/td-gemini-toolkit/releases). Navigate to the latest release, click on `show all assets` and download the `package.zip` file. This file contains all of the single `tox` files packaged into a single library you can download.
 
-## Drag and Drop
+### Drag and Drop
 
-Get started using the Gemini Toolkit by dragging and dropping the `tox` files into your TouchDesigner projects. We recommend first adding  the `api_key_manager` to your project. Here you can add both Studio and Enterprise API keys for the respective Google AI platforms. By adding the [`api_key_manager`](https://sudomagiccode.github.io/td-gemini-tools/gemini-comps/gemini-ops/key-manager) first, every component you add after will pull credentials from the manager making it easy to work quickly in your project.
+Get started using the Gemini Toolkit by dragging and dropping the `tox` files into your TouchDesigner projects. We recommend first adding  the `api_key_manager` to your project. Here you can add both Studio and Enterprise API keys for the respective Google AI platforms. By adding the [`api_key_manager`](https://sudomagiccode.github.io/td-gemini-toolkit/gemini-comps/gemini-ops/key-manager) first, every component you add after will pull credentials from the manager making it easy to work quickly in your project.
 
-API Keys are kept in the storage of your operators. The [`api_key_manager`](https://sudomagiccode.github.io/td-gemini-tools/gemini-comps/gemini-ops/key-manager) has several convenience mechanics for both distributing and clearing keys from your project.
+API Keys are kept in the storage of your operators. The [`api_key_manager`](https://sudomagiccode.github.io/td-gemini-toolkit/gemini-comps/gemini-ops/key-manager) has several convenience mechanics for both distributing and clearing keys from your project.
 
 Next add any of the model components to your project:
 
@@ -41,18 +41,18 @@ Next add any of the model components to your project:
 
 Each component comes with a default prompt, inputs, outputs, and utility handles for making it easy to work with the Gemini API.
 
-[Complete project documentation here](https://sudomagiccode.github.io/td-gemini-tools/).
+[Complete project documentation here](hhttps://sudomagiccode.github.io/td-gemini-toolkit/).
 
-# Development
+## Development
 
-## Dependencies
+### Dependencies
 
 * [TouchDesigner](https://derivative.ca/download)
 * [Taskfile](https://taskfile.dev/)
 * [Github CLI](https://cli.github.com/)
 * Gemini API Access
 
-# Gemini API Reference
+## Gemini API Reference
 
 [AI Studio](https://ai.google.dev/gemini-api/docs)
 [Vertext AI](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/start)

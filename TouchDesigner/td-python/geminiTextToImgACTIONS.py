@@ -37,14 +37,7 @@ def createRequest(textOp: textDAT):
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
 
     # resolve model
-    endpointInfo = resolveEndpointInfo()
-    modelType = endpointInfo.get("modelType")
-    if modelType == "studio":
-        model_par_enum = enumPars.StudioImageModels[parent.geminiCOMP.par.Model.eval()]
-    else:
-        model_par_enum = enumPars.VertexImageModels[parent.geminiCOMP.par.Model.eval()]
-
-    currentModel: geminiObjects.GeminiModel = model_par_enum.value.model.value
+    current_model: geminiObjects.GeminiModel = parent.geminiCOMP.ResolveModel()
 
     # create input object
     geminiInput = geminiObjects.GeminiInput()
@@ -72,7 +65,7 @@ def createRequest(textOp: textDAT):
     # debug(resolution, aspect)
 
     # create a request object which resolves to the output_buffer
-    request = TextToImageRequestObject(geminiInput, output_buffer, model=currentModel)
+    request = TextToImageRequestObject(geminiInput, output_buffer, model=current_model)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -80,7 +73,7 @@ def createRequest(textOp: textDAT):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request, isPreview=currentModel.isPreview)
+    requestId = request_engine.MakeRequest(request, isPreview=current_model.isPreview)
 
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
@@ -98,3 +91,19 @@ def Cancel(par: Par):
     """Cancel running request"""
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
     request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
+
+
+def Forcegenerate(par: Par):
+    Cancel()
+    run(Generate, delayFrames=10)
+
+
+def Saveimage(par: Par):
+    destination = ui.chooseFile(
+        load=False, fileTypes=tdu.fileTypes["image"], title="Save image as"
+    )
+    if destination == None:
+        pass
+    else:
+        source: TOP = parent.geminiCOMP.op("out_response")
+        source.save(destination)

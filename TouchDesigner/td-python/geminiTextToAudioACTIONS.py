@@ -39,14 +39,7 @@ def createRequest(textOp: DAT, top: TOP):
     userContent = geminiInput.addUserContent()
 
     # resolve model
-    endpointInfo = resolveEndpointInfo()
-    modelType = endpointInfo.get("modelType")
-    if modelType == "studio":
-        model_par_enum = enumPars.StudioAudioModels[parent.geminiCOMP.par.Model.eval()]
-    else:
-        model_par_enum = enumPars.VertexAudioModels[parent.geminiCOMP.par.Model.eval()]
-
-    currentModel: geminiObjects.GeminiModel = model_par_enum.value.model.value
+    current_model: geminiObjects.GeminiModel = parent.geminiCOMP.ResolveModel()
 
     # add a text part to the contents
     userContent.addPart(textPart)
@@ -57,7 +50,7 @@ def createRequest(textOp: DAT, top: TOP):
         userContent.addPart(imagePart)
 
     # create a request object which resolves to the output_buffer
-    request = TextToAudioRequest(geminiInput, output_buffer, model=currentModel)
+    request = TextToAudioRequest(geminiInput, output_buffer, model=current_model)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -65,7 +58,7 @@ def createRequest(textOp: DAT, top: TOP):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request, isPreview=currentModel.isPreview)
+    requestId = request_engine.MakeRequest(request, isPreview=current_model.isPreview)
 
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
@@ -83,6 +76,11 @@ def Cancel(par: Par):
     """Generate new output on demand"""
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
     request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
+
+
+def Forcegenerate(par: Par):
+    Cancel()
+    run(Generate, delayFrames=10)
 
 
 def Deleteaudiofile(par: Par):

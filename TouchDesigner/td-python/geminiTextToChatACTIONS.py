@@ -34,20 +34,17 @@ def CreateRequest(
 
 
 def createRequest(fifo: fifoDAT, context: DAT):
-    info = resolveEndpointInfo()
-    if info.get("modelType") == "studio":
-        current_model = geminiObjects.StudioModels[parent.geminiCOMP.par.Model.eval()]
-    else:
-        current_model = geminiObjects.VertexModels[parent.geminiCOMP.par.Model.eval()]
+    # resolve model
+    current_model: geminiObjects.GeminiModel = parent.geminiCOMP.ResolveModel()
+    print(current_model)
 
     # create input object
     geminiInput = geminiObjects.GeminiInput()
 
     contents = geminiObjects.Adaptors.FIFODattoGeminiContents(context)
     geminiInput.addContent(contents)
-    print(type(current_model.value))
     # create a request object which resolves to the output_buffer
-    request = ChatRequestObject(geminiInput, fifo, model=current_model.value)
+    request = ChatRequestObject(geminiInput, fifo, model=current_model)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -55,9 +52,7 @@ def createRequest(fifo: fifoDAT, context: DAT):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(
-        request, isPreview=current_model.value.isPreview
-    )
+    requestId = request_engine.MakeRequest(request, isPreview=current_model.isPreview)
 
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
@@ -77,3 +72,8 @@ def Cancel(par: Par):
     """Cancel running request"""
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
     request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
+
+
+def Forcegenerate(par: Par):
+    Cancel()
+    run(Generate, delayFrames=10)

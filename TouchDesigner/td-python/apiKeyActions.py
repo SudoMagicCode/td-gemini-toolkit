@@ -2,6 +2,7 @@ import copy
 import smOpUtils
 import geminiTerminalLogs
 import tdGeminiOp
+from tdGeminiOp import tdGeminiComp
 
 GEMINI_KEY_NAME = "gemini_apiKey"
 
@@ -115,9 +116,9 @@ def Clearallendpoints(tdPar: Par) -> None:
 
 
 def Apiendpoint(tdPar: Par) -> None:
-    info = resolveEndpointInfo()
-    thisOp = parent.geminiCOMP
+    thisOp: tdGeminiComp = parent.geminiCOMP
     thisGeminiOp: tdGeminiOp.geminiOP = thisOp.par.Geminioptype.eval()
+    info = thisOp.ResolveEndpointInfo()
 
     if info == None:
         thisOp.par.Hasapikey = False
@@ -126,17 +127,18 @@ def Apiendpoint(tdPar: Par) -> None:
             smOpUtils.set_par_state(thisOp, "Hasapikey", False)
         else:
             smOpUtils.set_par_state(thisOp, "Hasapikey", True)
+            thisOp.UpdateEndpointType(info)
 
-            if thisOp.par.Model.isMenu:
-                menuSourceStr = thisGeminiOp.vertexEnumPar
-                if info.get("modelType") == "studio":
-                    menuSourceStr = thisGeminiOp.studioEnumPar
-                smOpUtils.updateMenuSource(thisOp, "Model", menuSourceStr)
-            else:
-                modelTarget = thisGeminiOp.vertexEnumPar
-                if info.get("modelType") == "studio":
-                    modelTarget = thisGeminiOp.studioEnumPar
-                thisOp.par.Model = modelTarget
+            # if thisOp.par.Model.isMenu:
+            #     menuSourceStr = thisGeminiOp.vertexEnumPar
+            #     if info.get("modelType") == "studio":
+            #         menuSourceStr = thisGeminiOp.studioEnumPar
+            #     smOpUtils.updateMenuSource(thisOp, "Model", menuSourceStr)
+            # else:
+            #     modelTarget = thisGeminiOp.vertexEnumPar
+            #     if info.get("modelType") == "studio":
+            #         modelTarget = thisGeminiOp.studioEnumPar
+            #     thisOp.par.Model = modelTarget
 
 
 def Distributeendpoints(tdPar: Par) -> None:
@@ -159,12 +161,18 @@ def Distributeendpoints(tdPar: Par) -> None:
             smOpUtils.updateApiEndpointPar(each)
             info = resolveEndpointInfo(each)
             if info == None:
-                each.par.Hasapikey = False
-            else:
-                if info.get("apiKey") == None or info.get("apiKey") == "":
+                try:
                     each.par.Hasapikey = False
-                else:
-                    each.par.Hasapikey = True
+                except Exception as e:
+                    pass
+            else:
+                try:
+                    if info.get("apiKey") == None or info.get("apiKey") == "":
+                        each.par.Hasapikey = False
+                    else:
+                        each.par.Hasapikey = True
+                except Exception as e:
+                    pass
 
 
 def Addinfo(tdPar: Par) -> None:

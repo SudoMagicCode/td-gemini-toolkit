@@ -34,14 +34,7 @@ def CreateRequest(textOp: textDAT):
 
 def createRequest(textOp: textDAT):
     # resolve model
-    endpointInfo = resolveEndpointInfo()
-    modelType = endpointInfo.get("modelType")
-    if modelType == "studio":
-        model_par_enum = enumPars.StudioTextModels[parent.geminiCOMP.par.Model.eval()]
-    else:
-        model_par_enum = enumPars.VertexTextModels[parent.geminiCOMP.par.Model.eval()]
-
-    currentModel: geminiObjects.GeminiModel = model_par_enum.value.model.value
+    current_model: geminiObjects.GeminiModel = parent.geminiCOMP.ResolveModel()
 
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(textOp)
@@ -54,7 +47,7 @@ def createRequest(textOp: textDAT):
     userContent.addPart(textPart)
 
     # create a request object which resolves to the output_buffer
-    request = TextToTextRequestObject(geminiInput, output_buffer, model=currentModel)
+    request = TextToTextRequestObject(geminiInput, output_buffer, model=current_model)
 
     def cleanup():
         smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
@@ -62,7 +55,7 @@ def createRequest(textOp: textDAT):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request, isPreview=currentModel.isPreview)
+    requestId = request_engine.MakeRequest(request, isPreview=current_model.isPreview)
 
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
@@ -80,3 +73,8 @@ def Cancel(par: Par):
     """Cancel running request"""
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
     request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
+
+
+def Forcegenerate(par: Par):
+    Cancel()
+    run(Generate, delayFrames=10)

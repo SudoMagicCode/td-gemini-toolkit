@@ -42,14 +42,7 @@ def createRequest(dat: textDAT, top: TOP):
     output_buffer.par.file = ""
 
     # resolve model
-    endpointInfo = resolveEndpointInfo()
-    modelType = endpointInfo.get("modelType")
-    if modelType == "studio":
-        model_par_enum = enumPars.StudioVeoModels[parent.geminiCOMP.par.Model.eval()]
-    else:
-        model_par_enum = enumPars.VertexVeoModels[parent.geminiCOMP.par.Model.eval()]
-
-    currentModel: geminiObjects.GeminiModel = model_par_enum.value.model.value
+    current_model: geminiObjects.GeminiModel = parent.geminiCOMP.ResolveModel()
 
     prompt = dat.text
 
@@ -77,7 +70,7 @@ def createRequest(dat: textDAT, top: TOP):
 
     # create a request object which resolves to the output_buffer
     request: ImageToVideoRequestObject = ImageToVideoRequestObject(
-        geminiInput, output_buffer, model=currentModel
+        geminiInput, output_buffer, model=current_model
     )
 
     def cleanup():
@@ -86,7 +79,7 @@ def createRequest(dat: textDAT, top: TOP):
     request.onDone = cleanup
 
     # make the request
-    requestId = request_engine.MakeRequest(request, isPreview=currentModel.isPreview)
+    requestId = request_engine.MakeRequest(request, isPreview=current_model.isPreview)
 
     parent.geminiCOMP.par.Requestid = requestId
     msg_formatter(f"{parent.geminiCOMP.name} creating request")
@@ -104,6 +97,11 @@ def Cancel(par: Par):
     """Generate new output on demand"""
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
     request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
+
+
+def Forcegenerate(par: Par):
+    Cancel()
+    run(Generate, delayFrames=10)
 
 
 def resolutionFromPars() -> tuple[int, int]:

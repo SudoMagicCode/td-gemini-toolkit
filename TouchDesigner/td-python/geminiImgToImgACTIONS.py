@@ -103,3 +103,19 @@ def Cancel(par: Par):
     """Cancel running request"""
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
     request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
+
+
+def Forcegenerate(par: Par):
+    Cancel()
+    run(Generate, delayFrames=10)
+
+
+def Saveimage(par: Par):
+    destination = ui.chooseFile(
+        load=False, fileTypes=tdu.fileTypes["image"], title="Save image as"
+    )
+    if destination == None:
+        pass
+    else:
+        source: TOP = parent.geminiCOMP.op("out_response")
+        source.save(destination)

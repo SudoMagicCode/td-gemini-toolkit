@@ -67,7 +67,18 @@ def createRequest(textOp: textDAT):
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", True)
 
 
-def Generatenew(par: Par):
+def Generate(par: Par):
     """Generate new output on demand"""
     smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
     CreateRequest(op("null_buffer"))
+
+
+def Cancel(par: Par):
+    """Generate new output on demand"""
+    smOpUtils.set_par_state(parent.geminiCOMP, "Generating", False)
+    request_engine.CancelRequest(parent.geminiCOMP.par.Requestid.eval())
+
+
+def Forcegenerate(par: Par):
+    Cancel()
+    run(Generate, delayFrames=10)

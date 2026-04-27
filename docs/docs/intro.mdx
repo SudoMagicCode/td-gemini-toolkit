@@ -23,15 +23,19 @@ There are a wide variety of perspectives about what comes next in AI, the long t
 
 Many Machine Learning models still produce inconsistent results. In our own testing we've discovered server timeouts, refusals to generate content (returned issues include trademark violation, content violation, failed generation by the remote serer, etc.) and all sorts of potential challenges. While there are several parameters exposed in the components to help track those issues there are still scenarios where you may find that content fails to generate. At the end of the day these components are an opinionated implementation of the Google Gemini API, and while they are intended to work for most use cases, you may find edges where it doesn't fit your use case.
 
-{/* ### A Prototyping Toolkit
+### A Prototyping Toolkit
 
+One position to consider is that many of these tools are great for fast prototyping, but might not standup against real-world conditions (especially for the Studio AI endpoint). One workflow you might consider is using these components to test ideas first, before you do the harder work of figuring out how you want to use AI in your installation, experience, or performance.
 
+### Test, Test, Test
 
-### Test, Test, Test */}
+If you do find that you're using these components in your live projects, we highly recommend that you set-up a Vertex endpoint. Generally speaking, the pricing is more advantageous, and the permissions have a wider set of scope for controlling API use. We also highly encourage you to reserve time in your process for play testing and load testing. A deployed project will surprise you with how it breaks, and if you can it is well worth setting aside time to test your artwork, performance, installation, etc before it's out in the world. We also recommend performing some load testing - some of the endpoints return faster than others, some models are more expensive than others. Make sure you have some budget and time to test so you're not suddenly surprised by a high utilization bill. 
 
 ## From SudoMagic
 
-As SudoMagic has worked on projects that have incorporated different AI mechanics we've frequently re-build some variation of the same set of prototyping components that work asynchronously with AI platforms. This project was an opportunity to look at what standardizing some of that practice might look like. It also helps illustrate where AI works well, and where it still requires a healthy degree of curation. 
+We're excited to partner with REMAP from UCLA for this project. SudoMagic has worked on projects that have incorporated different AI mechanics we've frequently re-build some variation of the same set of prototyping components that work asynchronously with AI platforms. This project was an opportunity to look at what standardizing some of that practice might look like. It also helps illustrate where AI works well, and where it still requires a healthy degree of curation.
+
+If you find something broken or want to start a discussion about how these components work, please don't hesitate to [add an issue](https://github.com/SudoMagicCode/td-gemini-toolkit/issues) to the project so we can keep it moving forward. If you find that you need to make changes to this project you're also free to fork the repo and start customizing the components so they fit your workflow.
 
 
 ## Acknowledgements

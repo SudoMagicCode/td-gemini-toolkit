@@ -1,8 +1,8 @@
 {
-  "label": "Api Configuration",
+  "label": "API Configuration",
   "position": 20,
   "link": {
     "type": "generated-index",
-    "description": "5 minutes to learn the most important Docusaurus concepts."
+    "description": "Finding and setting up your API Keys"
   }
 }

@@ -1,0 +1,36 @@
+---
+sidebar_position: 2
+slug: /getting-started
+---
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
+# Getting Started
+
+## Setup
+
+### Download the `package.zip`
+
+The TouchDesigner Gemini Toolkit is built on the principle that you want to get working quickly. For that reason you should get started by downloading the latest release of `tox` files [from the releases page](https://github.com/SudoMagicCode/td-gemini-toolkit/releases). Navigate to the latest release, click on `show all assets` and download the `package.zip` file. This file contains all of the single `tox` files packaged into a single library you can download.
+
+### Drag and Drop
+
+Get started using the Gemini Toolkit by dragging and dropping the `tox` files into your TouchDesigner projects. We recommend first adding  the `api_key_manager` to your project. Here you can add both Studio and Enterprise API keys for the respective Google AI platforms. By adding the [`api_key_manager`](https://sudomagiccode.github.io/td-gemini-toolkit/gemini-comps/gemini-ops/key-manager) first, every component you add after will pull credentials from the manager making it easy to work quickly in your project.
+
+API Keys are kept in the storage of your operators. The [`api_key_manager`](https://sudomagiccode.github.io/td-gemini-toolkit/gemini-comps/gemini-ops/key-manager) has several convenience mechanics for both distributing and clearing keys from your project.
+
+Next add any of the model components to your project:
+
+| `tox` | Reference | Description |
+| --- | --- | --- |
+| `base_txt_input` | [Prompt Editor](gemini-comps/prompt-editor) | a prompt editing utility component |
+| `base_txt_to_txt` | [Text to Text](gemini-comps/txt-to-txt) |  used for working with text to text workflows |
+| `base_txt_to_chat` | [Text Chat](gemini-comps/txt-chat) |  a chat style interaction tool for Gemini |
+| `base_img_to_txt` | [Image to Text](gemini-comps/img-to-txt) |  used for creating images from text prompts |
+| `base_txt_to_img` | [Text to Image](gemini-comps/txt-to-img) |  used from generating images from text |
+| `base_img_to_img` | [Image to Image](gemini-comps/img-to-img) |  used for creating images from image and text prompts |
+| `base_txt_to_vid` | [Text to Video](gemini-comps/txt-to-vid) |  used for generating video from text |
+| `base_img_to_vid` | [Image to Video](gemini-comps/img-to-vid) |  used for generating videos from text and images |
+| `base_audio_to_txt` | [Audio to Text](gemini-comps/audio-to-txt) |  used for generating audio from text prompts |
+| `base_txt_to_audio` | [Text to Audio](gemini-comps/txt-to-audio) |  used for transcribing or describing audio as text. |
+| `base_txt_to_speech` | [Text to Speech](gemini-comps/txt-to-speech) |  used for generating speech audio from text |
+

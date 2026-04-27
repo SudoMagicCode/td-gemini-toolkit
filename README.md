@@ -41,7 +41,7 @@ Next add any of the model components to your project:
 
 Each component comes with a default prompt, inputs, outputs, and utility handles for making it easy to work with the Gemini API.
 
-[Complete project documentation here](hhttps://sudomagiccode.github.io/td-gemini-toolkit/).
+Find all the [detailed documentation here.](https://sudomagiccode.github.io/td-gemini-toolkit/)
 
 ## Development
 

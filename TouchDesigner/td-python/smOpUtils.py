@@ -128,12 +128,15 @@ def createDefaultEndpoint(apiKey: str) -> None:
 def updateApiEndpointPar(targetOp: OP = parent.geminiCOMP) -> None:
     """"""
     endpoints = targetOp.fetch("endpoints", None)
-    if endpoints == None:
-        targetOp.par.Hasapikey = False
-        clear_menu_par(targetOp, "Apiendpoint")
-        return
-    else:
-        set_menu_par(targetOp, "Apiendpoint", targetOp.fetch("endpoints"))
+    try:
+        if endpoints == None:
+            targetOp.par.Hasapikey = False
+            clear_menu_par(targetOp, "Apiendpoint")
+            return
+        else:
+            set_menu_par(targetOp, "Apiendpoint", targetOp.fetch("endpoints"))
+    except Exception as e:
+        geminiTerminalLogs.msg_formatter(e)
 
 
 def addEndpoint(

@@ -1,6 +1,7 @@
 ---
 slug: txt-to-img
 ---
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Text to Image
 
@@ -11,11 +12,14 @@ A TouchDesigner component for generating synthetic images with the Google Gemini
 
 ## Controls
 
+Refer to the [Common Controls](common-controls) for a list of all available parameters.
+
+
 Parameter Name | Parameter | Type | Description |
 --- | --- | --- | --- |
-Default Prompt | `Defaultprompt` | string | The prompt used when no input `Text DAT` is connected |
 Resolution | `Resolution` | menu | The output image resolution |
 Aspect Ratio | `Aspectratio` | menu | The output image aspect ratio |
+Save Image | `Saveimage` | pulse | Prompts the user to save the image to file, note that the user is response for selecting a file extension |
 
 ## Outputs
 

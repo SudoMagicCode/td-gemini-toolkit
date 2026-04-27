@@ -2,25 +2,41 @@
 slug: txt-to-vid
 
 ---
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Text to Video
 
 TOX name `base_txt_to_vid`
 
-![base_gemini_key_server](imgs/base_text_to_video.png)
+<img src={require('./imgs/base_text_to_video.png').default} style={{width: '300px'}}></img>
 
 ## Summary
 A TouchDesigner component for generating synthetic video with the Google Gemini API.
 
 ## Controls
 
+Refer to the [Common Controls](common-controls) for a list of all available parameters.
+
+
 Parameter Name | Parameter | Type | Description |
 --- | --- | --- | --- |
-Default Prompt | `Defaultprompt` | string | The prompt used when no input `Text DAT` is connected |
-Model | `Model` | Menu | The Gemini Model to use for processing this text prompt |
 Resolution | `Resolution` | menu | The output image resolution |
 Aspect Ratio | `Aspectratio` | menu | The output image aspect ratio |
 Video Length | `Videolength` | menu | The duration of the output video |
+Has VFS | `Hasvfs` | Toggle | (*Read Only*) |
+Export Video File | `Exportvideofile` | pulse | Allows for exporting video from component - this is only available if the file stored in VFS |
+Fade In | `Fadein` | toggle | Fades in video when it is done loading
+Reload | `Reload` | toggle | Reload par from video device in
+Reloadpulse | `Reloadpulse` | pulse | Instantly reload the file from disk. |
+Play | `Play` | toggle | Controls play parameter moviefilein TOP |
+Speed | `Speed` | float | Controls playback speed of moviefilein TOP |
+Cue | `Cue` | toggle | Jumps to Cue Point when set to on |
+Pulse Cue | `Cuepulse` | pulse | Instantly jumps to the Cue Point |
+Loopcrossfade | `Loopcrossfade | float | Loopcrossfade parameter from moviefilein TOP
+Audio Loop | `Audioloop` | menu | Audio Loop parameter from moviefilein TOP |
+Interpolate Frames | `Interpolateframes` | toggle | Interpolate Frames parameter from moviefilein TOP |
+Delete Video File | `Deletevideofile` | pulse | Deletes video file stored in VFS - this is only available if the file is stored in VFS
+
 
 ## Outputs
 

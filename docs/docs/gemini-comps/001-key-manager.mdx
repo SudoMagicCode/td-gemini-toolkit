@@ -1,13 +1,28 @@
 ---
 slug: key-manager
 ---
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Key Manager
 
 TOX name `base_api_key_manager`
 
-![base_gemini_key_server](imgs/base_gemini_key_server.png)
+<img src={require('./imgs/base_gemini_key_server.png').default} style={{width: '300px'}}></img>
+
 
 ## Summary
 
-A TouchDesigner component for generating synthetic text with the Google Gemini API based on an input prompt. The first input to this component should be a `Text DAT` - the contents of this `DAT` will be used as the prompt for generating text.
+A TouchDesigner for manager API keys across your project. This component make sit easy to manage multiple API keys and distribute them to the gemini components you add to your project. A typical work flow would include first adding this component to  your project, adding your API keys, and then adding any other gemini components to your project.
+
+The API Key Manager is an operator that uses the global op shortcut `geminiAPIKeyServer`. This means you should only include one of these in any given TouchDesigner `toe` file. When a new gemini component is added they will first attempt to find this component by using it's global op shortcut, and then pull any endpoints that are stored in this key manager. Practically speaking, this means that when you add a new gemini component it will pull any API keys from this component so it's ready to make requests right away.
+
+## Controls
+
+Parameter Name | Parameter | Type | Description |
+--- | --- | --- | --- |
+Show Info | `Showinfo` | string | The prompt used when no input `Text DAT` is connected |
+Add Default API Key | `Adddefaultapikey` | pulse | Adds an API key to a default endpoint thats always configured as a Studio AI Endpoint |
+Add New Endpoint | `Addnewendpoint` | pulse | Add a new endpoint that can for either Vertex or Studio |
+Distribute Endpoints | `Distributeendpoints` | pulse | Distributes longin infor to all ops that are tagged `gemini` in your project |
+Clear Endpoints | `Clearendpoints` | pulse | Clears the `endpoint` storage key for this operator only | 
+Clear All Endpoints | `Clearallendpoints` | pulse | Clears the `endpoint` storage key all operators tagged `gemini` in your project |

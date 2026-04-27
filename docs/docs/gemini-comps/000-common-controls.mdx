@@ -4,6 +4,8 @@ slug: common-controls
 
 # Common Controls
 
+There are a number of controls and parameters that are consistent across all operators. For the sake of brevity and consistency you'll find those outlined on this page. 
+
 ## Gemini Page - Available on all Components
 
 Parameter Name | Parameter | Type | Description |
@@ -14,6 +16,7 @@ Generating | `Generating` | toggle | *(Read Only)* Indicator for if this COMP is
 Request ID | `Requestid` | int | *(Read Only)* Used for tracking the current request for this COMP |
 AI Studio Model | `Studiomodel` | string or menu | Available Studio Models
 Vertex Model | `Vertexmodel` | string or menu | Available Vertex Models
+Default Prompt | `Defaultprompt` | string | The prompt used when no input `Text DAT` is connected |
 Auto Generate | `Autogenerate` | toggle | Toggle on to automatically submit request when the text input changes |
 Generate | `Generate` | pulse | Manually start generation process |
 Force Generate | `Forcegenerate` | pulse | Cancels current image generation and starts a new one
@@ -26,12 +29,52 @@ Add Callbacks | `Addcallbacks` | pulse | Adds a callbacks dat with two methods `
 Callbacks DAT | `Callbacksdat` | DAT | 
 
 
+
 ## API Page
 
 Parameter Name | Parameter | Type | Description |
 --- | --- | --- | --- |
+Add Info | `Addinfo` | pulse | Adds an examine DAT that's docked to this operator which will show the endpoint data associated with this op |
 Has API Key | `Hasapikey` | toggle | *(Read Only)* Indicator for if this COMP has an API Key set to use with Gemini API |
-Add API Key | `Addapikey` | pulse | Adds an API key to this COMP |
-Distribute API Key | `Distributeapikey` | pulse | Distributes the API key from this COMP to all other gemini COMPs |
-Clear API Key | `Clearapikey` | pulse | Clears this COMP's API key |
+API Endpoint | `Apiendpoint` | menu | A dropdown menu of all endpoints in storage for this component 
+Add Default API Key | `Adddefaultapikey` | pulse | Adds a default API Key - default keys are always configured for the Studio AI Endpoint |
+Clear Endpoints | `Clearendpoints` | pulse | Clears all endpoints for this operator |
 
+:::warning[Storing API Keys]
+
+Managing API keys is an important consideration for any project. The opinion of this working framework is to store API keys in operator storage. This means that when your project is saved, the API key is not directly exposed, but it is accessible if your project is shared with others. 
+
+
+:::
+
+### API Key Safety
+
+If your project is only in a private repo, or only on a computer that you control, you can likely skim this section.
+
+If, however, you are using source control for a project that's publicly accessible (i.e. shared on a public dropbox link or public repo) we recommend taking extra precautions to ensure that your API key isn't used without your consent.
+
+### Setup
+
+One approach to using API keys in a TD project is not to store them in your project at all. Instead, the idea would be that you'd launch your project with a script that would set your needed values as environment variables that you could use in TouchDesigner. 
+
+An example method for setting your API keys at start might look like:
+
+```python
+def set_endpoints():
+
+    apiKey_server = op.geminiAPIKeyServer
+
+    DEFAULT_API_KEY = me.var("DEFAULT_API_KEY")
+    UCLA_BASE = me.var("PROJECT_BASE_URL")
+    UCLA_PREVIEW = me.var("PROJECT_PREVIEW_URL")
+    UCLA_API_KEY = me.var("PROJECT_KEY")
+
+    apiKey_server.mod.apiKeyActions.smOpUtils.createDefaultEndpoint(DEFAULT_API_KEY)
+    apiKey_server.mod.apiKeyActions.smOpUtils.addEndpoint(
+        "Project Name", "vertex", PROJECT_BASE_URL, PROJECT_PREVIEW_URL, PROJECT_KEY
+    )
+
+    apiKey_server.par.Distributeendpoints.pulse()
+```
+
+You might also be sure to set-up a script to run on exit to clear your API keys from your project. The API Manager component has to parameters that make this easy. 

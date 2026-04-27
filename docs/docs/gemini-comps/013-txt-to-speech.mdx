@@ -1,21 +1,40 @@
 ---
 slug: txt-to-speech
 ---
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Text to Speech
 
 TOX name `base_txt_to_speech`
 
-![base_gemini_key_server](imgs/base_text_to_speech.png)
+<img src={require('./imgs/base_text_to_speech.png').default} style={{width: '300px'}}></img>
 
 ## Summary
 A TouchDesigner component for generating synthetic speech with the Google Gemini API.
 
 ## Controls
 
+Refer to the [Common Controls](common-controls) for a list of all available parameters.
+
+:::info[Prompts]
+One interesting element to consider when writing prompts for Text to Speech is how you can provide inline instructions about tonality. You can provide instructions for the model about delivery by enclosing them in square brackets. For example, consider the following:
+
+```
+[menacingly] Have a great day!
+```
+```
+[cheerfully] Have a great day!
+```
+
+While the text is the same, these prompts will produce different results. You can change the intonation of your prompt by adding another set of square brackets.
+
+```
+[menacingly] Have a great day! [cheerfully] Just kidding, keep your chin up
+```
+:::
+
 Parameter Name | Parameter | Type | Description |
 --- | --- | --- | --- |
-Default Prompt | `Defaultprompt` | str | The prompt used when no input `Text DAT` is connected |
 Voice | `Voice`| menu | The available voice options for generating speech |
 Export Audio File | `Exportaudiofile` | pulse | Allows for exporting audio from component - using this parameter will open a dialog asking you where to save the file |
 File | `File` | file | *(Read Only)* Path of source. |

@@ -23,6 +23,24 @@ Get started using the Gemini Toolkit by dragging and dropping the `tox` files in
 
 API Keys are kept in the storage of your operators. The [`api_key_manager`](https://sudomagiccode.github.io/td-gemini-tools/gemini-comps/gemini-ops/key-manager) has several convenience mechanics for both distributing and clearing keys from your project.
 
+Next add any of the model components to your project:
+
+| tox | description |
+| --- | --- |
+| txt_input | a prompt editing utility component |
+| audio_to_txt | used for generating audio from text prompts |
+| txt_to_audio | used for transcribing or describing audio as text. |
+| txt_to_speech | used for generating speech audio from text |
+| img_to_img | used for creating images from image and text prompts |
+| img_to_txt | used for creating images from text prompts |
+| txt_to_txt | used for working with text to text workflows |
+| txt_to_chat | a chat style interaction tool for Gemini |
+| txt_to_img | used from generating images from text |
+| txt_to_vid | used for generating video from text |
+| img_to_vid | used for generating videos from text and images |
+
+Each component comes with a default prompt, inputs, outputs, and utility handles for making it easy to work with the Gemini API.
+
 [Complete project documentation here](https://sudomagiccode.github.io/td-gemini-tools/).
 
 ## Development

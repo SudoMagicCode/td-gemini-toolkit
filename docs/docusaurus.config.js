@@ -23,7 +23,7 @@ const config = {
   url: 'https://sudomagiccode.github.io/td-gemini-tools/',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/td-gemini-tools',
+  baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.

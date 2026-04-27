@@ -90,8 +90,9 @@ class VertexAudioModels(Enum):
     """
 
     # LYRIA_002                       = ModelAsPar(VertexModels.LYRIA_002, "Lyria 002")
-    LYRIA_3_CLIP_PREVIEW            = ModelAsPar(VertexModels.LYRIA_3_CLIP_PREVIEW, "Lyria 3 Clip")
-    LYRIA_3_PRO_PREVIEW             = ModelAsPar(VertexModels.LYRIA_3_PRO_PREVIEW, "Lyria 3 Pro")
+    # NOTE = lyria not currently supported for vertex
+    # LYRIA_3_CLIP_PREVIEW            = ModelAsPar(VertexModels.LYRIA_3_CLIP_PREVIEW, "Lyria 3 Clip")
+    # LYRIA_3_PRO_PREVIEW             = ModelAsPar(VertexModels.LYRIA_3_PRO_PREVIEW, "Lyria 3 Pro")
 
 
 class VertexTTSModels(Enum):

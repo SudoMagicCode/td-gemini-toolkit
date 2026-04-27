@@ -94,8 +94,12 @@ def Cancel(par: Par):
 
 
 def Forcegenerate(par: Par):
-    Cancel()
-    run(Generate, delayFrames=10)
+    Cancel(parent.geminiCOMP.par.Cancel)
+
+    def runGenerate():
+        Generate(parent.geminiCOMP.par.Generate)
+
+    run(runGenerate, delayFrames=10)
 
 
 def Saveimage(par: Par):

@@ -73,7 +73,7 @@ const config = {
         title: 'TD Gemini Toolkit',
         logo: {
           alt: 'My Site Logo',
-          src: 'img/gemini-logo.png',
+          src: 'img/logo.png',
         },
         items: [
           // {

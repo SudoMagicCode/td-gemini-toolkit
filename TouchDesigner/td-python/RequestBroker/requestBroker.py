@@ -146,20 +146,20 @@ class RequestBroker:
             )
             pass
 
-        requestObject = self._requestLookup[id]
-
         try:
             # attempt to resolve the request object
+            requestObject = self._requestLookup[id]
             requestObject._error(CanceledRequestException())
+            self._webclientDat.par.clear.pulse()
+            self._webclientDat.par.stop.pulse()
+            # delete the request object from lookup
+            del self._requestLookup[id]
 
         except Exception as e:
             # something went wrong in the resolving code...
             msg_formatter(
                 f"{str(self.my_id)} at {self._thisOp.path} raised Exception for request {id}:{e}"
             )
-
-        # delete the request object from lookup
-        del self._requestLookup[id]
 
     def MakeRequest(
         self, requestObject: RequestObjectBase, isPreview: bool = False

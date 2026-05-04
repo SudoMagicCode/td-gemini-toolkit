@@ -35,8 +35,8 @@ def CreateRequest(textOp: textDAT, top: TOP):
 def createRequest(dat: textDAT, top: TOP):
 
     # resolve model
-    # resolve model
     current_model: geminiObjects.GeminiModel = parent.geminiCOMP.ResolveModel()
+    print(parent.geminiCOMP.EndpointTypeIsStudio)
 
     # grab text from buffer
     textPart = geminiObjects.Adaptors.DATtoGeminiTextPart(dat)
@@ -90,7 +90,11 @@ def createRequest(dat: textDAT, top: TOP):
 
 def Generate(par: Par):
     """Generate new output on demand"""
-    CreateRequest(op("null_text_buffer"), op("null_image_buffer"))
+
+    CreateRequest(
+        parent.geminiCOMP.op("null_text_buffer"),
+        parent.geminiCOMP.op("null_image_buffer"),
+    )
 
 
 def Cancel(par: Par):

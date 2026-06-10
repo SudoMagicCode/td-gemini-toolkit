@@ -1,0 +1,4 @@
+name: Vertex AI Testing
+tdVersion: 2025.32460.Project
+tdPackages:
+pythonRequirements: []

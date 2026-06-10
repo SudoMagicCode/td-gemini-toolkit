@@ -1,0 +1,5 @@
+Summary
+
+A TouchDesigner component for generating synthetic text with the Google Gemini API based on an input prompt. The first input to this component should be a Text DAT - the contents of this DAT will be used as the prompt for generating text.
+
+Help

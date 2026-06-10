@@ -5,3 +5,5 @@ TouchDesigner/.env
 TouchDesigner/td-python/.vscode/
 
 sandbox/td-vertex-testing/.env
+
+sandbox/example/.env

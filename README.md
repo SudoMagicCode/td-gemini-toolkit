@@ -2,6 +2,9 @@
 
 *Development of the open source TouchDesigner Gemini Toolkit was supported by [UCLA REMAP](https://remap.ucla.edu/) and the [UCLA School of Theater, Film, and Television](https://www.tft.ucla.edu/), as part of the [2026 AI + Live Arts Hackathon.](https://datax.ucla.edu/news-events/events/ai-onstage-ai-live-arts-hackathon)*
 
+> [!IMPORTANT]
+> SudoMagic has identified issues performance issues when using the Vertex AI Endpoints. We are currently working to address these issues. For now, the Studio Endpoints provide the most reliable and complete set of behaviors.
+
 ## About this Project
 
 * Built with TouchDesigner 2025.32460

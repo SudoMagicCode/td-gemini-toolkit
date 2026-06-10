@@ -14,7 +14,7 @@ opBuilder = op("/base_root/base_project/base_save_for_release")
 
 defaults = {
     apiKeyManager: {
-        "Selectedviewer": "icon",
+        "Opviewer": "icon",
     },
     txtToTxt: {
         "Requestid": 0,
